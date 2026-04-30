@@ -27,4 +27,11 @@ export const projects = [
     icon: "✅",
     description: "Task manager with Telegram reminders",
   },
+  {
+    id: "texttools",
+    name: "Text Tools",
+    path: "/texttools",
+    icon: "\u{1F527}",
+    description: "Format JSON, convert case, trim, Base64 encode/decode",
+  },
 ];

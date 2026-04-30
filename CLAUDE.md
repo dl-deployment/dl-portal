@@ -47,3 +47,4 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/telegram.md` | Telegram app details (Bot API, env vars) |
 | `existing-pages/youtube.md` | YouTube app details (RSS, Context, localStorage data model) |
 | `existing-pages/tasks.md` | Tasks app details (repeating tasks, reminders, data model) |
+| `existing-pages/texttools.md` | Text Tools app details (JSON, case, trim, Base64 transforms) |

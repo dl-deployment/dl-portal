@@ -6,6 +6,7 @@ import TimelinePage from "./pages/TimelinePage";
 import TelegramPage from "./pages/TelegramPage";
 import YouTubePage from "./pages/YouTubePage";
 import TasksPage from "./pages/TasksPage";
+import TextToolsPage from "./pages/TextToolsPage";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="telegram" element={<ErrorBoundary><TelegramPage /></ErrorBoundary>} />
           <Route path="youtube" element={<ErrorBoundary><YouTubePage /></ErrorBoundary>} />
           <Route path="tasks" element={<ErrorBoundary><TasksPage /></ErrorBoundary>} />
+          <Route path="texttools" element={<ErrorBoundary><TextToolsPage /></ErrorBoundary>} />
         </Route>
       </Routes>
     </BrowserRouter>

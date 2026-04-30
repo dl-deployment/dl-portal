@@ -1,0 +1,161 @@
+.texttools-app {
+  --tt-accent: #6366f1;
+  --tt-accent-hover: #818cf8;
+  --tt-surface: #1a1a24;
+  --tt-surface-hover: #22222e;
+  --tt-border: #2a2a3a;
+  --tt-text: #a0a0b0;
+  --tt-text-bright: #e4e4ef;
+  --tt-radius: 8px;
+
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+}
+
+/* ── Header ────────────────────────────── */
+.texttools-app .tt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0 0.75rem;
+}
+
+.texttools-app .tt-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--tt-text-bright);
+}
+
+.texttools-app .tt-header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ── Toolbar ───────────────────────────── */
+.texttools-app .tt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--tt-border);
+}
+
+.texttools-app .tt-dropdown {
+  position: relative;
+}
+
+.texttools-app .tt-dropdown .btn.active {
+  background: var(--tt-accent);
+  color: #fff;
+  border-color: var(--tt-accent);
+}
+
+.texttools-app .tt-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  min-width: 120px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  border-radius: var(--tt-radius);
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.texttools-app .tt-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: var(--tt-text);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.texttools-app .tt-dropdown-item:hover {
+  background: var(--tt-surface-hover);
+  color: var(--tt-text-bright);
+}
+
+/* ── Textarea ──────────────────────────── */
+.texttools-app .tt-textarea {
+  flex: 1;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  border-radius: var(--tt-radius);
+  color: var(--tt-text-bright);
+  font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.texttools-app .tt-textarea:focus {
+  border-color: var(--tt-accent);
+}
+
+.texttools-app .tt-textarea::placeholder {
+  color: var(--tt-text);
+  opacity: 0.5;
+}
+
+/* ── Toast ─────────────────────────────── */
+.texttools-app .tt-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--tt-radius);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+  animation: tt-fadeIn 0.2s ease;
+  z-index: 100;
+}
+
+.texttools-app .tt-toast--success {
+  background: #22c55e;
+}
+
+.texttools-app .tt-toast--error {
+  background: #ef4444;
+}
+
+@keyframes tt-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive ────────────────────────── */
+@media (max-width: 640px) {
+  .texttools-app {
+    padding: 0 0.5rem;
+  }
+
+  .texttools-app .tt-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .texttools-app .tt-toolbar {
+    gap: 0.35rem;
+  }
+}
