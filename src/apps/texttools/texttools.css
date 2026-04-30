@@ -112,6 +112,15 @@
   opacity: 0.5;
 }
 
+/* ── Footer ────────────────────────────── */
+.texttools-app .tt-footer {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.4rem 0;
+  font-size: 0.75rem;
+  color: var(--tt-text);
+}
+
 /* ── Toast ─────────────────────────────── */
 .texttools-app .tt-toast {
   position: fixed;
