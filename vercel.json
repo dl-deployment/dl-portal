@@ -4,5 +4,8 @@
   "installCommand": "npm install && cd api && npm install",
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    { "path": "/api/tasks-check-reminders", "schedule": "0 * * * *" }
   ]
 }

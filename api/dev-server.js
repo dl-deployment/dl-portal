@@ -32,6 +32,16 @@ app.post("/api/send-telegram", async (req, res) => {
   await handler(req, res);
 });
 
+app.all("/api/tasks", async (req, res) => {
+  const handler = await loadHandler("tasks");
+  await handler(req, res);
+});
+
+app.get("/api/tasks-check-reminders", async (req, res) => {
+  const handler = await loadHandler("tasks-check-reminders");
+  await handler(req, res);
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`API dev server running on http://localhost:${PORT}`);

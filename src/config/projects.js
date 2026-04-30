@@ -20,4 +20,11 @@ export const projects = [
     icon: "\u{1F4FA}",
     description: "Track YouTube channels and videos",
   },
+  {
+    id: "tasks",
+    name: "Tasks",
+    path: "/tasks",
+    icon: "✅",
+    description: "Task manager with Telegram reminders",
+  },
 ];

@@ -1,0 +1,314 @@
+.tasks-app {
+  --tk-accent: #6366f1;
+  --tk-accent-hover: #818cf8;
+  --tk-surface: #1a1a24;
+  --tk-surface-hover: #22222e;
+  --tk-border: #2a2a3a;
+  --tk-text: #a0a0b0;
+  --tk-text-bright: #e4e4ef;
+  --tk-success: #22c55e;
+  --tk-danger: #ef4444;
+  --tk-warning: #f59e0b;
+  --tk-radius: 10px;
+
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header */
+.tk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.tk-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--tk-text-bright);
+}
+
+/* Tabs */
+.tk-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--tk-border);
+  margin-bottom: 1.25rem;
+}
+
+.tk-tab {
+  padding: 0.6rem 1.2rem;
+  background: none;
+  border: none;
+  color: var(--tk-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tk-tab:hover {
+  color: var(--tk-text-bright);
+}
+
+.tk-tab--active {
+  color: var(--tk-accent);
+  border-bottom-color: var(--tk-accent);
+}
+
+.tk-tab-badge {
+  font-size: 0.75rem;
+  background: var(--tk-surface-hover);
+  color: var(--tk-text);
+  padding: 0.1rem 0.45rem;
+  border-radius: 99px;
+  min-width: 1.2rem;
+  text-align: center;
+}
+
+.tk-tab--active .tk-tab-badge {
+  background: var(--tk-accent);
+  color: #fff;
+}
+
+/* Form */
+.tk-form {
+  background: var(--tk-surface);
+  border: 1px solid var(--tk-border);
+  border-radius: var(--tk-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.tk-form-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: var(--tk-text-bright);
+}
+
+.tk-form-field {
+  margin-bottom: 0.85rem;
+  flex: 1;
+}
+
+.tk-form-field label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--tk-text);
+  margin-bottom: 0.3rem;
+}
+
+.tk-form-field input,
+.tk-form-field textarea,
+.tk-form-field select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: var(--tk-surface-hover);
+  border: 1px solid var(--tk-border);
+  border-radius: 6px;
+  color: var(--tk-text-bright);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.tk-form-field input:focus,
+.tk-form-field textarea:focus,
+.tk-form-field select:focus {
+  border-color: var(--tk-accent);
+}
+
+.tk-form-field textarea {
+  resize: vertical;
+}
+
+.tk-form-row {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.tk-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Task list */
+.tk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tk-empty {
+  text-align: center;
+  color: var(--tk-text);
+  padding: 2.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* Task item */
+.tk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--tk-surface);
+  border: 1px solid var(--tk-border);
+  border-radius: var(--tk-radius);
+  padding: 0.85rem 1rem;
+  transition: border-color 0.15s;
+}
+
+.tk-item:hover {
+  border-color: var(--tk-accent);
+}
+
+.tk-item--overdue {
+  border-left: 3px solid var(--tk-danger);
+}
+
+.tk-item--done {
+  opacity: 0.6;
+}
+
+.tk-item--done .tk-item-title {
+  text-decoration: line-through;
+}
+
+/* Checkbox */
+.tk-checkbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--tk-border);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-top: 2px;
+  transition: background-color 0.15s, border-color 0.15s;
+  padding: 0;
+}
+
+.tk-checkbox:hover {
+  border-color: var(--tk-accent);
+}
+
+.tk-checkbox--checked {
+  background: var(--tk-success);
+  border-color: var(--tk-success);
+}
+
+/* Item body */
+.tk-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.tk-item-title {
+  font-size: 0.95rem;
+  color: var(--tk-text-bright);
+  margin-bottom: 0.2rem;
+  word-break: break-word;
+}
+
+.tk-item-desc {
+  font-size: 0.8rem;
+  color: var(--tk-text);
+  margin-bottom: 0.35rem;
+  word-break: break-word;
+}
+
+.tk-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--tk-text);
+}
+
+.tk-item-due--overdue {
+  color: var(--tk-danger);
+}
+
+.tk-item-reminder {
+  color: var(--tk-warning);
+}
+
+.tk-item-sent {
+  color: var(--tk-success);
+}
+
+/* Item actions */
+.tk-item-actions {
+  display: flex;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.tk-btn-sm {
+  padding: 0.3rem;
+  min-width: auto;
+}
+
+.tk-btn-danger:hover {
+  color: var(--tk-danger);
+}
+
+/* Error */
+.tk-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--tk-danger);
+  border-radius: var(--tk-radius);
+  color: var(--tk-danger);
+  padding: 0.65rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tk-error button {
+  background: none;
+  border: none;
+  color: var(--tk-danger);
+  cursor: pointer;
+  padding: 0.2rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Loading */
+.tk-loading {
+  text-align: center;
+  color: var(--tk-text);
+  padding: 3rem 1rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .tk-form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tk-item-meta {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .tk-header h2 {
+    font-size: 1.1rem;
+  }
+}
