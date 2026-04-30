@@ -12,7 +12,7 @@ async function readTasks() {
     if (useBlob) {
       const { blobs } = await list({ prefix: "tasks.json" });
       if (blobs.length === 0) return { tasks: [] };
-      const res = await fetch(blobs[0].url);
+      const res = await fetch(blobs[0].downloadUrl);
       return res.json();
     }
     if (!existsSync(LOCAL_FILE)) return { tasks: [] };
@@ -25,7 +25,7 @@ async function readTasks() {
 async function writeTasks(data) {
   if (useBlob) {
     await put("tasks.json", JSON.stringify(data), {
-      access: "public",
+      access: "private",
       addRandomSuffix: false,
       contentType: "application/json",
     });
