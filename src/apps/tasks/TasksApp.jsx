@@ -34,13 +34,14 @@ export default function TasksApp() {
     setSaving(true);
     try {
       if (payload.id) {
-        await api.updateTask(payload);
+        const { task } = await api.updateTask(payload);
+        setTasks((prev) => prev.map((t) => (t.id === task.id ? task : t)));
       } else {
-        await api.createTask(payload);
+        const { task } = await api.createTask(payload);
+        setTasks((prev) => [...prev, task]);
       }
       setShowForm(false);
       setEditingTask(null);
-      await loadTasks();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -49,10 +50,15 @@ export default function TasksApp() {
   }
 
   async function handleToggleComplete(task) {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === task.id ? { ...t, completed: !t.completed } : t))
+    );
     try {
       await api.updateTask({ id: task.id, completed: !task.completed });
-      await loadTasks();
     } catch (err) {
+      setTasks((prev) =>
+        prev.map((t) => (t.id === task.id ? { ...t, completed: task.completed } : t))
+      );
       setError(err.message);
     }
   }
@@ -63,10 +69,11 @@ export default function TasksApp() {
   }
 
   async function handleDelete(task) {
+    setTasks((prev) => prev.filter((t) => t.id !== task.id));
     try {
       await api.deleteTask(task.id);
-      await loadTasks();
     } catch (err) {
+      setTasks((prev) => [...prev, task]);
       setError(err.message);
     }
   }

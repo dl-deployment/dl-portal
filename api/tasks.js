@@ -1,4 +1,4 @@
-import { put, list } from "@vercel/blob";
+import { put } from "@vercel/blob";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -6,13 +6,14 @@ import path from "path";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LOCAL_FILE = path.join(__dirname, "tasks-local.json");
 const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+const blobUrl = process.env.BLOB_URL || "";
 
 async function readTasks() {
   try {
     if (useBlob) {
-      const { blobs } = await list({ prefix: "tasks.json" });
-      if (blobs.length === 0) return { tasks: [] };
-      const res = await fetch(blobs[0].url);
+      if (!blobUrl) return { tasks: [] };
+      const res = await fetch(blobUrl, { cache: "no-store" });
+      if (!res.ok) return { tasks: [] };
       return res.json();
     }
     if (!existsSync(LOCAL_FILE)) return { tasks: [] };
