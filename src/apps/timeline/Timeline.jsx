@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getToday, formatDateVi, solarToLunar, calcDaysLeft } from "./lunar.js";
-import eventsData from "./events.json";
+import eventsData from "../../data/events.json";
 import EventCard from "./components/EventCard.jsx";
 import "./timeline.css";
 

@@ -31,10 +31,14 @@ function formatAbsolute(isoString) {
 }
 
 function reminderLabel(mins) {
-  if (mins === 1440) return "1 day before";
-  if (mins === 60) return "1h before";
-  if (mins === 30) return "30m before";
-  return "15m before";
+  if (mins === 1440) return "1d";
+  if (mins === 60) return "1h";
+  return `${mins}m`;
+}
+
+function remindersLabel(reminders) {
+  if (!Array.isArray(reminders)) return reminderLabel(reminders || 15);
+  return reminders.map(reminderLabel).join(", ");
 }
 
 const TaskItem = memo(function TaskItem({ task, onToggleComplete, onEdit, onDelete }) {
@@ -61,7 +65,10 @@ const TaskItem = memo(function TaskItem({ task, onToggleComplete, onEdit, onDele
           <span className={`tk-item-due ${isOverdue ? "tk-item-due--overdue" : ""}`}>
             {formatAbsolute(task.dueAt)} ({formatRelative(task.dueAt)})
           </span>
-          <span className="tk-item-reminder">{reminderLabel(task.reminderMinsBefore)}</span>
+          {task.repeat && task.repeat !== "none" && (
+            <span className="tk-repeat-badge">{task.repeat === "daily" ? "Daily" : "Weekly"}</span>
+          )}
+          <span className="tk-item-reminder">{remindersLabel(task.reminders ?? task.reminderMinsBefore)}</span>
           {task.reminderSent && <span className="tk-item-sent">Reminded</span>}
         </div>
       </div>

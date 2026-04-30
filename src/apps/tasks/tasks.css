@@ -30,6 +30,18 @@
   color: var(--tk-text-bright);
 }
 
+.tk-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tk-data-manager {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 /* Tabs */
 .tk-tabs {
   display: flex;
@@ -245,6 +257,11 @@
   color: var(--tk-warning);
 }
 
+.tk-repeat-badge {
+  color: var(--tk-accent);
+  font-weight: 600;
+}
+
 .tk-item-sent {
   color: var(--tk-success);
 }
@@ -294,6 +311,41 @@
   text-align: center;
   color: var(--tk-text);
   padding: 3rem 1rem;
+}
+
+/* Reminder chips */
+.tk-reminder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tk-chip {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  border-radius: 99px;
+  border: 1px solid var(--tk-border);
+  background: var(--tk-surface-hover);
+  color: var(--tk-text);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.tk-chip:hover {
+  border-color: var(--tk-accent);
+  color: var(--tk-text-bright);
+}
+
+.tk-chip--active {
+  background: var(--tk-accent);
+  border-color: var(--tk-accent);
+  color: #fff;
+}
+
+.tk-chip--active:hover {
+  background: var(--tk-accent-hover);
+  border-color: var(--tk-accent-hover);
+  color: #fff;
 }
 
 /* Responsive */

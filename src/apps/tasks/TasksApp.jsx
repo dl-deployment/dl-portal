@@ -1,66 +1,35 @@
-import { useState, useEffect, useCallback } from "react";
-import { api } from "./api";
+import { useState } from "react";
+import * as store from "./store.js";
 import TaskTabs from "./components/TaskTabs";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
+import DataManager from "./components/DataManager";
 import "./tasks.css";
 
 export default function TasksApp() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => store.getTasks());
   const [activeTab, setActiveTab] = useState("pending");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-  const [saving, setSaving] = useState(false);
 
-  const loadTasks = useCallback(async () => {
-    try {
-      setError(null);
-      const data = await api.getTasks();
-      setTasks(data.tasks || []);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadTasks();
-  }, [loadTasks]);
-
-  async function handleSave(payload) {
-    setSaving(true);
-    try {
-      if (payload.id) {
-        const { task } = await api.updateTask(payload);
-        setTasks((prev) => prev.map((t) => (t.id === task.id ? task : t)));
-      } else {
-        const { task } = await api.createTask(payload);
-        setTasks((prev) => [...prev, task]);
-      }
-      setShowForm(false);
-      setEditingTask(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSaving(false);
-    }
+  function reload() {
+    setTasks(store.getTasks());
   }
 
-  async function handleToggleComplete(task) {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === task.id ? { ...t, completed: !t.completed } : t))
-    );
-    try {
-      await api.updateTask({ id: task.id, completed: !task.completed });
-    } catch (err) {
-      setTasks((prev) =>
-        prev.map((t) => (t.id === task.id ? { ...t, completed: task.completed } : t))
-      );
-      setError(err.message);
+  function handleSave(payload) {
+    if (payload.id) {
+      store.updateTask(payload.id, payload);
+    } else {
+      store.createTask(payload);
     }
+    setShowForm(false);
+    setEditingTask(null);
+    reload();
+  }
+
+  function handleToggleComplete(task) {
+    store.completeTask(task.id);
+    reload();
   }
 
   function handleEdit(task) {
@@ -68,15 +37,10 @@ export default function TasksApp() {
     setShowForm(true);
   }
 
-  async function handleDelete(task) {
+  function handleDelete(task) {
     if (!window.confirm(`Delete "${task.title}"?`)) return;
-    setTasks((prev) => prev.filter((t) => t.id !== task.id));
-    try {
-      await api.deleteTask(task.id);
-    } catch (err) {
-      setTasks((prev) => [...prev, task]);
-      setError(err.message);
-    }
+    store.deleteTask(task.id);
+    reload();
   }
 
   function handleCancel() {
@@ -92,29 +56,17 @@ export default function TasksApp() {
   const pendingCount = tasks.filter((t) => !t.completed).length;
   const completedCount = tasks.filter((t) => t.completed).length;
 
-  if (loading) {
-    return (
-      <div className="tasks-app">
-        <div className="tk-loading">Loading tasks...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="tasks-app">
       <div className="tk-header">
         <h2>Tasks</h2>
-        <button className="btn btn-primary" onClick={handleAdd}>
-          + Add Task
-        </button>
-      </div>
-
-      {error && (
-        <div className="tk-error">
-          <span>{error}</span>
-          <button onClick={() => setError(null)}>&times;</button>
+        <div className="tk-header-actions">
+          <DataManager onDataChange={reload} />
+          <button className="btn btn-primary" onClick={handleAdd}>
+            + Add Task
+          </button>
         </div>
-      )}
+      </div>
 
       <TaskTabs
         activeTab={activeTab}
@@ -128,7 +80,6 @@ export default function TasksApp() {
           task={editingTask}
           onSave={handleSave}
           onCancel={handleCancel}
-          saving={saving}
         />
       )}
 

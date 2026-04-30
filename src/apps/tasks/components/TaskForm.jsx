@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
 const REMINDER_OPTIONS = [
-  { value: 15, label: "15 minutes before" },
-  { value: 30, label: "30 minutes before" },
-  { value: 60, label: "1 hour before" },
-  { value: 1440, label: "1 day before" },
+  { value: 5, label: "5m" },
+  { value: 10, label: "10m" },
+  { value: 15, label: "15m" },
+  { value: 30, label: "30m" },
+  { value: 60, label: "1h" },
+  { value: 1440, label: "1 day" },
 ];
 
 function toLocalDatetime(isoString) {
@@ -15,25 +17,38 @@ function toLocalDatetime(isoString) {
   return local.toISOString().slice(0, 16);
 }
 
-export default function TaskForm({ task, onSave, onCancel, saving }) {
+export default function TaskForm({ task, onSave, onCancel }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueAt, setDueAt] = useState("");
-  const [reminderMinsBefore, setReminderMinsBefore] = useState(60);
+  const [reminders, setReminders] = useState([15]);
+  const [repeat, setRepeat] = useState("none");
 
   useEffect(() => {
     if (task) {
       setTitle(task.title);
       setDescription(task.description || "");
       setDueAt(toLocalDatetime(task.dueAt));
-      setReminderMinsBefore(task.reminderMinsBefore);
+      setReminders(task.reminders || [task.reminderMinsBefore || 15]);
+      setRepeat(task.repeat || "none");
     } else {
       setTitle("");
       setDescription("");
       setDueAt("");
-      setReminderMinsBefore(60);
+      setReminders([15]);
+      setRepeat("none");
     }
   }, [task]);
+
+  function toggleReminder(value) {
+    setReminders((prev) => {
+      if (prev.includes(value)) {
+        if (prev.length === 1) return prev;
+        return prev.filter((v) => v !== value);
+      }
+      return [...prev, value].sort((a, b) => b - a);
+    });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -42,7 +57,8 @@ export default function TaskForm({ task, onSave, onCancel, saving }) {
       title,
       description,
       dueAt: localDate.toISOString(),
-      reminderMinsBefore,
+      reminders,
+      repeat,
     };
     if (task) payload.id = task.id;
     onSave(payload);
@@ -92,26 +108,40 @@ export default function TaskForm({ task, onSave, onCancel, saving }) {
         </div>
 
         <div className="tk-form-field">
-          <label htmlFor="tk-reminder">Reminder</label>
+          <label htmlFor="tk-repeat">Repeat</label>
           <select
-            id="tk-reminder"
-            value={reminderMinsBefore}
-            onChange={(e) => setReminderMinsBefore(Number(e.target.value))}
+            id="tk-repeat"
+            value={repeat}
+            onChange={(e) => setRepeat(e.target.value)}
           >
-            {REMINDER_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
+            <option value="none">None</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
           </select>
         </div>
       </div>
 
+      <div className="tk-form-field">
+        <label>Reminders</label>
+        <div className="tk-reminder-chips">
+          {REMINDER_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              className={`tk-chip ${reminders.includes(opt.value) ? "tk-chip--active" : ""}`}
+              onClick={() => toggleReminder(opt.value)}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="tk-form-actions">
-        <button type="submit" className="btn btn-primary" disabled={saving}>
-          {saving ? "Saving..." : isEdit ? "Update" : "Create"}
+        <button type="submit" className="btn btn-primary">
+          {isEdit ? "Update" : "Create"}
         </button>
-        <button type="button" className="btn btn-ghost" onClick={onCancel} disabled={saving}>
+        <button type="button" className="btn btn-ghost" onClick={onCancel}>
           Cancel
         </button>
       </div>

@@ -1,10 +1,10 @@
+import defaultData from "../../data/youtube-default.json";
+
 const STORAGE_KEY = "dl-youtube-data";
 
 function defaultStore() {
   return {
-    tabs: [{ id: 1, name: "General", position: 0 }],
-    channels: [],
-    videos: [],
+    ...structuredClone(defaultData),
     nextTabId: 2,
   };
 }
