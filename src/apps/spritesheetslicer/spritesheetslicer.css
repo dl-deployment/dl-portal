@@ -1,0 +1,215 @@
+.spritesheetslicer-app {
+  --ss-accent: var(--accent, #6366f1);
+  --ss-border: var(--border, #23233a);
+  --ss-surface: var(--bg-card, #1a1a24);
+  --ss-text: var(--text, #a0a0b0);
+  --ss-text-bright: var(--text-bright, #e4e4ef);
+  --ss-radius: var(--radius, 10px);
+
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Header */
+.spritesheetslicer-app .ss-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.spritesheetslicer-app .ss-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--ss-text-bright);
+  font-weight: 600;
+}
+
+/* Drop zone */
+.spritesheetslicer-app .ss-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 280px;
+  border: 2px dashed var(--ss-border);
+  border-radius: var(--ss-radius);
+  background: var(--ss-surface);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.spritesheetslicer-app .ss-dropzone:hover,
+.spritesheetslicer-app .ss-dropzone.dragging {
+  border-color: var(--ss-accent);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.spritesheetslicer-app .ss-dropzone-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.spritesheetslicer-app .ss-dropzone-text {
+  color: var(--ss-text);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.spritesheetslicer-app .ss-dropzone-text span {
+  color: var(--ss-accent);
+  text-decoration: underline;
+}
+
+/* Controls */
+.spritesheetslicer-app .ss-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+}
+
+.spritesheetslicer-app .ss-control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.spritesheetslicer-app .ss-separator {
+  color: var(--ss-border);
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.spritesheetslicer-app .ss-control-group label {
+  color: var(--ss-text);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.spritesheetslicer-app .ss-control-group input[type="number"] {
+  width: 60px;
+  padding: 0.35rem 0.5rem;
+  background: var(--bg, #0f0f13);
+  border: 1px solid var(--ss-border);
+  border-radius: 6px;
+  color: var(--ss-text-bright);
+  font-size: 0.9rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.spritesheetslicer-app .ss-control-group input[type="number"]:focus {
+  border-color: var(--ss-accent);
+}
+
+.spritesheetslicer-app .ss-info {
+  color: var(--ss-text);
+  font-size: 0.8rem;
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.spritesheetslicer-app .ss-info span {
+  white-space: nowrap;
+}
+
+/* Preview */
+.spritesheetslicer-app .ss-preview {
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+
+.spritesheetslicer-app .ss-preview-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border-radius: var(--ss-radius);
+  overflow: hidden;
+  border: 1px solid var(--ss-border);
+}
+
+.spritesheetslicer-app .ss-preview-container img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.spritesheetslicer-app .ss-grid-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  pointer-events: none;
+}
+
+.spritesheetslicer-app .ss-grid-cell {
+  border: 1px solid rgba(255, 50, 50, 0.5);
+  box-sizing: border-box;
+}
+
+/* Toast */
+.spritesheetslicer-app .ss-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #fff;
+  z-index: 1000;
+  animation: ss-toast-in 0.25s ease;
+  pointer-events: none;
+}
+
+.spritesheetslicer-app .ss-toast.success {
+  background: var(--success, #22c55e);
+}
+
+.spritesheetslicer-app .ss-toast.error {
+  background: var(--danger, #ef4444);
+}
+
+@keyframes ss-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .spritesheetslicer-app {
+    padding: 0 0.5rem;
+  }
+
+  .spritesheetslicer-app .ss-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .spritesheetslicer-app .ss-info {
+    margin-left: 0;
+  }
+
+  .spritesheetslicer-app .ss-dropzone {
+    min-height: 200px;
+  }
+}

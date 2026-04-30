@@ -34,4 +34,11 @@ export const projects = [
     icon: "\u{1F527}",
     description: "Format JSON, convert case, trim, Base64 encode/decode",
   },
+  {
+    id: "spritesheetslicer",
+    name: "SpriteSheet Slicer",
+    path: "/spritesheetslicer",
+    icon: "✂️",
+    description: "Slice spritesheet images into grid pieces and download as ZIP",
+  },
 ];

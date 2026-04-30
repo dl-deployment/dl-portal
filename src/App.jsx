@@ -7,6 +7,7 @@ import TelegramPage from "./pages/TelegramPage";
 import YouTubePage from "./pages/YouTubePage";
 import TasksPage from "./pages/TasksPage";
 import TextToolsPage from "./pages/TextToolsPage";
+import SpriteSheetSlicerPage from "./pages/SpriteSheetSlicerPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="youtube" element={<ErrorBoundary><YouTubePage /></ErrorBoundary>} />
           <Route path="tasks" element={<ErrorBoundary><TasksPage /></ErrorBoundary>} />
           <Route path="texttools" element={<ErrorBoundary><TextToolsPage /></ErrorBoundary>} />
+          <Route path="spritesheetslicer" element={<ErrorBoundary><SpriteSheetSlicerPage /></ErrorBoundary>} />
         </Route>
       </Routes>
     </BrowserRouter>
