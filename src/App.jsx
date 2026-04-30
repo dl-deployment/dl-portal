@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import TimelinePage from "./pages/TimelinePage";
 import TelegramPage from "./pages/TelegramPage";
@@ -11,9 +12,9 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="timeline" element={<TimelinePage />} />
-          <Route path="telegram" element={<TelegramPage />} />
-          <Route path="youtube" element={<YouTubePage />} />
+          <Route path="timeline" element={<ErrorBoundary><TimelinePage /></ErrorBoundary>} />
+          <Route path="telegram" element={<ErrorBoundary><TelegramPage /></ErrorBoundary>} />
+          <Route path="youtube" element={<ErrorBoundary><YouTubePage /></ErrorBoundary>} />
         </Route>
       </Routes>
     </BrowserRouter>

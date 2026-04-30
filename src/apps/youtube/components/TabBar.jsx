@@ -26,14 +26,35 @@ export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename
     setEditingId(null);
   }
 
+  function cancelEdit() {
+    setEditingId(null);
+    setAdding(false);
+    setNewName("");
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Escape") {
+      cancelEdit();
+    }
+  }
+
   return (
-    <div className="tab-bar">
-      <div className="tab-list">
+    <div className="tab-bar" onKeyDown={handleKeyDown}>
+      <div className="tab-list" role="tablist" aria-label="Channel groups">
         {tabs.map((tab) => (
           <div
             key={tab.id}
             className={`tab-item ${tab.id === activeTabId ? "active" : ""}`}
+            role="tab"
+            aria-selected={tab.id === activeTabId}
+            tabIndex={tab.id === activeTabId ? 0 : -1}
             onClick={() => onSelect(tab.id)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect(tab.id);
+              }
+            }}
           >
             {editingId === tab.id ? (
               <form onSubmit={handleRename} className="tab-edit-form">
@@ -43,6 +64,7 @@ export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename
                   onChange={(e) => setEditName(e.target.value)}
                   onBlur={() => setEditingId(null)}
                   className="tab-edit-input"
+                  aria-label="Rename tab"
                 />
               </form>
             ) : (
@@ -62,7 +84,7 @@ export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename
                         onDelete(tab.id);
                       }
                     }}
-                    title="Delete tab"
+                    aria-label={`Delete tab ${tab.name}`}
                   >
                     x
                   </button>
@@ -81,10 +103,15 @@ export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename
               onChange={(e) => setNewName(e.target.value)}
               onBlur={() => { if (!newName.trim()) setAdding(false); }}
               className="tab-add-input"
+              aria-label="New tab name"
             />
           </form>
         ) : (
-          <button className="tab-add-btn" onClick={() => setAdding(true)} title="Add tab">
+          <button
+            className="tab-add-btn"
+            onClick={() => setAdding(true)}
+            aria-label="Add new tab"
+          >
             +
           </button>
         )}

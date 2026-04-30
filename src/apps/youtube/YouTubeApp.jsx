@@ -1,6 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
-import { api } from "./api.js";
-import * as store from "./store.js";
+import { YouTubeProvider, useYouTube } from "./YouTubeContext.jsx";
 import TabBar from "./components/TabBar.jsx";
 import AddChannel from "./components/AddChannel.jsx";
 import ChannelList from "./components/ChannelList.jsx";
@@ -8,107 +6,15 @@ import VideoGrid from "./components/VideoGrid.jsx";
 import DataManager from "./components/DataManager.jsx";
 import "./youtube.css";
 
-export default function YouTubeApp() {
-  const [tabs, setTabs] = useState([]);
-  const [activeTabId, setActiveTabId] = useState(null);
-  const [range, setRange] = useState("week");
-  const [channels, setChannels] = useState([]);
-  const [videos, setVideos] = useState([]);
-  const [syncing, setSyncing] = useState(false);
-  const [error, setError] = useState(null);
-
-  const refreshFromStore = useCallback(() => {
-    const t = store.getTabs();
-    setTabs(t);
-    const tabId = t.find((x) => x.id === activeTabId) ? activeTabId : t[0]?.id;
-    if (tabId !== activeTabId) setActiveTabId(tabId);
-    if (tabId) {
-      setChannels(store.getChannels(tabId));
-      setVideos(store.getVideos(tabId, range));
-    }
-  }, [activeTabId, range]);
-
-  useEffect(() => {
-    const t = store.getTabs();
-    setTabs(t);
-    if (t.length > 0) setActiveTabId(t[0].id);
-  }, []);
-
-  useEffect(() => {
-    if (activeTabId) {
-      setChannels(store.getChannels(activeTabId));
-      setVideos(store.getVideos(activeTabId, range));
-    }
-  }, [activeTabId, range]);
-
-  function handleCreateTab(name) {
-    const tab = store.createTab(name);
-    setTabs(store.getTabs());
-    setActiveTabId(tab.id);
-  }
-
-  function handleRenameTab(id, name) {
-    store.updateTab(id, name);
-    setTabs(store.getTabs());
-  }
-
-  function handleDeleteTab(id) {
-    store.deleteTab(id);
-    const remaining = store.getTabs();
-    setTabs(remaining);
-    if (activeTabId === id && remaining.length > 0) {
-      setActiveTabId(remaining[0].id);
-    }
-  }
-
-  async function handleAddChannel(input) {
-    setError(null);
-    try {
-      const info = await api.resolveChannel(input);
-      const added = store.addChannel({ ...info, tabId: activeTabId });
-      if (!added) {
-        setError("Channel already added");
-        return;
-      }
-      setChannels(store.getChannels(activeTabId));
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
-  function handleDeleteChannel(channelId) {
-    store.deleteChannel(channelId);
-    setChannels(store.getChannels(activeTabId));
-    setVideos(store.getVideos(activeTabId, range));
-  }
-
-  async function handleSync() {
-    setSyncing(true);
-    setError(null);
-    try {
-      const chs = store.getChannels(activeTabId);
-      const days = range === "month" ? 30 : 7;
-      const publishedAfter = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-
-      for (const ch of chs) {
-        try {
-          const { videos: vids } = await api.fetchVideos(ch.channelId, publishedAfter);
-          store.addVideos(vids);
-        } catch (err) {
-          console.error(`Error fetching ${ch.channelName}:`, err.message);
-        }
-      }
-      setVideos(store.getVideos(activeTabId, range));
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSyncing(false);
-    }
-  }
-
-  function handleDataChange() {
-    refreshFromStore();
-  }
+function YouTubeInner() {
+  const {
+    tabs, channels, videos,
+    activeTabId, range, syncing, error,
+    setActiveTabId, setRange, setError,
+    handleCreateTab, handleRenameTab, handleDeleteTab,
+    handleAddChannel, handleDeleteChannel,
+    handleSync, handleDataChange,
+  } = useYouTube();
 
   return (
     <div className="youtube-app">
@@ -150,7 +56,7 @@ export default function YouTubeApp() {
       />
 
       {error && (
-        <div className="error-banner">
+        <div className="error-banner" role="alert">
           {error}
           <button className="btn-ghost" onClick={() => setError(null)}>dismiss</button>
         </div>
@@ -158,7 +64,15 @@ export default function YouTubeApp() {
 
       <AddChannel onAdded={handleAddChannel} />
       <ChannelList channels={channels} onDelete={handleDeleteChannel} />
-      <VideoGrid videos={videos} />
+      <VideoGrid videos={videos} syncing={syncing} />
     </div>
+  );
+}
+
+export default function YouTubeApp() {
+  return (
+    <YouTubeProvider>
+      <YouTubeInner />
+    </YouTubeProvider>
   );
 }

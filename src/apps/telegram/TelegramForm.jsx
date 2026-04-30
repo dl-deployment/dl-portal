@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { sendMessage } from "./api.js";
 import "./telegram.css";
 
 export default function TelegramForm() {
@@ -13,29 +14,16 @@ export default function TelegramForm() {
     setSending(true);
     setStatus(null);
 
-    try {
-      const res = await fetch("/api/send-telegram", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": import.meta.env.VITE_API_SECRET ?? "",
-        },
-        body: JSON.stringify({ message: message.trim() }),
-      });
+    const result = await sendMessage(message.trim());
 
-      const data = await res.json();
-
-      if (data.success) {
-        setStatus({ type: "success", text: "Message sent!" });
-        setMessage("");
-      } else {
-        setStatus({ type: "error", text: data.error ?? "Send failed" });
-      }
-    } catch {
-      setStatus({ type: "error", text: "Network error" });
-    } finally {
-      setSending(false);
+    if (result.success) {
+      setStatus({ type: "success", text: "Message sent!" });
+      setMessage("");
+    } else {
+      setStatus({ type: "error", text: result.error });
     }
+
+    setSending(false);
   }
 
   const telegramLink = import.meta.env.VITE_TELEGRAM_LINK;
@@ -67,18 +55,24 @@ export default function TelegramForm() {
             rows={4}
             maxLength={4096}
             className="tg-textarea"
+            aria-label="Message"
           />
+          {message.length > 0 && (
+            <span className="tg-char-count">
+              {message.length} / 4096
+            </span>
+          )}
           <button
             type="submit"
             disabled={sending || !message.trim()}
-            className="tg-submit"
+            className="btn btn-primary tg-submit"
           >
             {sending ? "Sending..." : "Send Message"}
           </button>
         </form>
 
         {status && (
-          <p className={`tg-status ${status.type}`}>
+          <p className={`tg-status ${status.type}`} role="alert">
             {status.text}
           </p>
         )}

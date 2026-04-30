@@ -1,21 +1,17 @@
-function timeAgo(dateString) {
-  const seconds = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
-  const intervals = [
-    [31536000, "year"],
-    [2592000, "month"],
-    [604800, "week"],
-    [86400, "day"],
-    [3600, "hour"],
-    [60, "minute"],
-  ];
-  for (const [secs, label] of intervals) {
-    const count = Math.floor(seconds / secs);
-    if (count >= 1) return `${count} ${label}${count > 1 ? "s" : ""} ago`;
-  }
-  return "just now";
-}
+import { memo } from "react";
+import { timeAgo } from "../utils.js";
+import Skeleton from "../../../components/Skeleton.jsx";
 
-export default function VideoGrid({ videos }) {
+const VideoGrid = memo(function VideoGrid({ videos, syncing }) {
+  if (syncing) {
+    return (
+      <div>
+        <div className="section-title">Fetching videos...</div>
+        <Skeleton variant="card" count={6} />
+      </div>
+    );
+  }
+
   if (videos.length === 0) {
     return (
       <div className="empty">
@@ -52,4 +48,6 @@ export default function VideoGrid({ videos }) {
       </div>
     </div>
   );
-}
+});
+
+export default VideoGrid;

@@ -1,5 +1,15 @@
 import { useState } from "react";
 
+const YT_PATTERNS = [
+  /^https?:\/\/(www\.)?youtube\.com\/(channel\/|@|c\/)/,
+  /^https?:\/\/youtu\.be\//,
+  /^@[\w.-]+$/,
+];
+
+function isValidInput(input) {
+  return YT_PATTERNS.some((re) => re.test(input));
+}
+
 export default function AddChannel({ onAdded }) {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -9,6 +19,11 @@ export default function AddChannel({ onAdded }) {
     e.preventDefault();
     const trimmed = value.trim();
     if (!trimmed) return;
+
+    if (!isValidInput(trimmed)) {
+      setError("Please enter a valid YouTube URL or @handle");
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -29,7 +44,7 @@ export default function AddChannel({ onAdded }) {
           type="text"
           placeholder="YouTube link or @handle (e.g. https://youtube.com/@MKBHD)"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => { setValue(e.target.value); setError(null); }}
           disabled={loading}
         />
         <button type="submit" className="btn-accent" disabled={loading || !value.trim()}>
@@ -37,7 +52,7 @@ export default function AddChannel({ onAdded }) {
         </button>
       </form>
       {error && (
-        <div className="error-banner">
+        <div className="error-banner" role="alert">
           {error}
           <button className="btn-ghost" onClick={() => setError(null)}>dismiss</button>
         </div>

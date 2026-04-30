@@ -3,6 +3,38 @@ import { XMLParser } from "fast-xml-parser";
 const RSS_BASE = "https://www.youtube.com/feeds/videos.xml";
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 
+const MAX_RETRIES = 3;
+const BASE_DELAY_MS = 1000;
+
+async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
+  let lastError;
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const r = await fetch(url, options);
+
+      // Retry on 404/500/503 (YouTube RSS intermittent errors)
+      if ((r.status === 404 || r.status >= 500) && attempt < retries) {
+        const delay = BASE_DELAY_MS * Math.pow(2, attempt);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        continue;
+      }
+
+      return r;
+    } catch (err) {
+      lastError = err;
+
+      if (attempt < retries) {
+        const delay = BASE_DELAY_MS * Math.pow(2, attempt);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        continue;
+      }
+    }
+  }
+
+  throw lastError;
+}
+
 async function resolveChannelId(input) {
   const trimmed = input.trim();
 
@@ -21,7 +53,7 @@ async function resolveChannelId(input) {
   const channelMatch = channelUrl.match(/youtube\.com\/channel\/(UC[\w-]{22})/);
   if (channelMatch) return channelMatch[1];
 
-  const res = await fetch(channelUrl, {
+  const res = await fetchWithRetry(channelUrl, {
     headers: { "User-Agent": "Mozilla/5.0" },
     redirect: "follow",
   });
@@ -52,10 +84,10 @@ async function resolveChannelId(input) {
 
 async function fetchChannelFromRSS(channelId) {
   const url = `${RSS_BASE}?channel_id=${encodeURIComponent(channelId)}`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch RSS for ${channelId} (${res.status})`);
+    throw new Error(`YouTube RSS is temporarily unavailable (${res.status})`);
   }
 
   const xml = await res.text();

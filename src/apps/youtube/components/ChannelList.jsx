@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 
-export default function ChannelList({ channels, onDelete }) {
+const ChannelList = memo(function ChannelList({ channels, onDelete }) {
   const [copied, setCopied] = useState(null);
 
   if (channels.length === 0) return null;
@@ -10,6 +10,8 @@ export default function ChannelList({ channels, onDelete }) {
     navigator.clipboard.writeText(url).then(() => {
       setCopied(channelId);
       setTimeout(() => setCopied(null), 1500);
+    }).catch(() => {
+      /* clipboard API not available */
     });
   }
 
@@ -19,7 +21,7 @@ export default function ChannelList({ channels, onDelete }) {
       <div className="channels-grid">
         {channels.map((ch) => (
           <div key={ch.channelId} className="channel-chip">
-            {ch.thumbnail && <img src={ch.thumbnail} alt="" />}
+            {ch.thumbnail && <img src={ch.thumbnail} alt={ch.channelName} />}
             <span
               className="channel-name-click"
               onClick={() => handleCopy(ch.channelId)}
@@ -40,4 +42,6 @@ export default function ChannelList({ channels, onDelete }) {
       </div>
     </div>
   );
-}
+});
+
+export default ChannelList;
