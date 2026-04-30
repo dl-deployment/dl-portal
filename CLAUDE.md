@@ -17,6 +17,14 @@ React SPA (Vite) + Vercel Serverless API. Multiple personal projects integrated 
 
 > Full templates and patterns: `.claude/docs/new-page-guide.md`
 
+## Documentation Maintenance
+
+When creating a new page or making significant changes to an existing page:
+
+1. **New page:** Create `.claude/docs/existing-pages/<name>.md` following the format of existing docs (see `tasks.md` or `texttools.md` as reference). Include: files, data model (if any), key implementation details, CSS prefix.
+2. **Update index:** Add/update the entry in the Documentation Index table below in this file.
+3. **Significant changes to existing page:** Update the corresponding `.claude/docs/existing-pages/<name>.md` to reflect the changes (new files, changed data model, new features, etc.).
+
 ## Development Rules
 
 1. **CSS isolation.** Every sub-app CSS scoped under its parent class (e.g., `.tasks-app button`). Never use global selectors.
