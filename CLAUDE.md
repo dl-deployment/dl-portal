@@ -57,3 +57,4 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/tasks.md` | Tasks app details (repeating tasks, reminders, data model) |
 | `existing-pages/texttools.md` | Text Tools app details (JSON, case, trim, Base64 transforms) |
 | `existing-pages/spritesheetslicer.md` | SpriteSheet Slicer app details (grid slicing, JSZip, Canvas API) |
+| `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid, import/export) |

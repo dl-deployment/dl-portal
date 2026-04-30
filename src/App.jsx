@@ -8,6 +8,7 @@ import YouTubePage from "./pages/YouTubePage";
 import TasksPage from "./pages/TasksPage";
 import TextToolsPage from "./pages/TextToolsPage";
 import SpriteSheetSlicerPage from "./pages/SpriteSheetSlicerPage";
+import BookmarksPage from "./pages/BookmarksPage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="tasks" element={<ErrorBoundary><TasksPage /></ErrorBoundary>} />
           <Route path="texttools" element={<ErrorBoundary><TextToolsPage /></ErrorBoundary>} />
           <Route path="spritesheetslicer" element={<ErrorBoundary><SpriteSheetSlicerPage /></ErrorBoundary>} />
+          <Route path="bookmarks" element={<ErrorBoundary><BookmarksPage /></ErrorBoundary>} />
         </Route>
       </Routes>
     </BrowserRouter>

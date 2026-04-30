@@ -1,0 +1,328 @@
+.bookmarks-app {
+  --bm-accent: #6366f1;
+  --bm-accent-hover: #818cf8;
+  --bm-surface: #1a1a24;
+  --bm-surface-hover: #22222e;
+  --bm-border: #2a2a3a;
+  --bm-text: #a0a0b0;
+  --bm-text-bright: #e4e4ef;
+  --bm-danger: #ef4444;
+  --bm-radius: 10px;
+}
+
+/* Header */
+.bm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.bm-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--bm-text-bright);
+}
+
+.bm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bm-data-manager {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.bm-btn-sm {
+  padding: 0.3rem;
+  min-width: auto;
+}
+
+/* Tab Bar */
+.bookmarks-app .tab-bar {
+  margin-bottom: 24px;
+}
+
+.bookmarks-app .tab-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--bm-border);
+}
+
+.bookmarks-app .tab-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--bm-text);
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  border-radius: 6px 6px 0 0;
+}
+
+.bookmarks-app .tab-item:hover {
+  color: var(--bm-text-bright);
+  background: var(--bm-surface);
+}
+
+.bookmarks-app .tab-item.active {
+  color: var(--bm-accent);
+  border-bottom-color: var(--bm-accent);
+  background: var(--bm-surface);
+}
+
+.bookmarks-app .tab-name {
+  user-select: none;
+}
+
+.bookmarks-app .tab-delete {
+  padding: 1px 4px;
+  font-size: 0.7rem;
+  line-height: 1;
+  background: transparent;
+  color: var(--bm-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.bookmarks-app .tab-item:hover .tab-delete {
+  opacity: 1;
+}
+
+.bookmarks-app .tab-delete:hover {
+  color: var(--bm-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.bookmarks-app .tab-edit-form,
+.bookmarks-app .tab-add-form {
+  display: inline;
+}
+
+.bookmarks-app .tab-edit-input,
+.bookmarks-app .tab-add-input {
+  width: 100px;
+  padding: 4px 8px;
+  background: var(--bm-surface-hover);
+  border: 1px solid var(--bm-accent);
+  border-radius: 4px;
+  color: var(--bm-text-bright);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.bookmarks-app .tab-add-btn {
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--bm-text);
+  border: 1px dashed var(--bm-border);
+  border-radius: 6px 6px 0 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bookmarks-app .tab-add-btn:hover {
+  color: var(--bm-accent);
+  border-color: var(--bm-accent);
+}
+
+/* Bookmark Grid */
+.bm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Bookmark Card */
+.bm-card {
+  background: var(--bm-surface);
+  border: 1px solid var(--bm-border);
+  border-radius: var(--bm-radius);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.bm-card:hover {
+  border-color: var(--bm-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.bm-card-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bm-card-icon {
+  flex-shrink: 0;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.bm-card-favicon {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.bm-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.bm-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bm-text-bright);
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.bm-card-desc {
+  font-size: 0.8rem;
+  color: var(--bm-text);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bm-card-actions {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px 12px;
+}
+
+.bm-card-actions .bm-btn-danger:hover {
+  color: var(--bm-danger);
+}
+
+/* Form */
+.bm-form {
+  background: var(--bm-surface);
+  border: 1px solid var(--bm-border);
+  border-radius: var(--bm-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.bm-form-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: var(--bm-text-bright);
+}
+
+.bm-form-field {
+  margin-bottom: 0.85rem;
+}
+
+.bm-form-field label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--bm-text);
+  margin-bottom: 0.3rem;
+}
+
+.bm-form-field input,
+.bm-form-field textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: var(--bm-surface-hover);
+  border: 1px solid var(--bm-border);
+  border-radius: 6px;
+  color: var(--bm-text-bright);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.bm-form-field input:focus,
+.bm-form-field textarea:focus {
+  border-color: var(--bm-accent);
+}
+
+.bm-form-field textarea {
+  resize: vertical;
+}
+
+.bm-form-hint {
+  font-size: 0.75rem;
+  color: var(--bm-text);
+  margin-top: 0.2rem;
+}
+
+.bm-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Empty state */
+.bm-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--bm-text);
+}
+
+.bm-empty p {
+  margin-bottom: 8px;
+}
+
+/* Error */
+.bm-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--bm-danger);
+  border-radius: var(--bm-radius);
+  color: var(--bm-danger);
+  padding: 0.65rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bm-error button {
+  background: none;
+  border: none;
+  color: var(--bm-danger);
+  cursor: pointer;
+  padding: 0.2rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .bm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bm-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

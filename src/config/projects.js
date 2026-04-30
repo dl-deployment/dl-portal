@@ -41,4 +41,11 @@ export const projects = [
     icon: "✂️",
     description: "Slice spritesheet images into grid pieces and download as ZIP",
   },
+  {
+    id: "bookmarks",
+    name: "Bookmarks",
+    path: "/bookmarks",
+    icon: "\u{1F516}",
+    description: "Tabbed bookmark manager with import/export",
+  },
 ];
