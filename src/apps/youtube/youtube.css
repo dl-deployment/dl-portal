@@ -1,0 +1,427 @@
+.youtube-app {
+  --yt-bg: #0f0f0f;
+  --yt-surface: #1a1a1a;
+  --yt-surface-hover: #252525;
+  --yt-border: #2a2a2a;
+  --yt-text: #f1f1f1;
+  --yt-text-secondary: #aaa;
+  --yt-accent: #ff4444;
+  --yt-accent-hover: #ff6666;
+  --yt-green: #2ea043;
+  --yt-green-hover: #3fb950;
+  --yt-radius: 12px;
+
+  color: var(--yt-text);
+  line-height: 1.5;
+}
+
+.youtube-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--yt-border);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.youtube-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--yt-accent);
+}
+
+.youtube-app .header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.youtube-app .range-toggle {
+  display: flex;
+  background: var(--yt-surface);
+  border-radius: 8px;
+  border: 1px solid var(--yt-border);
+  overflow: hidden;
+}
+
+.youtube-app .range-btn {
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--yt-text-secondary);
+  border: none;
+  border-radius: 0;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.youtube-app .range-btn.active {
+  background: var(--yt-accent);
+  color: white;
+}
+
+.youtube-app .range-btn:hover:not(.active) {
+  color: var(--yt-text);
+}
+
+/* Tab Bar */
+.youtube-app .tab-bar {
+  margin-bottom: 24px;
+}
+
+.youtube-app .tab-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--yt-border);
+}
+
+.youtube-app .tab-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--yt-text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  border-radius: 6px 6px 0 0;
+}
+
+.youtube-app .tab-item:hover {
+  color: var(--yt-text);
+  background: var(--yt-surface);
+}
+
+.youtube-app .tab-item.active {
+  color: var(--yt-accent);
+  border-bottom-color: var(--yt-accent);
+  background: var(--yt-surface);
+}
+
+.youtube-app .tab-name {
+  user-select: none;
+}
+
+.youtube-app .tab-delete {
+  padding: 1px 4px;
+  font-size: 0.7rem;
+  line-height: 1;
+  background: transparent;
+  color: var(--yt-text-secondary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.youtube-app .tab-item:hover .tab-delete {
+  opacity: 1;
+}
+
+.youtube-app .tab-delete:hover {
+  color: var(--yt-accent);
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.youtube-app .tab-edit-form,
+.youtube-app .tab-add-form {
+  display: inline;
+}
+
+.youtube-app .tab-edit-input,
+.youtube-app .tab-add-input {
+  width: 100px;
+  padding: 4px 8px;
+  background: var(--yt-bg);
+  border: 1px solid var(--yt-accent);
+  border-radius: 4px;
+  color: var(--yt-text);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.youtube-app .tab-add-btn {
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--yt-text-secondary);
+  border: 1px dashed var(--yt-border);
+  border-radius: 6px 6px 0 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.youtube-app .tab-add-btn:hover {
+  color: var(--yt-accent);
+  border-color: var(--yt-accent);
+}
+
+/* Buttons */
+.youtube-app button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.youtube-app button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.youtube-app .btn-accent {
+  background: var(--yt-accent);
+  color: white;
+}
+.youtube-app .btn-accent:hover:not(:disabled) {
+  background: var(--yt-accent-hover);
+}
+
+.youtube-app .btn-green {
+  background: var(--yt-green);
+  color: white;
+}
+.youtube-app .btn-green:hover:not(:disabled) {
+  background: var(--yt-green-hover);
+}
+
+.youtube-app .btn-ghost {
+  background: transparent;
+  color: var(--yt-text-secondary);
+  padding: 4px 8px;
+}
+.youtube-app .btn-ghost:hover {
+  color: var(--yt-accent);
+}
+
+.youtube-app .btn-outline {
+  background: transparent;
+  border: 1px solid var(--yt-border);
+  color: var(--yt-text);
+}
+.youtube-app .btn-outline:hover:not(:disabled) {
+  border-color: var(--yt-text-secondary);
+}
+
+.youtube-app .btn-sm {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+/* Data Manager */
+.youtube-app .data-manager {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  position: relative;
+}
+
+/* Add Channel Form */
+.youtube-app .add-channel {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.youtube-app .add-channel input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-border);
+  border-radius: 8px;
+  color: var(--yt-text);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.youtube-app .add-channel input:focus {
+  border-color: var(--yt-accent);
+}
+
+.youtube-app .add-channel input::placeholder {
+  color: var(--yt-text-secondary);
+}
+
+/* Channels List */
+.youtube-app .channels-section {
+  margin-bottom: 40px;
+}
+
+.youtube-app .section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--yt-text-secondary);
+}
+
+.youtube-app .channels-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.youtube-app .channel-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-border);
+  border-radius: 40px;
+  transition: border-color 0.15s;
+}
+
+.youtube-app .channel-chip:hover {
+  border-color: var(--yt-text-secondary);
+}
+
+.youtube-app .channel-chip img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.youtube-app .channel-chip span {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.youtube-app .channel-chip button {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.youtube-app .channel-name-click {
+  cursor: pointer;
+  position: relative;
+  transition: color 0.15s;
+}
+
+.youtube-app .channel-name-click:hover {
+  color: var(--yt-accent);
+}
+
+.youtube-app .copied-badge {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--yt-green);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Videos Grid */
+.youtube-app .videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding-bottom: 60px;
+}
+
+.youtube-app .video-card {
+  background: var(--yt-surface);
+  border-radius: var(--yt-radius);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1px solid var(--yt-border);
+}
+
+.youtube-app .video-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.youtube-app .video-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.youtube-app .video-thumb {
+  position: relative;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.youtube-app .video-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.youtube-app .video-info {
+  padding: 12px;
+}
+
+.youtube-app .video-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.youtube-app .video-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--yt-text-secondary);
+}
+
+/* Error / Loading */
+.youtube-app .error-banner {
+  background: #3b1010;
+  border: 1px solid #5c2020;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: #ff8888;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.youtube-app .empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--yt-text-secondary);
+}
+
+.youtube-app .empty p {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+  .youtube-app .videos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .youtube-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

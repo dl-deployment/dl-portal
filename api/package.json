@@ -1,0 +1,13 @@
+{
+  "name": "dl-portal-api",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.21.0",
+    "fast-xml-parser": "^4.5.1"
+  },
+  "scripts": {
+    "dev": "node dev-server.js"
+  }
+}
