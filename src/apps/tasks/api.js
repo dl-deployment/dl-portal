@@ -30,5 +30,5 @@ export const api = {
   getTasks: () => request("GET"),
   createTask: (task) => request("POST", { body: task }),
   updateTask: (task) => request("PUT", { body: task }),
-  deleteTask: (id) => request("DELETE", { query: { id } }),
+  deleteTask: (id) => request("DELETE", { body: { id } }),
 };

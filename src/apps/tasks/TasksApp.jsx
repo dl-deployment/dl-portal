@@ -69,6 +69,7 @@ export default function TasksApp() {
   }
 
   async function handleDelete(task) {
+    if (!window.confirm(`Delete "${task.title}"?`)) return;
     setTasks((prev) => prev.filter((t) => t.id !== task.id));
     try {
       await api.deleteTask(task.id);

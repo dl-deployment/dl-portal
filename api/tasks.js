@@ -127,7 +127,7 @@ async function handleMethod(req, res) {
   }
 
   if (method === "DELETE") {
-    const id = req.query?.id || new URL(req.url, "http://localhost").searchParams.get("id");
+    const { id } = req.body || {};
     if (!id) {
       return res.status(400).json({ success: false, error: "Task id is required" });
     }
