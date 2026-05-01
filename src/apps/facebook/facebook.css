@@ -1,0 +1,395 @@
+.facebook-app {
+  --fb-bg: #0f0f0f;
+  --fb-surface: #1a1a1a;
+  --fb-surface-hover: #252525;
+  --fb-border: #2a2a2a;
+  --fb-text: #f1f1f1;
+  --fb-text-secondary: #aaa;
+  --fb-accent: #1877f2;
+  --fb-accent-hover: #4293f5;
+  --fb-green: #2ea043;
+  --fb-green-hover: #3fb950;
+  --fb-radius: 12px;
+
+  color: var(--fb-text);
+  line-height: 1.5;
+}
+
+.facebook-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--fb-border);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.facebook-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fb-accent);
+}
+
+.facebook-app .header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.facebook-app .range-toggle {
+  display: flex;
+  background: var(--fb-surface);
+  border-radius: 8px;
+  border: 1px solid var(--fb-border);
+  overflow: hidden;
+}
+
+.facebook-app .range-btn {
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--fb-text-secondary);
+  border: none;
+  border-radius: 0;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.facebook-app .range-btn.active {
+  background: var(--fb-accent);
+  color: white;
+}
+
+.facebook-app .range-btn:hover:not(.active) {
+  color: var(--fb-text);
+}
+
+/* Tab Bar */
+.facebook-app .tab-bar {
+  margin-bottom: 24px;
+}
+
+.facebook-app .tab-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--fb-border);
+}
+
+.facebook-app .tab-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--fb-text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  border-radius: 6px 6px 0 0;
+}
+
+.facebook-app .tab-item:hover {
+  color: var(--fb-text);
+  background: var(--fb-surface);
+}
+
+.facebook-app .tab-item.active {
+  color: var(--fb-accent);
+  border-bottom-color: var(--fb-accent);
+  background: var(--fb-surface);
+}
+
+.facebook-app .tab-name {
+  user-select: none;
+}
+
+.facebook-app .tab-delete {
+  padding: 1px 4px;
+  font-size: 0.7rem;
+  line-height: 1;
+  background: transparent;
+  color: var(--fb-text-secondary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.facebook-app .tab-item:hover .tab-delete {
+  opacity: 1;
+}
+
+.facebook-app .tab-delete:hover {
+  color: var(--fb-accent);
+  background: rgba(24, 119, 242, 0.1);
+}
+
+.facebook-app .tab-edit-form,
+.facebook-app .tab-add-form {
+  display: inline;
+}
+
+.facebook-app .tab-edit-input,
+.facebook-app .tab-add-input {
+  width: 100px;
+  padding: 4px 8px;
+  background: var(--fb-bg);
+  border: 1px solid var(--fb-accent);
+  border-radius: 4px;
+  color: var(--fb-text);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.facebook-app .tab-add-btn {
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--fb-text-secondary);
+  border: 1px dashed var(--fb-border);
+  border-radius: 6px 6px 0 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.facebook-app .tab-add-btn:hover {
+  color: var(--fb-accent);
+  border-color: var(--fb-accent);
+}
+
+/* Buttons */
+.facebook-app button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.facebook-app button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.facebook-app .btn-accent {
+  background: var(--fb-accent);
+  color: white;
+}
+.facebook-app .btn-accent:hover:not(:disabled) {
+  background: var(--fb-accent-hover);
+}
+
+.facebook-app .btn-green {
+  background: var(--fb-green);
+  color: white;
+}
+.facebook-app .btn-green:hover:not(:disabled) {
+  background: var(--fb-green-hover);
+}
+
+.facebook-app .btn-ghost {
+  background: transparent;
+  color: var(--fb-text-secondary);
+  padding: 4px 8px;
+}
+.facebook-app .btn-ghost:hover {
+  color: var(--fb-accent);
+}
+
+.facebook-app .btn-outline {
+  background: transparent;
+  border: 1px solid var(--fb-border);
+  color: var(--fb-text);
+}
+.facebook-app .btn-outline:hover:not(:disabled) {
+  border-color: var(--fb-text-secondary);
+}
+
+.facebook-app .btn-sm {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+/* Data Manager */
+.facebook-app .data-manager {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  position: relative;
+}
+
+/* Add Page Form */
+.facebook-app .add-page {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.facebook-app .add-page input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--fb-surface);
+  border: 1px solid var(--fb-border);
+  border-radius: 8px;
+  color: var(--fb-text);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.facebook-app .add-page .add-page-name {
+  flex: 0 0 150px;
+}
+
+.facebook-app .add-page input:focus {
+  border-color: var(--fb-accent);
+}
+
+.facebook-app .add-page input::placeholder {
+  color: var(--fb-text-secondary);
+}
+
+/* Pages List */
+.facebook-app .pages-section {
+  margin-bottom: 40px;
+}
+
+.facebook-app .section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--fb-text-secondary);
+}
+
+.facebook-app .pages-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.facebook-app .page-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--fb-surface);
+  border: 1px solid var(--fb-border);
+  border-radius: 40px;
+  transition: border-color 0.15s;
+}
+
+.facebook-app .page-chip:hover {
+  border-color: var(--fb-text-secondary);
+}
+
+.facebook-app .page-chip .page-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--fb-text);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.facebook-app .page-chip .page-name:hover {
+  color: var(--fb-accent);
+}
+
+.facebook-app .page-chip button {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+/* Post List */
+.facebook-app .post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-bottom: 60px;
+}
+
+.facebook-app .post-item {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--fb-border);
+}
+
+.facebook-app .post-item:first-child {
+  padding-top: 0;
+}
+
+.facebook-app .post-content {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--fb-text);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.facebook-app .post-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: var(--fb-text-secondary);
+  align-items: center;
+}
+
+.facebook-app .post-source {
+  font-weight: 600;
+  color: var(--fb-accent);
+}
+
+.facebook-app .post-link {
+  color: var(--fb-accent);
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.facebook-app .post-link:hover {
+  text-decoration: underline;
+}
+
+/* Error / Loading */
+.facebook-app .error-banner {
+  background: #3b1010;
+  border: 1px solid #5c2020;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: #ff8888;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.facebook-app .empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--fb-text-secondary);
+}
+
+.facebook-app .empty p {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+  .facebook-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

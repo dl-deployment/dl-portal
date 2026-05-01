@@ -13,7 +13,7 @@ app.use(express.json());
 
 async function loadHandler(name) {
   const filePath = path.join(__dirname, `${name}.js`);
-  const mod = await import(pathToFileURL(filePath).href);
+  const mod = await import(pathToFileURL(filePath).href + "?t=" + Date.now());
   return mod.default;
 }
 
@@ -29,6 +29,11 @@ app.post("/api/fetch-videos", async (req, res) => {
 
 app.post("/api/send-telegram", async (req, res) => {
   const handler = await loadHandler("send-telegram");
+  await handler(req, res);
+});
+
+app.post("/api/fetch-facebook-posts", async (req, res) => {
+  const handler = await loadHandler("fetch-facebook-posts");
   await handler(req, res);
 });
 

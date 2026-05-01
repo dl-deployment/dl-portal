@@ -48,4 +48,11 @@ export const projects = [
     icon: "\u{1F516}",
     description: "Tabbed bookmark manager with import/export",
   },
+  {
+    id: "facebook",
+    name: "Facebook",
+    path: "/facebook",
+    icon: "\u{1F4D8}",
+    description: "Track Facebook pages and fetch posts via RSS Bridge",
+  },
 ];

@@ -3,7 +3,21 @@
     "allow": [
       "Bash(npm install *)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://rss-bridge.org/bridge01/?action=display&bridge=FacebookBridge&context=User&u=NASA&media_type=all&format=Atom\")",
+      "WebSearch",
+      "WebFetch(domain:rss-bridge.github.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -sL \"https://rss-bridge.org/bridge01/?action=display&bridge=FB2Bridge&context=default&u=NASA&format=Atom\")",
+      "Bash(curl -sL \"https://mbasic.facebook.com/NASA\" -H \"User-Agent: Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' --max-time 10 '__TRACKED_VAR__/?action=display&bridge=FacebookBridge&context=User&u=NASA&format=Atom')",
+      "Bash(curl -sL --max-time 15 \"https://wtf.roflcopter.fr/rss-bridge/?action=display&bridge=FacebookBridge&context=User&u=NASA&format=Atom\" -H \"User-Agent: Mozilla/5.0\")",
+      "WebFetch(domain:rss.app)",
+      "WebFetch(domain:help.rss.app)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3001)",
+      "Bash(findstr LISTENING)"
     ]
   }
 }
