@@ -1,76 +1,63 @@
-import defaultData from "../../data/youtube-default.json";
+import { dbApi } from "../../lib/dbApi.js";
 
-const STORAGE_KEY = "dl-youtube-data";
+const APP = "youtube";
 
-function defaultStore() {
-  return {
-    ...structuredClone(defaultData),
-    nextTabId: 2,
-  };
+async function readStore() {
+  const { data } = await dbApi.read(APP);
+  return data || { tabs: [], channels: [], videos: [] };
 }
 
-export function getStore() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultStore();
-    const data = JSON.parse(raw);
-    if (!data.tabs || data.tabs.length === 0) return defaultStore();
-    if (!data.nextTabId) data.nextTabId = Math.max(...data.tabs.map((t) => t.id)) + 1;
-    return data;
-  } catch {
-    return defaultStore();
-  }
+async function writeStore(data) {
+  await dbApi.write(APP, data);
 }
 
-export function saveStore(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+export async function getTabs() {
+  const store = await readStore();
+  return store.tabs.sort((a, b) => a.position - b.position);
 }
 
-export function getTabs() {
-  return getStore().tabs.sort((a, b) => a.position - b.position);
-}
-
-export function createTab(name) {
-  const store = getStore();
-  const tab = { id: store.nextTabId++, name, position: store.tabs.length };
+export async function createTab(name) {
+  const store = await readStore();
+  const maxId = store.tabs.reduce((m, t) => Math.max(m, t.id), 0);
+  const tab = { id: maxId + 1, name, position: store.tabs.length };
   store.tabs.push(tab);
-  saveStore(store);
+  await writeStore(store);
   return tab;
 }
 
-export function updateTab(id, name) {
-  const store = getStore();
+export async function updateTab(id, name) {
+  const store = await readStore();
   const tab = store.tabs.find((t) => t.id === id);
   if (tab) tab.name = name;
-  saveStore(store);
+  await writeStore(store);
 }
 
-export function deleteTab(id) {
-  const store = getStore();
+export async function deleteTab(id) {
+  const store = await readStore();
   if (store.tabs.length <= 1) return;
   store.tabs = store.tabs.filter((t) => t.id !== id);
   const channelIds = store.channels.filter((c) => c.tabId === id).map((c) => c.channelId);
   store.channels = store.channels.filter((c) => c.tabId !== id);
   store.videos = store.videos.filter((v) => !channelIds.includes(v.channelId));
-  saveStore(store);
+  await writeStore(store);
 }
 
-export function getChannels(tabId) {
-  const store = getStore();
+export async function getChannels(tabId) {
+  const store = await readStore();
   if (tabId) return store.channels.filter((c) => c.tabId === tabId);
   return store.channels;
 }
 
-export function addChannel(channel) {
-  const store = getStore();
+export async function addChannel(channel) {
+  const store = await readStore();
   if (store.channels.find((c) => c.channelId === channel.channelId)) return false;
   store.channels.push(channel);
-  saveStore(store);
+  await writeStore(store);
   return true;
 }
 
-export function updateChannel(channelId, updates) {
-  const store = getStore();
+export async function updateChannel(channelId, updates) {
+  const store = await readStore();
   const ch = store.channels.find((c) => c.channelId === channelId);
   if (ch) {
     if (updates.channelName !== undefined) ch.channelName = updates.channelName;
@@ -80,19 +67,19 @@ export function updateChannel(channelId, updates) {
       });
       ch.channelId = updates.channelId;
     }
-    saveStore(store);
+    await writeStore(store);
   }
 }
 
-export function deleteChannel(channelId) {
-  const store = getStore();
+export async function deleteChannel(channelId) {
+  const store = await readStore();
   store.channels = store.channels.filter((c) => c.channelId !== channelId);
   store.videos = store.videos.filter((v) => v.channelId !== channelId);
-  saveStore(store);
+  await writeStore(store);
 }
 
-export function getVideos(tabId, range = "week") {
-  const store = getStore();
+export async function getVideos(tabId, range = "week") {
+  const store = await readStore();
   const days = range === "month" ? 30 : 7;
   const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).getTime();
   const tabChannelIds = tabId
@@ -107,8 +94,8 @@ export function getVideos(tabId, range = "week") {
     .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 }
 
-export function addVideos(videos) {
-  const store = getStore();
+export async function addVideos(videos) {
+  const store = await readStore();
   const existing = new Set(store.videos.map((v) => v.videoId));
   let added = 0;
   for (const v of videos) {
@@ -118,21 +105,6 @@ export function addVideos(videos) {
       added++;
     }
   }
-  if (added > 0) saveStore(store);
+  if (added > 0) await writeStore(store);
   return added;
-}
-
-export function exportData() {
-  const store = getStore();
-  const { nextTabId: _, ...data } = store;
-  return JSON.stringify(data, null, 2);
-}
-
-export function importData(json) {
-  const data = JSON.parse(json);
-  if (!data.tabs || !Array.isArray(data.tabs)) throw new Error("Invalid data: missing tabs");
-  if (!data.channels) data.channels = [];
-  if (!data.videos) data.videos = [];
-  data.nextTabId = Math.max(...data.tabs.map((t) => t.id), 0) + 1;
-  saveStore(data);
 }

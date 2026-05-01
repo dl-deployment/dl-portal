@@ -3,7 +3,6 @@ import TabBar from "./components/TabBar.jsx";
 import AddPage from "./components/AddPage.jsx";
 import PageList from "./components/PageList.jsx";
 import PostList from "./components/PostList.jsx";
-import DataManager from "./components/DataManager.jsx";
 import "./facebook.css";
 
 const RANGES = [
@@ -20,7 +19,7 @@ function FacebookInner() {
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
     handleAddPage, handleDeletePage, handleUpdatePage,
-    handleSync, handleDataChange,
+    handleSync,
   } = useFacebook();
 
   return (
@@ -28,7 +27,6 @@ function FacebookInner() {
       <div className="facebook-header">
         <h2>DL Facebook</h2>
         <div className="header-actions">
-          <DataManager onDataChange={handleDataChange} />
           <div className="range-toggle">
             {RANGES.map((r) => (
               <button

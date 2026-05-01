@@ -1,76 +1,63 @@
-import defaultData from "../../data/facebook-default.json";
+import { dbApi } from "../../lib/dbApi.js";
 
-const STORAGE_KEY = "dl-facebook-data";
+const APP = "facebook";
 
-function defaultStore() {
-  return {
-    ...structuredClone(defaultData),
-    nextTabId: 2,
-  };
+async function readStore() {
+  const { data } = await dbApi.read(APP);
+  return data || { tabs: [], pages: [], posts: [] };
 }
 
-export function getStore() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultStore();
-    const data = JSON.parse(raw);
-    if (!data.tabs || data.tabs.length === 0) return defaultStore();
-    if (!data.nextTabId) data.nextTabId = Math.max(...data.tabs.map((t) => t.id)) + 1;
-    return data;
-  } catch {
-    return defaultStore();
-  }
+async function writeStore(data) {
+  await dbApi.write(APP, data);
 }
 
-export function saveStore(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+export async function getTabs() {
+  const store = await readStore();
+  return store.tabs.sort((a, b) => a.position - b.position);
 }
 
-export function getTabs() {
-  return getStore().tabs.sort((a, b) => a.position - b.position);
-}
-
-export function createTab(name) {
-  const store = getStore();
-  const tab = { id: store.nextTabId++, name, position: store.tabs.length };
+export async function createTab(name) {
+  const store = await readStore();
+  const maxId = store.tabs.reduce((m, t) => Math.max(m, t.id), 0);
+  const tab = { id: maxId + 1, name, position: store.tabs.length };
   store.tabs.push(tab);
-  saveStore(store);
+  await writeStore(store);
   return tab;
 }
 
-export function updateTab(id, name) {
-  const store = getStore();
+export async function updateTab(id, name) {
+  const store = await readStore();
   const tab = store.tabs.find((t) => t.id === id);
   if (tab) tab.name = name;
-  saveStore(store);
+  await writeStore(store);
 }
 
-export function deleteTab(id) {
-  const store = getStore();
+export async function deleteTab(id) {
+  const store = await readStore();
   if (store.tabs.length <= 1) return;
   store.tabs = store.tabs.filter((t) => t.id !== id);
   const feedUrls = store.pages.filter((p) => p.tabId === id).map((p) => p.feedUrl);
   store.pages = store.pages.filter((p) => p.tabId !== id);
   store.posts = store.posts.filter((p) => !feedUrls.includes(p.feedUrl));
-  saveStore(store);
+  await writeStore(store);
 }
 
-export function getPages(tabId) {
-  const store = getStore();
+export async function getPages(tabId) {
+  const store = await readStore();
   if (tabId) return store.pages.filter((p) => p.tabId === tabId);
   return store.pages;
 }
 
-export function addPage(page) {
-  const store = getStore();
+export async function addPage(page) {
+  const store = await readStore();
   if (store.pages.find((p) => p.feedUrl === page.feedUrl)) return false;
   store.pages.push(page);
-  saveStore(store);
+  await writeStore(store);
   return true;
 }
 
-export function updatePage(feedUrl, updates) {
-  const store = getStore();
+export async function updatePage(feedUrl, updates) {
+  const store = await readStore();
   const pg = store.pages.find((p) => p.feedUrl === feedUrl);
   if (pg) {
     if (updates.pageName !== undefined) pg.pageName = updates.pageName;
@@ -80,19 +67,19 @@ export function updatePage(feedUrl, updates) {
       });
       pg.feedUrl = updates.feedUrl;
     }
-    saveStore(store);
+    await writeStore(store);
   }
 }
 
-export function deletePage(feedUrl) {
-  const store = getStore();
+export async function deletePage(feedUrl) {
+  const store = await readStore();
   store.pages = store.pages.filter((p) => p.feedUrl !== feedUrl);
   store.posts = store.posts.filter((p) => p.feedUrl !== feedUrl);
-  saveStore(store);
+  await writeStore(store);
 }
 
-export function getPosts(tabId, range = "week") {
-  const store = getStore();
+export async function getPosts(tabId, range = "week") {
+  const store = await readStore();
   const ms = { hour: 3600000, day: 86400000, week: 604800000, month: 2592000000 };
   const cutoff = new Date(Date.now() - (ms[range] || ms.week)).getTime();
   const tabFeedUrls = tabId
@@ -107,8 +94,8 @@ export function getPosts(tabId, range = "week") {
     .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 }
 
-export function addPosts(posts) {
-  const store = getStore();
+export async function addPosts(posts) {
+  const store = await readStore();
   const existing = new Set(store.posts.map((p) => p.postId));
   let added = 0;
   for (const p of posts) {
@@ -118,21 +105,6 @@ export function addPosts(posts) {
       added++;
     }
   }
-  if (added > 0) saveStore(store);
+  if (added > 0) await writeStore(store);
   return added;
-}
-
-export function exportData() {
-  const store = getStore();
-  const { nextTabId: _, ...data } = store;
-  return JSON.stringify(data, null, 2);
-}
-
-export function importData(json) {
-  const data = JSON.parse(json);
-  if (!data.tabs || !Array.isArray(data.tabs)) throw new Error("Invalid data: missing tabs");
-  if (!data.pages) data.pages = [];
-  if (!data.posts) data.posts = [];
-  data.nextTabId = Math.max(...data.tabs.map((t) => t.id), 0) + 1;
-  saveStore(data);
 }

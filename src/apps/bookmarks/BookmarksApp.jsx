@@ -1,58 +1,73 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import * as store from "./store.js";
 import TabBar from "./components/TabBar";
 import BookmarkForm from "./components/BookmarkForm";
 import BookmarkGrid from "./components/BookmarkGrid";
-import DataManager from "./components/DataManager";
 import "./bookmarks.css";
 
 export default function BookmarksApp() {
-  const [tabs, setTabs] = useState(() => store.getTabs());
-  const [activeTabId, setActiveTabId] = useState(() => store.getTabs()[0]?.id);
+  const [tabs, setTabs] = useState([]);
+  const [activeTabId, setActiveTabId] = useState(null);
   const [bookmarks, setBookmarks] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setBookmarks(store.getBookmarks(activeTabId));
+    store.getTabs().then((t) => {
+      setTabs(t);
+      if (t.length > 0) {
+        setActiveTabId(t[0].id);
+        store.getBookmarks(t[0].id).then(setBookmarks);
+      }
+      setReady(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (activeTabId) {
+      store.getBookmarks(activeTabId).then(setBookmarks);
+    }
   }, [activeTabId]);
 
-  function reload() {
-    const freshTabs = store.getTabs();
+  const reload = useCallback(async () => {
+    const freshTabs = await store.getTabs();
     setTabs(freshTabs);
-    setBookmarks(store.getBookmarks(activeTabId));
-  }
+    setBookmarks(await store.getBookmarks(activeTabId));
+  }, [activeTabId]);
 
-  function handleCreateTab(name) {
-    const tab = store.createTab(name);
+  async function handleCreateTab(name) {
+    const tab = await store.createTab(name);
     setActiveTabId(tab.id);
-    reload();
+    await reload();
   }
 
-  function handleRenameTab(id, name) {
-    store.updateTab(id, name);
-    reload();
+  async function handleRenameTab(id, name) {
+    await store.updateTab(id, name);
+    await reload();
   }
 
-  function handleDeleteTab(id) {
-    store.deleteTab(id);
-    const freshTabs = store.getTabs();
+  async function handleDeleteTab(id) {
+    await store.deleteTab(id);
+    const freshTabs = await store.getTabs();
     setTabs(freshTabs);
     if (activeTabId === id) {
       setActiveTabId(freshTabs[0]?.id);
+      setBookmarks(await store.getBookmarks(freshTabs[0]?.id));
+    } else {
+      setBookmarks(await store.getBookmarks(activeTabId));
     }
-    setBookmarks(store.getBookmarks(activeTabId === id ? freshTabs[0]?.id : activeTabId));
   }
 
-  function handleSave(payload) {
+  async function handleSave(payload) {
     if (payload.id) {
-      store.updateBookmark(payload.id, payload);
+      await store.updateBookmark(payload.id, payload);
     } else {
-      store.createBookmark({ ...payload, tabId: activeTabId });
+      await store.createBookmark({ ...payload, tabId: activeTabId });
     }
     setShowForm(false);
     setEditingBookmark(null);
-    reload();
+    await reload();
   }
 
   function handleEdit(bookmark) {
@@ -60,9 +75,9 @@ export default function BookmarksApp() {
     setShowForm(true);
   }
 
-  function handleDelete(id) {
-    store.deleteBookmark(id);
-    reload();
+  async function handleDelete(id) {
+    await store.deleteBookmark(id);
+    await reload();
   }
 
   function handleAdd() {
@@ -75,19 +90,12 @@ export default function BookmarksApp() {
     setEditingBookmark(null);
   }
 
-  function handleDataChange() {
-    const freshTabs = store.getTabs();
-    setTabs(freshTabs);
-    setActiveTabId(freshTabs[0]?.id);
-    setBookmarks(store.getBookmarks(freshTabs[0]?.id));
-  }
-
   return (
     <div className="bookmarks-app">
+      {!ready ? <div className="app-loading">Loading...</div> : <>
       <div className="bm-header">
         <h2>Bookmarks</h2>
         <div className="bm-header-actions">
-          <DataManager onDataChange={handleDataChange} />
           <button className="btn btn-primary" onClick={handleAdd}>
             + Add Bookmark
           </button>
@@ -116,6 +124,7 @@ export default function BookmarksApp() {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+      </>}
     </div>
   );
 }

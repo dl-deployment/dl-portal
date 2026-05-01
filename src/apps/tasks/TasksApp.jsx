@@ -1,35 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as store from "./store.js";
 import TaskTabs from "./components/TaskTabs";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
-import DataManager from "./components/DataManager";
 import "./tasks.css";
 
 export default function TasksApp() {
-  const [tasks, setTasks] = useState(() => store.getTasks());
+  const [tasks, setTasks] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [ready, setReady] = useState(false);
 
-  function reload() {
-    setTasks(store.getTasks());
+  useEffect(() => {
+    store.getTasks().then((t) => {
+      setTasks(t);
+      setReady(true);
+    });
+  }, []);
+
+  async function reload() {
+    setTasks(await store.getTasks());
   }
 
-  function handleSave(payload) {
+  async function handleSave(payload) {
     if (payload.id) {
-      store.updateTask(payload.id, payload);
+      await store.updateTask(payload.id, payload);
     } else {
-      store.createTask(payload);
+      await store.createTask(payload);
     }
     setShowForm(false);
     setEditingTask(null);
-    reload();
+    await reload();
   }
 
-  function handleToggleComplete(task) {
-    store.completeTask(task.id);
-    reload();
+  async function handleToggleComplete(task) {
+    await store.completeTask(task.id);
+    await reload();
   }
 
   function handleEdit(task) {
@@ -37,10 +44,10 @@ export default function TasksApp() {
     setShowForm(true);
   }
 
-  function handleDelete(task) {
+  async function handleDelete(task) {
     if (!window.confirm(`Delete "${task.title}"?`)) return;
-    store.deleteTask(task.id);
-    reload();
+    await store.deleteTask(task.id);
+    await reload();
   }
 
   function handleCancel() {
@@ -58,10 +65,10 @@ export default function TasksApp() {
 
   return (
     <div className="tasks-app">
+      {!ready ? <div className="app-loading">Loading...</div> : <>
       <div className="tk-header">
         <h2>Tasks</h2>
         <div className="tk-header-actions">
-          <DataManager onDataChange={reload} />
           <button className="btn btn-primary" onClick={handleAdd}>
             + Add Task
           </button>
@@ -90,6 +97,7 @@ export default function TasksApp() {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+      </>}
     </div>
   );
 }

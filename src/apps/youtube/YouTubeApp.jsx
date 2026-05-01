@@ -3,7 +3,6 @@ import TabBar from "./components/TabBar.jsx";
 import AddChannel from "./components/AddChannel.jsx";
 import ChannelList from "./components/ChannelList.jsx";
 import VideoGrid from "./components/VideoGrid.jsx";
-import DataManager from "./components/DataManager.jsx";
 import "./youtube.css";
 
 function YouTubeInner() {
@@ -13,7 +12,7 @@ function YouTubeInner() {
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
     handleAddChannel, handleDeleteChannel, handleUpdateChannel,
-    handleSync, handleDataChange,
+    handleSync,
   } = useYouTube();
 
   return (
@@ -21,7 +20,6 @@ function YouTubeInner() {
       <div className="youtube-header">
         <h2>DL YouTube</h2>
         <div className="header-actions">
-          <DataManager onDataChange={handleDataChange} />
           <div className="range-toggle">
             <button
               className={`range-btn ${range === "week" ? "active" : ""}`}

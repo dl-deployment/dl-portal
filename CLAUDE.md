@@ -6,6 +6,7 @@ React SPA (Vite) + Vercel Serverless API. Multiple personal projects integrated 
 
 - **Frontend:** React 19, Vite 8, React Router DOM 7, vanilla CSS (no TypeScript)
 - **Backend:** Vercel serverless functions (plain JS, ESM)
+- **Database:** Supabase (PostgreSQL) — relational tables, accessed via serverless API only (service_role key server-side)
 - **Deployment:** Vercel (static frontend + serverless `/api/*` routes)
 
 ## Adding a New Page (4 steps)
@@ -34,6 +35,7 @@ When creating a new page or making significant changes to an existing page:
 5. **Windows dev.** Dev server uses `pathToFileURL()` for dynamic imports.
 6. **Dark theme.** Global dark theme in `src/index.css`. Sub-apps inherit but can override with scoped variables.
 7. **No TypeScript.** All code is plain JSX/JS.
+8. **Database-only storage.** All persistent data stored in Supabase. No localStorage. Client → serverless API → Supabase. Use `dbApi.read(app)` / `dbApi.write(app, data)` from `src/lib/dbApi.js`. All store functions are async.
 
 ## Dev Commands
 
@@ -50,13 +52,13 @@ npm run dev:client          # Frontend on http://localhost:5174
 |----------|----------|
 | `new-page-guide.md` | Step-by-step templates for adding a new page, CSS/component/state patterns |
 | `css-and-shared.md` | Global CSS variables, shared button/skeleton classes, layout structure |
-| `api-and-storage.md` | Serverless function templates, localStorage store patterns, API client patterns |
+| `api-and-storage.md` | Serverless function templates, Supabase DB store patterns, API client patterns |
 | `existing-pages/timeline.md` | Timeline app details (lunar calendar, events) |
 | `existing-pages/telegram.md` | Telegram app details (Bot API, env vars) |
-| `existing-pages/youtube.md` | YouTube app details (RSS, Context, localStorage data model) |
+| `existing-pages/youtube.md` | YouTube app details (RSS, Context, Supabase data model) |
 | `existing-pages/tasks.md` | Tasks app details (repeating tasks, reminders, data model) |
 | `existing-pages/texttools.md` | Text Tools app details (JSON, case, trim, Base64 transforms) |
 | `existing-pages/spritesheetslicer.md` | SpriteSheet Slicer app details (grid slicing, JSZip, Canvas API) |
-| `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid, import/export) |
+| `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid) |
 | `existing-pages/facebook.md` | Facebook app details (RSS Bridge, post list, tabs) |
 | `existing-pages/color.md` | Color Tools app details (conversions, palettes, WCAG contrast) |

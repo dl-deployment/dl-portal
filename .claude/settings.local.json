@@ -17,7 +17,13 @@
       "WebFetch(domain:help.rss.app)",
       "Bash(netstat -ano)",
       "Bash(findstr :3001)",
-      "Bash(findstr LISTENING)"
+      "Bash(findstr LISTENING)",
+      "Bash(timeout 5 node dev-server.js)",
+      "Bash(npx eslint *)",
+      "Bash(node -e ' *)",
+      "Bash(node --input-type=module -e ' *)",
+      "Bash(npm list *)",
+      "Bash(npx supabase *)"
     ]
   }
 }

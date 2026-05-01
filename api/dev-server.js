@@ -37,6 +37,21 @@ app.post("/api/fetch-facebook-posts", async (req, res) => {
   await handler(req, res);
 });
 
+app.post("/api/db/read", async (req, res) => {
+  const handler = await loadHandler("db/read");
+  await handler(req, res);
+});
+
+app.post("/api/db/write", async (req, res) => {
+  const handler = await loadHandler("db/write");
+  await handler(req, res);
+});
+
+app.post("/api/db/migrate", async (req, res) => {
+  const handler = await loadHandler("db/migrate");
+  await handler(req, res);
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`API dev server running on http://localhost:${PORT}`);

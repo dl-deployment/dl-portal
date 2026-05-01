@@ -429,3 +429,12 @@ select:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text);
+  font-size: 0.9rem;
+}

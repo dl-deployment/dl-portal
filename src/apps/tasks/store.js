@@ -1,39 +1,26 @@
-import defaultData from "../../data/tasks-default.json";
+import { dbApi } from "../../lib/dbApi.js";
 
-const STORAGE_KEY = "dl-tasks-data";
+const APP = "tasks";
 
-function defaultStore() {
-  return {
-    ...structuredClone(defaultData),
-    nextTaskId: 1,
-  };
+async function readStore() {
+  const { data } = await dbApi.read(APP);
+  return data || { tasks: [] };
 }
 
-export function getStore() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultStore();
-    const data = JSON.parse(raw);
-    if (!data.tasks || !Array.isArray(data.tasks)) return defaultStore();
-    if (!data.nextTaskId) data.nextTaskId = Math.max(...data.tasks.map((t) => t.id), 0) + 1;
-    return data;
-  } catch {
-    return defaultStore();
-  }
+async function writeStore(data) {
+  await dbApi.write(APP, data);
 }
 
-export function saveStore(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+export async function getTasks() {
+  const store = await readStore();
+  return store.tasks;
 }
 
-export function getTasks() {
-  return getStore().tasks;
-}
-
-export function createTask({ title, description, dueAt, reminders, repeat }) {
-  const store = getStore();
+export async function createTask({ title, description, dueAt, reminders, repeat }) {
+  const store = await readStore();
+  const maxId = store.tasks.reduce((m, t) => Math.max(m, t.id), 0);
   const task = {
-    id: store.nextTaskId++,
+    id: maxId + 1,
     title: title.trim().slice(0, 200),
     description: (description || "").trim().slice(0, 1000),
     dueAt,
@@ -44,12 +31,12 @@ export function createTask({ title, description, dueAt, reminders, repeat }) {
     createdAt: new Date().toISOString(),
   };
   store.tasks.push(task);
-  saveStore(store);
+  await writeStore(store);
   return task;
 }
 
-export function updateTask(id, fields) {
-  const store = getStore();
+export async function updateTask(id, fields) {
+  const store = await readStore();
   const task = store.tasks.find((t) => t.id === id);
   if (!task) return null;
 
@@ -69,18 +56,18 @@ export function updateTask(id, fields) {
     task.reminderSent = false;
   }
 
-  saveStore(store);
+  await writeStore(store);
   return task;
 }
 
-export function completeTask(id) {
-  const store = getStore();
+export async function completeTask(id) {
+  const store = await readStore();
   const task = store.tasks.find((t) => t.id === id);
   if (!task) return null;
 
   if (task.completed) {
     task.completed = false;
-    saveStore(store);
+    await writeStore(store);
     return task;
   }
 
@@ -91,8 +78,9 @@ export function completeTask(id) {
     const nextDue = new Date(task.dueAt);
     nextDue.setDate(nextDue.getDate() + days);
 
+    const maxId = store.tasks.reduce((m, t) => Math.max(m, t.id), 0);
     const nextTask = {
-      id: store.nextTaskId++,
+      id: maxId + 1,
       title: task.title,
       description: task.description,
       dueAt: nextDue.toISOString(),
@@ -105,25 +93,12 @@ export function completeTask(id) {
     store.tasks.push(nextTask);
   }
 
-  saveStore(store);
+  await writeStore(store);
   return task;
 }
 
-export function deleteTask(id) {
-  const store = getStore();
+export async function deleteTask(id) {
+  const store = await readStore();
   store.tasks = store.tasks.filter((t) => t.id !== id);
-  saveStore(store);
-}
-
-export function exportData() {
-  const store = getStore();
-  const { nextTaskId: _, ...data } = store;
-  return JSON.stringify(data, null, 2);
-}
-
-export function importData(json) {
-  const data = JSON.parse(json);
-  if (!data.tasks || !Array.isArray(data.tasks)) throw new Error("Invalid data: missing tasks");
-  data.nextTaskId = Math.max(...data.tasks.map((t) => t.id), 0) + 1;
-  saveStore(data);
+  await writeStore(store);
 }

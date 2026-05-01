@@ -11,7 +11,7 @@ src/apps/<name>/
 ├── <Name>App.jsx       # Main component (scoped CSS class: <name>-app)
 ├── <name>.css          # Scoped styles under .<name>-app
 ├── components/         # (optional) sub-components
-├── store.js            # (optional) localStorage CRUD
+├── store.js            # (optional) async DB CRUD via dbApi
 └── api.js              # (optional) API client
 ```
 
@@ -94,29 +94,44 @@ export default function <Name>App() {
 
 ## Common State Patterns
 
-### localStorage + useState
+### Async DB store + useState
 
 ```jsx
+import { useState, useEffect } from "react";
 import * as store from "./store.js";
 
 export default function <Name>App() {
-  const [items, setItems] = useState(() => store.getItems());
+  const [items, setItems] = useState([]);
+  const [ready, setReady] = useState(false);
 
-  function reload() {
-    setItems(store.getItems());
+  useEffect(() => {
+    store.getItems().then((data) => {
+      setItems(data);
+      setReady(true);
+    });
+  }, []);
+
+  async function reload() {
+    setItems(await store.getItems());
   }
 
-  function handleAdd(data) {
-    store.createItem(data);
-    reload();
+  async function handleAdd(data) {
+    await store.createItem(data);
+    await reload();
   }
 
-  function handleDelete(id) {
-    store.deleteItem(id);
-    reload();
+  async function handleDelete(id) {
+    await store.deleteItem(id);
+    await reload();
   }
 
-  return <div className="<name>-app">...</div>;
+  return (
+    <div className="<name>-app">
+      {!ready ? <div className="app-loading">Loading...</div> : <>
+        {/* content */}
+      </>}
+    </div>
+  );
 }
 ```
 
