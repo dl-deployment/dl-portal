@@ -21,7 +21,7 @@ src/pages/ColorPage.jsx       # Thin page wrapper
 
 ## Data Model
 
-- **Color history:** `localStorage` key `cl-color-history`, max 16 entries, each `{hex, rgb}`. Deduped by hex.
+- **Color history:** Stored in Supabase table `color_history` via `dbApi.read("color")` / `dbApi.write("color", ...)`. Max 16 entries, each `{hex, rgb}`. Deduped by hex.
 - **Single source of truth:** `rgb {r, g, b}` (0-255 integers) in ColorApp
 - **Derived values:** `hex`, `hsl`, `hsv`, `cmyk`, `colorName` computed via `useMemo`
 - **ContrastChecker** has own internal fg/bg state (fg syncs from parent)
@@ -40,7 +40,7 @@ src/pages/ColorPage.jsx       # Thin page wrapper
 - **Text color on swatches:** Auto white/black based on luminance threshold (0.179)
 - **Color name lookup:** ~140 named CSS colors, nearest match by Euclidean RGB distance
 - **Random color:** Generates random r/g/b 0-255
-- **Color history:** Stored in localStorage, shown as small swatch row above tabs, click to restore
+- **Color history:** Stored in Supabase, shown as small swatch row above tabs, click to restore
 - **Gradient generator:** Supports linear/radial/conic, 2-6 color stops, angle slider, generates copyable CSS
 - **Image color extraction:** Canvas API downscale + color quantization (32-bucket), returns top 8 dominant colors
 - **Color blindness simulation:** Matrix-based simulation in linear RGB space for protanopia, deuteranopia, tritanopia
