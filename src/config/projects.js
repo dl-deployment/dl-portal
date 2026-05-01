@@ -55,4 +55,11 @@ export const projects = [
     icon: "\u{1F4D8}",
     description: "Track Facebook pages and fetch posts via RSS Bridge",
   },
+  {
+    id: "color",
+    name: "Color Tools",
+    path: "/color",
+    icon: "\u{1F3A8}",
+    description: "Convert colors, generate palettes, check WCAG contrast",
+  },
 ];

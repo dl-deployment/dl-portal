@@ -59,3 +59,4 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/spritesheetslicer.md` | SpriteSheet Slicer app details (grid slicing, JSZip, Canvas API) |
 | `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid, import/export) |
 | `existing-pages/facebook.md` | Facebook app details (RSS Bridge, post list, tabs) |
+| `existing-pages/color.md` | Color Tools app details (conversions, palettes, WCAG contrast) |

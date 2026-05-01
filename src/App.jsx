@@ -10,6 +10,7 @@ import TextToolsPage from "./pages/TextToolsPage";
 import SpriteSheetSlicerPage from "./pages/SpriteSheetSlicerPage";
 import BookmarksPage from "./pages/BookmarksPage";
 import FacebookPage from "./pages/FacebookPage";
+import ColorPage from "./pages/ColorPage";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="spritesheetslicer" element={<ErrorBoundary><SpriteSheetSlicerPage /></ErrorBoundary>} />
           <Route path="bookmarks" element={<ErrorBoundary><BookmarksPage /></ErrorBoundary>} />
           <Route path="facebook" element={<ErrorBoundary><FacebookPage /></ErrorBoundary>} />
+          <Route path="color" element={<ErrorBoundary><ColorPage /></ErrorBoundary>} />
         </Route>
       </Routes>
     </BrowserRouter>
