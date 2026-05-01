@@ -69,6 +69,21 @@ export function addChannel(channel) {
   return true;
 }
 
+export function updateChannel(channelId, updates) {
+  const store = getStore();
+  const ch = store.channels.find((c) => c.channelId === channelId);
+  if (ch) {
+    if (updates.channelName !== undefined) ch.channelName = updates.channelName;
+    if (updates.channelId !== undefined && updates.channelId !== channelId) {
+      store.videos.forEach((v) => {
+        if (v.channelId === channelId) v.channelId = updates.channelId;
+      });
+      ch.channelId = updates.channelId;
+    }
+    saveStore(store);
+  }
+}
+
 export function deleteChannel(channelId) {
   const store = getStore();
   store.channels = store.channels.filter((c) => c.channelId !== channelId);

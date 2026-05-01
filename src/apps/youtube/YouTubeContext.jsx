@@ -90,6 +90,12 @@ export function YouTubeProvider({ children }) {
     setVideos(store.getVideos(activeTabId, range));
   }, [activeTabId, range]);
 
+  const handleUpdateChannel = useCallback((channelId, updates) => {
+    store.updateChannel(channelId, updates);
+    setChannels(store.getChannels(activeTabId));
+    if (updates.channelId) setVideos(store.getVideos(activeTabId, range));
+  }, [activeTabId, range]);
+
   // ── Sync handler ──
   const handleSync = useCallback(async () => {
     setSyncing(true);
@@ -143,6 +149,7 @@ export function YouTubeProvider({ children }) {
     handleDeleteTab,
     handleAddChannel,
     handleDeleteChannel,
+    handleUpdateChannel,
     handleSync,
     handleDataChange: refreshFromStore,
   };

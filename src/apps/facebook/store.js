@@ -69,6 +69,21 @@ export function addPage(page) {
   return true;
 }
 
+export function updatePage(feedUrl, updates) {
+  const store = getStore();
+  const pg = store.pages.find((p) => p.feedUrl === feedUrl);
+  if (pg) {
+    if (updates.pageName !== undefined) pg.pageName = updates.pageName;
+    if (updates.feedUrl !== undefined && updates.feedUrl !== feedUrl) {
+      store.posts.forEach((p) => {
+        if (p.feedUrl === feedUrl) p.feedUrl = updates.feedUrl;
+      });
+      pg.feedUrl = updates.feedUrl;
+    }
+    saveStore(store);
+  }
+}
+
 export function deletePage(feedUrl) {
   const store = getStore();
   store.pages = store.pages.filter((p) => p.feedUrl !== feedUrl);

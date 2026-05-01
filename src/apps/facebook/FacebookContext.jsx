@@ -79,6 +79,12 @@ export function FacebookProvider({ children }) {
     setPosts(store.getPosts(activeTabId, range));
   }, [activeTabId, range]);
 
+  const handleUpdatePage = useCallback((feedUrl, updates) => {
+    store.updatePage(feedUrl, updates);
+    setPages(store.getPages(activeTabId));
+    if (updates.feedUrl) setPosts(store.getPosts(activeTabId, range));
+  }, [activeTabId, range]);
+
   const handleSync = useCallback(async () => {
     setSyncing(true);
     setError(null);
@@ -116,7 +122,7 @@ export function FacebookProvider({ children }) {
     activeTabId, range, syncing, error,
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
-    handleAddPage, handleDeletePage,
+    handleAddPage, handleDeletePage, handleUpdatePage,
     handleSync, handleDataChange: refreshFromStore,
   };
 

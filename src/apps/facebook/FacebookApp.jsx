@@ -19,7 +19,7 @@ function FacebookInner() {
     activeTabId, range, syncing, error,
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
-    handleAddPage, handleDeletePage,
+    handleAddPage, handleDeletePage, handleUpdatePage,
     handleSync, handleDataChange,
   } = useFacebook();
 
@@ -67,7 +67,7 @@ function FacebookInner() {
       )}
 
       <AddPage onAdded={handleAddPage} />
-      <PageList pages={pages} onDelete={handleDeletePage} />
+      <PageList pages={pages} onDelete={handleDeletePage} onUpdate={handleUpdatePage} />
       <PostList posts={posts} syncing={syncing} />
     </div>
   );

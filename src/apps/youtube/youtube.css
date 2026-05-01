@@ -277,7 +277,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px 6px 6px;
+  padding: 6px 12px;
   background: var(--yt-surface);
   border: 1px solid var(--yt-border);
   border-radius: 40px;
@@ -288,45 +288,99 @@
   border-color: var(--yt-text-secondary);
 }
 
-.youtube-app .channel-chip img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.youtube-app .chip-icon {
+  flex-shrink: 0;
+  color: var(--yt-accent);
 }
 
-.youtube-app .channel-chip span {
+.youtube-app .chip-name {
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-.youtube-app .channel-chip button {
+.youtube-app .channel-chip button,
+.youtube-app .channel-chip a.chip-link {
   padding: 2px 6px;
   font-size: 0.75rem;
   line-height: 1;
 }
 
-.youtube-app .channel-name-click {
-  cursor: pointer;
-  position: relative;
-  transition: color 0.15s;
+.youtube-app .chip-btn {
+  opacity: 0;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
-.youtube-app .channel-name-click:hover {
-  color: var(--yt-accent);
+.youtube-app .channel-chip:hover .chip-btn {
+  opacity: 1;
 }
 
-.youtube-app .copied-badge {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--yt-green);
-  color: white;
-  font-size: 0.65rem;
+.youtube-app .chip-link:hover {
+  color: var(--yt-green) !important;
+}
+
+.youtube-app .chip-delete:hover {
+  color: var(--yt-accent) !important;
+}
+
+.youtube-app .chip-edit-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.youtube-app .chip-edit-input {
+  width: 120px;
   padding: 2px 6px;
+  background: var(--yt-bg);
+  border: 1px solid var(--yt-accent);
   border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
+  color: var(--yt-text);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.youtube-app .chip-edit-url {
+  width: 200px;
+}
+
+.youtube-app .chip-editing {
+  border-radius: 8px;
+}
+
+.youtube-app .confirm-active {
+  border-color: var(--yt-accent) !important;
+}
+
+.youtube-app .confirm-msg {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--yt-accent);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.youtube-app .confirm-yes {
+  color: var(--yt-green) !important;
+  display: flex;
+  align-items: center;
+}
+
+.youtube-app .confirm-yes:hover {
+  color: var(--yt-green-hover) !important;
+}
+
+.youtube-app .confirm-no {
+  color: var(--yt-text-secondary) !important;
+  display: flex;
+  align-items: center;
+}
+
+.youtube-app .confirm-no:hover {
+  color: var(--yt-text) !important;
 }
 
 /* Videos Grid */

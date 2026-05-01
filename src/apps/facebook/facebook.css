@@ -293,22 +293,100 @@
   border-color: var(--fb-text-secondary);
 }
 
-.facebook-app .page-chip .page-name {
+.facebook-app .page-chip .chip-name {
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--fb-text);
-  text-decoration: none;
-  transition: color 0.15s;
 }
 
-.facebook-app .page-chip .page-name:hover {
-  color: var(--fb-accent);
-}
-
-.facebook-app .page-chip button {
+.facebook-app .page-chip button,
+.facebook-app .page-chip a.chip-link {
   padding: 2px 6px;
   font-size: 0.75rem;
   line-height: 1;
+}
+
+.facebook-app .chip-icon {
+  flex-shrink: 0;
+  color: var(--fb-accent);
+}
+
+.facebook-app .chip-btn {
+  opacity: 0;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.facebook-app .page-chip:hover .chip-btn {
+  opacity: 1;
+}
+
+.facebook-app .chip-link:hover {
+  color: var(--fb-green) !important;
+}
+
+.facebook-app .chip-delete:hover {
+  color: var(--fb-accent) !important;
+}
+
+.facebook-app .chip-edit-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.facebook-app .chip-edit-input {
+  width: 120px;
+  padding: 2px 6px;
+  background: var(--fb-bg);
+  border: 1px solid var(--fb-accent);
+  border-radius: 4px;
+  color: var(--fb-text);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.facebook-app .chip-edit-url {
+  width: 200px;
+}
+
+.facebook-app .chip-editing {
+  border-radius: 8px;
+}
+
+.facebook-app .confirm-active {
+  border-color: var(--fb-accent) !important;
+}
+
+.facebook-app .confirm-msg {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--fb-accent);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.facebook-app .confirm-yes {
+  color: var(--fb-green) !important;
+  display: flex;
+  align-items: center;
+}
+
+.facebook-app .confirm-yes:hover {
+  color: var(--fb-green-hover) !important;
+}
+
+.facebook-app .confirm-no {
+  color: var(--fb-text-secondary) !important;
+  display: flex;
+  align-items: center;
+}
+
+.facebook-app .confirm-no:hover {
+  color: var(--fb-text) !important;
 }
 
 /* Post List */

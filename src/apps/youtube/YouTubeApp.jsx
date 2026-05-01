@@ -12,7 +12,7 @@ function YouTubeInner() {
     activeTabId, range, syncing, error,
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
-    handleAddChannel, handleDeleteChannel,
+    handleAddChannel, handleDeleteChannel, handleUpdateChannel,
     handleSync, handleDataChange,
   } = useYouTube();
 
@@ -63,7 +63,7 @@ function YouTubeInner() {
       )}
 
       <AddChannel onAdded={handleAddChannel} />
-      <ChannelList channels={channels} onDelete={handleDeleteChannel} />
+      <ChannelList channels={channels} onDelete={handleDeleteChannel} onUpdate={handleUpdateChannel} />
       <VideoGrid videos={videos} syncing={syncing} />
     </div>
   );
