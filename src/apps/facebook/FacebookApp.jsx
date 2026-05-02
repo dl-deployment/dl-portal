@@ -59,7 +59,7 @@ function FacebookInner() {
   return (
     <div className="facebook-app">
       <div className="facebook-header">
-        <h2>DL Facebook</h2>
+        <h2>Facebook</h2>
         <div className="header-actions">
           <button className="btn btn-primary" onClick={handleAdd}>
             + Add Feed

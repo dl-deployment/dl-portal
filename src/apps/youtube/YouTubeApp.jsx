@@ -64,7 +64,7 @@ function YouTubeInner() {
   return (
     <div className="youtube-app">
       <div className="youtube-header">
-        <h2>DL YouTube</h2>
+        <h2>YouTube</h2>
         <div className="header-actions">
           <button className="btn btn-primary" onClick={handleAdd}>
             + Add Channel

@@ -21,17 +21,6 @@ export function FacebookProvider({ children }) {
   const [error, setError] = useState(null);
   const [ready, setReady] = useState(false);
 
-  const refreshFromStore = useCallback(async () => {
-    const t = await store.getTabs();
-    setTabs(t);
-    const tabId = t.find((x) => x.id === activeTabId) ? activeTabId : t[0]?.id;
-    if (tabId !== activeTabId) setActiveTabId(tabId);
-    if (tabId) {
-      setPages(await store.getPages(tabId));
-      setPosts(await store.getPosts(tabId, range));
-    }
-  }, [activeTabId, range]);
-
   useEffect(() => {
     store.getTabs().then((t) => {
       setTabs(t);
@@ -126,7 +115,7 @@ export function FacebookProvider({ children }) {
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
     handleAddPage, handleDeletePage, handleUpdatePage,
-    handleSync, handleDataChange: refreshFromStore,
+    handleSync,
   };
 
   return (

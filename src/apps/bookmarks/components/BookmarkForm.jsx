@@ -5,6 +5,7 @@ export default function BookmarkForm({ bookmark, onSave, onCancel }) {
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [icon, setIcon] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (bookmark) {
@@ -20,15 +21,21 @@ export default function BookmarkForm({ bookmark, onSave, onCancel }) {
     }
   }, [bookmark]);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    onSave({
-      ...(bookmark && { id: bookmark.id }),
-      title,
-      url,
-      description,
-      icon,
-    });
+    if (saving) return;
+    setSaving(true);
+    try {
+      await onSave({
+        ...(bookmark && { id: bookmark.id }),
+        title,
+        url,
+        description,
+        icon,
+      });
+    } finally {
+      setSaving(false);
+    }
   }
 
   const isEdit = !!bookmark;
@@ -89,8 +96,8 @@ export default function BookmarkForm({ bookmark, onSave, onCancel }) {
       </div>
 
       <div className="bm-form-actions">
-        <button type="submit" className="btn btn-primary">
-          {isEdit ? "Update" : "Create"}
+        <button type="submit" className="btn btn-primary" disabled={saving}>
+          {saving ? "Saving..." : isEdit ? "Update" : "Create"}
         </button>
         <button type="button" className="btn btn-ghost" onClick={onCancel}>
           Cancel

@@ -2,8 +2,6 @@ import { supabase, getSupabase } from "../supabase.js";
 
 const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4 };
 
-export { writeYoutube, writeFacebook, writeBookmarks, writeTasks };
-
 const WRITERS = {
   youtube: writeYoutube,
   facebook: writeFacebook,

@@ -42,7 +42,6 @@ export const projects = [
     path: "/timeline",
     icon: "\u{1F4C5}",
     description: "Vietnamese event timeline with lunar calendar",
-    auth: true,
   },
   {
     id: "telegram",

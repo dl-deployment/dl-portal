@@ -21,17 +21,6 @@ export function YouTubeProvider({ children }) {
   const [error, setError] = useState(null);
   const [ready, setReady] = useState(false);
 
-  const refreshFromStore = useCallback(async () => {
-    const t = await store.getTabs();
-    setTabs(t);
-    const tabId = t.find((x) => x.id === activeTabId) ? activeTabId : t[0]?.id;
-    if (tabId !== activeTabId) setActiveTabId(tabId);
-    if (tabId) {
-      setChannels(await store.getChannels(tabId));
-      setVideos(await store.getVideos(tabId, range));
-    }
-  }, [activeTabId, range]);
-
   useEffect(() => {
     store.getTabs().then((t) => {
       setTabs(t);
@@ -123,7 +112,7 @@ export function YouTubeProvider({ children }) {
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
     handleAddChannel, handleDeleteChannel, handleUpdateChannel,
-    handleSync, handleDataChange: refreshFromStore,
+    handleSync,
   };
 
   return (

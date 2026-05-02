@@ -31,7 +31,7 @@ export default function App() {
           {/* Auth required */}
           <Route path="bookmarks" element={<ProtectedRoute><ErrorBoundary><BookmarksPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="tasks" element={<ProtectedRoute><ErrorBoundary><TasksPage /></ErrorBoundary></ProtectedRoute>} />
-          <Route path="timeline" element={<ProtectedRoute><ErrorBoundary><TimelinePage /></ErrorBoundary></ProtectedRoute>} />
+          <Route path="timeline" element={<ErrorBoundary><TimelinePage /></ErrorBoundary>} />
           <Route path="telegram" element={<ProtectedRoute><ErrorBoundary><TelegramPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="youtube" element={<ProtectedRoute><ErrorBoundary><YouTubePage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="facebook" element={<ProtectedRoute><ErrorBoundary><FacebookPage /></ErrorBoundary></ProtectedRoute>} />
