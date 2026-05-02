@@ -44,6 +44,14 @@ export const projects = [
     description: "Vietnamese event timeline with lunar calendar",
   },
   {
+    id: "ptimeline",
+    name: "Personal Timeline",
+    path: "/ptimeline",
+    icon: "\u{1F4CB}",
+    description: "Personal event timeline with CRUD and lunar calendar",
+    auth: true,
+  },
+  {
     id: "telegram",
     name: "Telegram",
     path: "/telegram",

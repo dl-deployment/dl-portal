@@ -10,6 +10,7 @@ import SpriteSheetSlicerPage from "./pages/SpriteSheetSlicerPage";
 import TasksPage from "./pages/TasksPage";
 import TelegramPage from "./pages/TelegramPage";
 import TextToolsPage from "./pages/TextToolsPage";
+import PersonalTimelinePage from "./pages/PersonalTimelinePage";
 import TimelinePage from "./pages/TimelinePage";
 import YouTubePage from "./pages/YouTubePage";
 
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="bookmarks" element={<ProtectedRoute><ErrorBoundary><BookmarksPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="tasks" element={<ProtectedRoute><ErrorBoundary><TasksPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="timeline" element={<ErrorBoundary><TimelinePage /></ErrorBoundary>} />
+          <Route path="ptimeline" element={<ProtectedRoute><ErrorBoundary><PersonalTimelinePage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="telegram" element={<ProtectedRoute><ErrorBoundary><TelegramPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="youtube" element={<ProtectedRoute><ErrorBoundary><YouTubePage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="facebook" element={<ProtectedRoute><ErrorBoundary><FacebookPage /></ErrorBoundary></ProtectedRoute>} />

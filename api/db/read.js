@@ -1,12 +1,13 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4 };
+const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4, ptimeline: 5 };
 
 const READERS = {
   youtube: readYoutube,
   facebook: readFacebook,
   bookmarks: readBookmarks,
   tasks: readTasks,
+  ptimeline: readPtimeline,
 };
 
 export default async function handler(req, res) {
@@ -108,6 +109,23 @@ async function readTasks() {
       completed: t.completed,
       reminderSent: t.reminder_sent,
       createdAt: t.created_at,
+    })),
+  };
+}
+
+async function readPtimeline() {
+  const { data } = await supabase.from("ptimeline").select("*").order("id");
+
+  return {
+    events: (data || []).map((e) => ({
+      id: e.id,
+      name: e.name,
+      solarDate: e.solar_date,
+      lunarDate: e.lunar_date,
+      type: e.type,
+      icon: e.icon,
+      note: e.note,
+      createdAt: e.created_at,
     })),
   };
 }

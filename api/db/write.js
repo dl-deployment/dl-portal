@@ -1,12 +1,13 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4 };
+const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4, ptimeline: 5 };
 
 const WRITERS = {
   youtube: writeYoutube,
   facebook: writeFacebook,
   bookmarks: writeBookmarks,
   tasks: writeTasks,
+  ptimeline: writePtimeline,
 };
 
 export default async function handler(req, res) {
@@ -179,4 +180,24 @@ async function deleteNotInNumeric(table, column, keepIds) {
   } else {
     await supabase.from(table).delete().gte(column, 0);
   }
+}
+
+async function writePtimeline(data) {
+  const { events = [] } = data;
+
+  const dbEvents = events.map((e) => ({
+    id: e.id,
+    name: e.name,
+    solar_date: e.solarDate,
+    lunar_date: e.lunarDate || "",
+    type: e.type || "solar",
+    icon: e.icon || "📌",
+    note: e.note || "",
+    created_at: e.createdAt || new Date().toISOString(),
+  }));
+
+  if (dbEvents.length > 0) {
+    await supabase.from("ptimeline").upsert(dbEvents, { onConflict: "id" });
+  }
+  await deleteNotInNumeric("ptimeline", "id", dbEvents.map((e) => e.id));
 }

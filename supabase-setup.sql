@@ -15,7 +15,7 @@ CREATE TABLE apps (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
 );
-INSERT INTO apps (name) VALUES ('youtube'), ('facebook'), ('bookmarks'), ('tasks');
+INSERT INTO apps (name) VALUES ('youtube'), ('facebook'), ('bookmarks'), ('tasks'), ('ptimeline');
 
 -- 1. Shared tabs table (linked to apps)
 CREATE TABLE tabs (
@@ -65,6 +65,18 @@ CREATE TABLE tasks (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- 6. Personal Timeline: personal events with lunar calendar
+CREATE TABLE ptimeline (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  solar_date TEXT NOT NULL,
+  lunar_date TEXT DEFAULT '',
+  type TEXT DEFAULT 'solar' CHECK (type IN ('solar', 'lunar')),
+  icon TEXT DEFAULT '📌',
+  note TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- =============================================
 -- Row Level Security — all tables locked down
 -- Only service_role key can access (bypasses RLS)
@@ -76,6 +88,7 @@ ALTER TABLE youtube ENABLE ROW LEVEL SECURITY;
 ALTER TABLE facebook ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookmarks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ptimeline ENABLE ROW LEVEL SECURITY;
 
 -- Indexes for common queries
 CREATE INDEX idx_tabs_app_id ON tabs(app_id);
