@@ -18,8 +18,7 @@ export async function getTabs() {
 
 export async function createTab(name) {
   const store = await readStore();
-  const maxId = store.tabs.reduce((m, t) => Math.max(m, t.id), 0);
-  const tab = { id: maxId + 1, name, position: store.tabs.length };
+  const { tab } = await dbApi.createTab(APP, name, store.tabs.length);
   store.tabs.push(tab);
   await writeStore(store);
   return tab;
@@ -56,7 +55,6 @@ export async function createBookmark({ tabId, title, url, description, icon }) {
     url,
     description: description || "",
     icon: icon || "",
-    createdAt: new Date().toISOString(),
   };
   store.bookmarks.push(bookmark);
   await writeStore(store);

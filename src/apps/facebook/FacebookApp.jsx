@@ -1,12 +1,12 @@
+import { useState } from "react";
 import { FacebookProvider, useFacebook } from "./FacebookContext.jsx";
 import TabBar from "./components/TabBar.jsx";
-import AddPage from "./components/AddPage.jsx";
-import PageList from "./components/PageList.jsx";
+import PageForm from "./components/PageForm.jsx";
+import PageGrid from "./components/PageGrid.jsx";
 import PostList from "./components/PostList.jsx";
 import "./facebook.css";
 
 const RANGES = [
-  { key: "hour", label: "Hour" },
   { key: "day", label: "Day" },
   { key: "week", label: "Week" },
   { key: "month", label: "Month" },
@@ -22,11 +22,48 @@ function FacebookInner() {
     handleSync,
   } = useFacebook();
 
+  const [showForm, setShowForm] = useState(false);
+  const [editingPage, setEditingPage] = useState(null);
+
+  function handleAdd() {
+    setEditingPage(null);
+    setShowForm(true);
+  }
+
+  function handleEdit(page) {
+    setEditingPage(page);
+    setShowForm(true);
+  }
+
+  function handleCancel() {
+    setShowForm(false);
+    setEditingPage(null);
+  }
+
+  async function handleSave(payload) {
+    if (payload.oldFeedUrl) {
+      // Edit mode
+      const updates = { pageName: payload.pageName };
+      if (payload.feedUrl !== payload.oldFeedUrl) {
+        updates.feedUrl = payload.feedUrl;
+      }
+      await handleUpdatePage(payload.oldFeedUrl, updates);
+    } else {
+      // Add mode
+      await handleAddPage(payload.feedUrl, payload.pageName);
+    }
+    setShowForm(false);
+    setEditingPage(null);
+  }
+
   return (
     <div className="facebook-app">
       <div className="facebook-header">
         <h2>DL Facebook</h2>
         <div className="header-actions">
+          <button className="btn btn-primary" onClick={handleAdd}>
+            + Add Feed
+          </button>
           <div className="range-toggle">
             {RANGES.map((r) => (
               <button
@@ -64,8 +101,19 @@ function FacebookInner() {
         </div>
       )}
 
-      <AddPage onAdded={handleAddPage} />
-      <PageList pages={pages} onDelete={handleDeletePage} onUpdate={handleUpdatePage} />
+      {showForm && (
+        <PageForm
+          page={editingPage}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
+      )}
+
+      <PageGrid
+        pages={pages}
+        onEdit={handleEdit}
+        onDelete={handleDeletePage}
+      />
       <PostList posts={posts} syncing={syncing} />
     </div>
   );

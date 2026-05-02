@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { projects } from "../config/projects";
+import { isLoggedIn } from "../lib/auth";
 
 export default function Home() {
+  const authed = isLoggedIn();
+  const visible = projects.filter((p) => !p.auth || authed);
+
   return (
     <div>
       <div className="home-header">
@@ -9,7 +13,7 @@ export default function Home() {
         <p>Personal tools and utilities</p>
       </div>
       <div className="projects-grid">
-        {projects.map((p) => (
+        {visible.map((p) => (
           <Link key={p.id} to={p.path} className="project-card">
             <div className="project-card-icon">{p.icon}</div>
             <div className="project-card-name">{p.name}</div>

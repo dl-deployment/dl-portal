@@ -17,5 +17,6 @@ async function request(path, body) {
 export const dbApi = {
   read: (app) => request("/db/read", { app }),
   write: (app, data) => request("/db/write", { app, data }),
+  createTab: (app, name, position) => request("/db/create-tab", { app, name, position }),
   migrate: (app, data) => request("/db/migrate", { app, data }),
 };

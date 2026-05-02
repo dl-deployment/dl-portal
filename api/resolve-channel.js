@@ -1,8 +1,3 @@
-import { XMLParser } from "fast-xml-parser";
-
-const RSS_BASE = "https://www.youtube.com/feeds/videos.xml";
-const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
-
 const MAX_RETRIES = 3;
 const BASE_DELAY_MS = 1000;
 
@@ -13,7 +8,6 @@ async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
     try {
       const r = await fetch(url, options);
 
-      // Retry on 404/500/503 (YouTube RSS intermittent errors)
       if ((r.status === 404 || r.status >= 500) && attempt < retries) {
         const delay = BASE_DELAY_MS * Math.pow(2, attempt);
         await new Promise((resolve) => setTimeout(resolve, delay));
@@ -35,13 +29,16 @@ async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
   throw lastError;
 }
 
-async function resolveChannelId(input) {
+async function resolveChannel(input) {
   const trimmed = input.trim();
 
-  if (/^UC[\w-]{22}$/.test(trimmed)) return trimmed;
+  // Direct channel ID
+  if (/^UC[\w-]{22}$/.test(trimmed)) {
+    return { channelId: trimmed, channelName: trimmed, thumbnail: "" };
+  }
 
+  // Build channel page URL
   let channelUrl;
-
   if (/^https?:\/\/(www\.)?youtube\.com\//i.test(trimmed)) {
     channelUrl = trimmed;
   } else if (trimmed.startsWith("@")) {
@@ -50,11 +47,21 @@ async function resolveChannelId(input) {
     channelUrl = `https://www.youtube.com/@${trimmed}`;
   }
 
+  // Direct /channel/UCxxx URL — extract ID from URL
   const channelMatch = channelUrl.match(/youtube\.com\/channel\/(UC[\w-]{22})/);
-  if (channelMatch) return channelMatch[1];
+  if (channelMatch) {
+    // Still need to fetch page for channel name
+    const info = await fetchChannelPage(channelUrl);
+    return { channelId: channelMatch[1], ...info };
+  }
 
+  // Fetch the page to get channel ID + name + thumbnail
+  return await fetchChannelPage(channelUrl);
+}
+
+async function fetchChannelPage(channelUrl) {
   const res = await fetchWithRetry(channelUrl, {
-    headers: { "User-Agent": "Mozilla/5.0" },
+    headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
     redirect: "follow",
   });
 
@@ -64,45 +71,50 @@ async function resolveChannelId(input) {
 
   const html = await res.text();
 
-  const metaMatch =
-    html.match(/<meta\s[^>]*(?:property|name)="(?:og:url|channel_id)"[^>]*content="([^"]*)"[^>]*>/i) ||
-    html.match(/<link\s[^>]*rel="canonical"[^>]*href="([^"]*)"[^>]*>/i);
-
-  if (metaMatch) {
-    const idFromUrl = metaMatch[1].match(/\/channel\/(UC[\w-]{22})/);
-    if (idFromUrl) return idFromUrl[1];
-  }
+  // Extract channel ID
+  let channelId = null;
 
   const externalIdMatch = html.match(/"externalId"\s*:\s*"(UC[\w-]{22})"/);
-  if (externalIdMatch) return externalIdMatch[1];
+  if (externalIdMatch) channelId = externalIdMatch[1];
 
-  const rssMatch = html.match(/channel_id=(UC[\w-]{22})/);
-  if (rssMatch) return rssMatch[1];
-
-  throw new Error(`Could not find channel ID from: ${input}`);
-}
-
-async function fetchChannelFromRSS(channelId) {
-  const url = `${RSS_BASE}?channel_id=${encodeURIComponent(channelId)}`;
-  const res = await fetchWithRetry(url);
-
-  if (!res.ok) {
-    throw new Error(`YouTube RSS is temporarily unavailable (${res.status})`);
+  if (!channelId) {
+    const rssMatch = html.match(/channel_id=(UC[\w-]{22})/);
+    if (rssMatch) channelId = rssMatch[1];
   }
 
-  const xml = await res.text();
-  const data = parser.parse(xml);
-  const feed = data.feed;
-
-  if (!feed) {
-    throw new Error(`Invalid RSS feed for channel: ${channelId}`);
+  if (!channelId) {
+    const metaMatch =
+      html.match(/<meta\s[^>]*content="[^"]*\/channel\/(UC[\w-]{22})"[^>]*>/i) ||
+      html.match(/<link\s[^>]*href="[^"]*\/channel\/(UC[\w-]{22})"[^>]*>/i);
+    if (metaMatch) channelId = metaMatch[1];
   }
 
-  return {
-    channelId,
-    channelName: feed.title || channelId,
-    thumbnail: "",
-  };
+  if (!channelId) {
+    throw new Error(`Could not find channel ID from: ${channelUrl}`);
+  }
+
+  // Extract channel name
+  let channelName = channelId;
+
+  const ogTitleMatch = html.match(/<meta\s[^>]*property="og:title"[^>]*content="([^"]*)"[^>]*>/i);
+  if (ogTitleMatch) {
+    channelName = ogTitleMatch[1];
+  } else {
+    const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
+    if (titleMatch) {
+      channelName = titleMatch[1].replace(/ - YouTube$/, "").trim();
+    }
+  }
+
+  // Extract thumbnail
+  let thumbnail = "";
+
+  const ogImageMatch = html.match(/<meta\s[^>]*property="og:image"[^>]*content="([^"]*)"[^>]*>/i);
+  if (ogImageMatch) {
+    thumbnail = ogImageMatch[1];
+  }
+
+  return { channelId, channelName, thumbnail };
 }
 
 export default async function handler(req, res) {
@@ -116,8 +128,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const channelId = await resolveChannelId(channel);
-    const info = await fetchChannelFromRSS(channelId);
+    const info = await resolveChannel(channel);
     res.json(info);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -229,37 +229,160 @@
 }
 
 /* Add Channel Form */
-.youtube-app .add-channel {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 32px;
-}
-
-.youtube-app .add-channel input {
-  flex: 1;
-  padding: 10px 14px;
+.youtube-app .yt-form {
   background: var(--yt-surface);
   border: 1px solid var(--yt-border);
-  border-radius: 8px;
-  color: var(--yt-text);
-  font-size: 0.875rem;
-  outline: none;
-  transition: border-color 0.15s;
+  border-radius: var(--yt-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
-.youtube-app .add-channel input:focus {
+.youtube-app .yt-form-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: var(--yt-text);
+}
+
+.youtube-app .yt-form-field {
+  margin-bottom: 0.85rem;
+}
+
+.youtube-app .yt-form-field label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--yt-text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.youtube-app .yt-form-field input {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: var(--yt-surface-hover);
+  border: 1px solid var(--yt-border);
+  border-radius: 6px;
+  color: var(--yt-text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.youtube-app .yt-form-field input:focus {
   border-color: var(--yt-accent);
 }
 
-.youtube-app .add-channel input::placeholder {
+.youtube-app .yt-form-field input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.youtube-app .yt-form-hint {
+  font-size: 0.75rem;
   color: var(--yt-text-secondary);
+  margin-top: 0.2rem;
 }
 
-/* Channels List */
-.youtube-app .channels-section {
-  margin-bottom: 40px;
+.youtube-app .yt-form-error {
+  background: #3b1010;
+  border: 1px solid #5c2020;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: #ff8888;
 }
 
+.youtube-app .yt-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Channel Grid */
+.youtube-app .yt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+/* Channel Card */
+.youtube-app .yt-card {
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-border);
+  border-radius: var(--yt-radius);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.youtube-app .yt-card:hover {
+  border-color: var(--yt-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.youtube-app .yt-card-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.youtube-app .yt-card-icon {
+  flex-shrink: 0;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.youtube-app .yt-card-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.youtube-app .yt-card-emoji {
+  font-size: 28px;
+}
+
+.youtube-app .yt-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.youtube-app .yt-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--yt-text);
+  word-break: break-word;
+}
+
+.youtube-app .yt-card-actions {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px 12px;
+}
+
+.youtube-app .yt-card-actions .yt-btn-danger:hover {
+  color: var(--yt-accent);
+}
+
+/* Empty state */
+.youtube-app .yt-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--yt-text-secondary);
+  margin-bottom: 2rem;
+}
+
+.youtube-app .yt-empty p {
+  margin-bottom: 8px;
+}
+
+/* Videos Grid */
 .youtube-app .section-title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -267,123 +390,6 @@
   color: var(--yt-text-secondary);
 }
 
-.youtube-app .channels-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.youtube-app .channel-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  background: var(--yt-surface);
-  border: 1px solid var(--yt-border);
-  border-radius: 40px;
-  transition: border-color 0.15s;
-}
-
-.youtube-app .channel-chip:hover {
-  border-color: var(--yt-text-secondary);
-}
-
-.youtube-app .chip-icon {
-  flex-shrink: 0;
-  color: var(--yt-accent);
-}
-
-.youtube-app .chip-name {
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.youtube-app .channel-chip button,
-.youtube-app .channel-chip a.chip-link {
-  padding: 2px 6px;
-  font-size: 0.75rem;
-  line-height: 1;
-}
-
-.youtube-app .chip-btn {
-  opacity: 0;
-  transition: opacity 0.15s;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.youtube-app .channel-chip:hover .chip-btn {
-  opacity: 1;
-}
-
-.youtube-app .chip-link:hover {
-  color: var(--yt-green) !important;
-}
-
-.youtube-app .chip-delete:hover {
-  color: var(--yt-accent) !important;
-}
-
-.youtube-app .chip-edit-form {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.youtube-app .chip-edit-input {
-  width: 120px;
-  padding: 2px 6px;
-  background: var(--yt-bg);
-  border: 1px solid var(--yt-accent);
-  border-radius: 4px;
-  color: var(--yt-text);
-  font-size: 0.8rem;
-  outline: none;
-}
-
-.youtube-app .chip-edit-url {
-  width: 200px;
-}
-
-.youtube-app .chip-editing {
-  border-radius: 8px;
-}
-
-.youtube-app .confirm-active {
-  border-color: var(--yt-accent) !important;
-}
-
-.youtube-app .confirm-msg {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--yt-accent);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.youtube-app .confirm-yes {
-  color: var(--yt-green) !important;
-  display: flex;
-  align-items: center;
-}
-
-.youtube-app .confirm-yes:hover {
-  color: var(--yt-green-hover) !important;
-}
-
-.youtube-app .confirm-no {
-  color: var(--yt-text-secondary) !important;
-  display: flex;
-  align-items: center;
-}
-
-.youtube-app .confirm-no:hover {
-  color: var(--yt-text) !important;
-}
-
-/* Videos Grid */
 .youtube-app .videos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -459,18 +465,12 @@
   align-items: center;
 }
 
-.youtube-app .empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--yt-text-secondary);
-}
-
-.youtube-app .empty p {
-  margin-bottom: 8px;
-}
-
 @media (max-width: 640px) {
   .youtube-app .videos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .youtube-app .yt-grid {
     grid-template-columns: 1fr;
   }
 

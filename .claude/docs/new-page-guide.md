@@ -32,7 +32,10 @@ export default function <Name>Page() {
 import <Name>Page from "./pages/<Name>Page";
 
 // Inside <Routes> inside <Route element={<Layout />}>:
+// Public page:
 <Route path="<name>" element={<ErrorBoundary><Name>Page /></ErrorBoundary>} />
+// Auth-required page:
+<Route path="<name>" element={<ProtectedRoute><ErrorBoundary><Name>Page /></ErrorBoundary></ProtectedRoute>} />
 ```
 
 ### Step 4 — Register in `src/config/projects.js`
@@ -45,6 +48,8 @@ import <Name>Page from "./pages/<Name>Page";
   path: "/<name>",
   icon: "<emoji>",
   description: "<Short description>",
+  // Add auth: true if this page requires login
+  auth: true,
 }
 ```
 

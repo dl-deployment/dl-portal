@@ -23,7 +23,10 @@
       "Bash(node -e ' *)",
       "Bash(node --input-type=module -e ' *)",
       "Bash(npm list *)",
-      "Bash(npx supabase *)"
+      "Bash(npx supabase *)",
+      "Bash(npm run *)",
+      "Bash(timeout 5)",
+      "Bash(taskkill /F /IM node.exe)"
     ]
   }
 }

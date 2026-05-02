@@ -1,13 +1,14 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-export { writeYoutube, writeFacebook, writeBookmarks, writeTasks, writeColor };
+const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4 };
+
+export { writeYoutube, writeFacebook, writeBookmarks, writeTasks };
 
 const WRITERS = {
   youtube: writeYoutube,
   facebook: writeFacebook,
   bookmarks: writeBookmarks,
   tasks: writeTasks,
-  color: writeColor,
 };
 
 export default async function handler(req, res) {
@@ -44,92 +45,64 @@ export default async function handler(req, res) {
 }
 
 async function writeYoutube(data) {
-  const { tabs = [], channels = [], videos = [] } = data;
+  const appId = APP_IDS.youtube;
+  const { tabs = [], channels = [] } = data;
 
   const dbTabs = tabs.map((t) => ({
     id: t.id,
-    app: "youtube",
+    app_id: appId,
     name: t.name,
     position: t.position,
   }));
 
   const dbChannels = channels.map((c) => ({
-    channel_id: c.channelId,
+    id: c.channelId,
     channel_name: c.channelName,
     thumbnail: c.thumbnail || "",
     tab_id: c.tabId,
   }));
 
-  const dbVideos = videos.map((v) => ({
-    video_id: v.videoId,
-    channel_id: v.channelId,
-    channel_name: v.channelName || "",
-    title: v.title || "",
-    published_at: v.publishedAt,
-    thumbnail: v.thumbnail || "",
-    link: v.link || "",
-  }));
-
-  await syncTabs("youtube", dbTabs);
+  await syncTabs(appId, dbTabs);
 
   if (dbChannels.length > 0) {
-    await supabase.from("channels").upsert(dbChannels, { onConflict: "channel_id" });
+    await supabase.from("youtube").upsert(dbChannels, { onConflict: "id" });
   }
-  await deleteNotIn("channels", "channel_id", dbChannels.map((c) => c.channel_id));
-
-  if (dbVideos.length > 0) {
-    for (let i = 0; i < dbVideos.length; i += 500) {
-      await supabase.from("videos").upsert(dbVideos.slice(i, i + 500), { onConflict: "video_id" });
-    }
-  }
+  await deleteNotIn("youtube", "id", dbChannels.map((c) => c.id));
 }
 
 async function writeFacebook(data) {
-  const { tabs = [], pages = [], posts = [] } = data;
+  const appId = APP_IDS.facebook;
+  const { tabs = [], pages = [] } = data;
 
   const dbTabs = tabs.map((t) => ({
     id: t.id,
-    app: "facebook",
+    app_id: appId,
     name: t.name,
     position: t.position,
   }));
 
   const dbPages = pages.map((p) => ({
-    feed_url: p.feedUrl,
+    id: p.feedUrl,
     page_name: p.pageName,
+    thumbnail: p.thumbnail || "",
     tab_id: p.tabId,
   }));
 
-  const dbPosts = posts.map((p) => ({
-    post_id: p.postId,
-    feed_url: p.feedUrl,
-    page_name: p.pageName || "",
-    title: p.title || "",
-    link: p.link || "",
-    content: p.content || "",
-    published_at: p.publishedAt,
-  }));
-
-  await syncTabs("facebook", dbTabs);
+  await syncTabs(appId, dbTabs);
 
   if (dbPages.length > 0) {
-    await supabase.from("pages").upsert(dbPages, { onConflict: "feed_url" });
+    await supabase.from("facebook").upsert(dbPages, { onConflict: "id" });
   }
-  await deleteNotIn("pages", "feed_url", dbPages.map((p) => p.feed_url));
-
-  if (dbPosts.length > 0) {
-    for (let i = 0; i < dbPosts.length; i += 500) {
-      await supabase.from("posts").upsert(dbPosts.slice(i, i + 500), { onConflict: "post_id" });
-    }
-  }
+  await deleteNotIn("facebook", "id", dbPages.map((p) => p.id));
 }
 
 async function writeBookmarks(data) {
+  const appId = APP_IDS.bookmarks;
   const { tabs = [], bookmarks = [] } = data;
 
   const dbTabs = tabs.map((t) => ({
     id: t.id,
-    app: "bookmarks",
+    app_id: appId,
     name: t.name,
     position: t.position,
   }));
@@ -141,10 +114,9 @@ async function writeBookmarks(data) {
     url: b.url,
     description: b.description || "",
     icon: b.icon || "",
-    created_at: b.createdAt || new Date().toISOString(),
   }));
 
-  await syncTabs("bookmarks", dbTabs);
+  await syncTabs(appId, dbTabs);
 
   if (dbBookmarks.length > 0) {
     await supabase.from("bookmarks").upsert(dbBookmarks, { onConflict: "id" });
@@ -173,22 +145,7 @@ async function writeTasks(data) {
   await deleteNotInNumeric("tasks", "id", dbTasks.map((t) => t.id));
 }
 
-async function writeColor(data) {
-  const items = Array.isArray(data) ? data : [];
-
-  await supabase.from("color_history").delete().gte("id", 0);
-
-  if (items.length > 0) {
-    const dbItems = items.map((c, i) => ({
-      hex: c.hex,
-      rgb: c.rgb,
-      position: i,
-    }));
-    await supabase.from("color_history").insert(dbItems);
-  }
-}
-
-async function syncTabs(app, dbTabs) {
+async function syncTabs(appId, dbTabs) {
   if (dbTabs.length > 0) {
     await supabase.from("tabs").upsert(dbTabs, { onConflict: "id" });
   }
@@ -197,10 +154,10 @@ async function syncTabs(app, dbTabs) {
     await supabase
       .from("tabs")
       .delete()
-      .eq("app", app)
+      .eq("app_id", appId)
       .not("id", "in", `(${keepIds.join(",")})`);
   } else {
-    await supabase.from("tabs").delete().eq("app", app);
+    await supabase.from("tabs").delete().eq("app_id", appId);
   }
 }
 

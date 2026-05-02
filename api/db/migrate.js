@@ -1,7 +1,7 @@
 import { getSupabase } from "../supabase.js";
-import { writeYoutube, writeFacebook, writeBookmarks, writeTasks, writeColor } from "./write.js";
+import { writeYoutube, writeFacebook, writeBookmarks, writeTasks } from "./write.js";
 
-const MIGRATORS = { youtube: writeYoutube, facebook: writeFacebook, bookmarks: writeBookmarks, tasks: writeTasks, color: writeColor };
+const MIGRATORS = { youtube: writeYoutube, facebook: writeFacebook, bookmarks: writeBookmarks, tasks: writeTasks };
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {

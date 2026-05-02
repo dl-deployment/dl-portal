@@ -16,7 +16,7 @@ export function FacebookProvider({ children }) {
   const [posts, setPosts] = useState([]);
 
   const [activeTabId, setActiveTabId] = useState(null);
-  const [range, setRange] = useState("week");
+  const [range, setRange] = useState("day");
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState(null);
   const [ready, setReady] = useState(false);
@@ -68,7 +68,7 @@ export function FacebookProvider({ children }) {
   const handleAddPage = useCallback(async (feedUrl, pageName) => {
     setError(null);
     const name = pageName || extractFeedName(feedUrl);
-    const added = await store.addPage({ feedUrl, pageName: name, tabId: activeTabId });
+    const added = await store.addPage({ feedUrl, pageName: name, thumbnail: "", tabId: activeTabId });
     if (!added) {
       setError("Feed already added");
       return;

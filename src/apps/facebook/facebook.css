@@ -229,42 +229,149 @@
   position: relative;
 }
 
-/* Add Page Form */
-.facebook-app .add-page {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 32px;
-}
-
-.facebook-app .add-page input {
-  flex: 1;
-  padding: 10px 14px;
+/* Add Feed Form */
+.facebook-app .fb-form {
   background: var(--fb-surface);
   border: 1px solid var(--fb-border);
-  border-radius: 8px;
+  border-radius: var(--fb-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.facebook-app .fb-form-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
   color: var(--fb-text);
-  font-size: 0.875rem;
+}
+
+.facebook-app .fb-form-field {
+  margin-bottom: 0.85rem;
+}
+
+.facebook-app .fb-form-field label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--fb-text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.facebook-app .fb-form-field input {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: var(--fb-surface-hover);
+  border: 1px solid var(--fb-border);
+  border-radius: 6px;
+  color: var(--fb-text);
+  font-size: 0.9rem;
+  font-family: inherit;
   outline: none;
   transition: border-color 0.15s;
+  box-sizing: border-box;
 }
 
-.facebook-app .add-page .add-page-name {
-  flex: 0 0 150px;
-}
-
-.facebook-app .add-page input:focus {
+.facebook-app .fb-form-field input:focus {
   border-color: var(--fb-accent);
 }
 
-.facebook-app .add-page input::placeholder {
+.facebook-app .fb-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Feed Grid */
+.facebook-app .fb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+/* Feed Card */
+.facebook-app .fb-card {
+  background: var(--fb-surface);
+  border: 1px solid var(--fb-border);
+  border-radius: var(--fb-radius);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.facebook-app .fb-card:hover {
+  border-color: var(--fb-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.facebook-app .fb-card-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.facebook-app .fb-card-icon {
+  flex-shrink: 0;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.facebook-app .fb-card-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.facebook-app .fb-card-emoji {
+  font-size: 28px;
+}
+
+.facebook-app .fb-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.facebook-app .fb-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fb-text);
+  word-break: break-word;
+  margin-bottom: 2px;
+}
+
+.facebook-app .fb-card-desc {
+  font-size: 0.75rem;
   color: var(--fb-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Pages List */
-.facebook-app .pages-section {
-  margin-bottom: 40px;
+.facebook-app .fb-card-actions {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px 12px;
 }
 
+.facebook-app .fb-card-actions .fb-btn-danger:hover {
+  color: #ef4444;
+}
+
+/* Empty state */
+.facebook-app .fb-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--fb-text-secondary);
+  margin-bottom: 2rem;
+}
+
+.facebook-app .fb-empty p {
+  margin-bottom: 8px;
+}
+
+/* Post List */
 .facebook-app .section-title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -272,124 +379,6 @@
   color: var(--fb-text-secondary);
 }
 
-.facebook-app .pages-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.facebook-app .page-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  background: var(--fb-surface);
-  border: 1px solid var(--fb-border);
-  border-radius: 40px;
-  transition: border-color 0.15s;
-}
-
-.facebook-app .page-chip:hover {
-  border-color: var(--fb-text-secondary);
-}
-
-.facebook-app .page-chip .chip-name {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--fb-text);
-}
-
-.facebook-app .page-chip button,
-.facebook-app .page-chip a.chip-link {
-  padding: 2px 6px;
-  font-size: 0.75rem;
-  line-height: 1;
-}
-
-.facebook-app .chip-icon {
-  flex-shrink: 0;
-  color: var(--fb-accent);
-}
-
-.facebook-app .chip-btn {
-  opacity: 0;
-  transition: opacity 0.15s;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.facebook-app .page-chip:hover .chip-btn {
-  opacity: 1;
-}
-
-.facebook-app .chip-link:hover {
-  color: var(--fb-green) !important;
-}
-
-.facebook-app .chip-delete:hover {
-  color: var(--fb-accent) !important;
-}
-
-.facebook-app .chip-edit-form {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.facebook-app .chip-edit-input {
-  width: 120px;
-  padding: 2px 6px;
-  background: var(--fb-bg);
-  border: 1px solid var(--fb-accent);
-  border-radius: 4px;
-  color: var(--fb-text);
-  font-size: 0.8rem;
-  outline: none;
-}
-
-.facebook-app .chip-edit-url {
-  width: 200px;
-}
-
-.facebook-app .chip-editing {
-  border-radius: 8px;
-}
-
-.facebook-app .confirm-active {
-  border-color: var(--fb-accent) !important;
-}
-
-.facebook-app .confirm-msg {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--fb-accent);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.facebook-app .confirm-yes {
-  color: var(--fb-green) !important;
-  display: flex;
-  align-items: center;
-}
-
-.facebook-app .confirm-yes:hover {
-  color: var(--fb-green-hover) !important;
-}
-
-.facebook-app .confirm-no {
-  color: var(--fb-text-secondary) !important;
-  display: flex;
-  align-items: center;
-}
-
-.facebook-app .confirm-no:hover {
-  color: var(--fb-text) !important;
-}
-
-/* Post List */
 .facebook-app .post-list {
   display: flex;
   flex-direction: column;
@@ -455,17 +444,11 @@
   align-items: center;
 }
 
-.facebook-app .empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--fb-text-secondary);
-}
-
-.facebook-app .empty p {
-  margin-bottom: 8px;
-}
-
 @media (max-width: 640px) {
+  .facebook-app .fb-grid {
+    grid-template-columns: 1fr;
+  }
+
   .facebook-header {
     flex-direction: column;
     align-items: flex-start;

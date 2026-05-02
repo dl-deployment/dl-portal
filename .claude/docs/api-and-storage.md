@@ -11,7 +11,8 @@ api/
 ├── <endpoint-name>.js    # POST /api/<endpoint-name>
 ├── db/
 │   ├── read.js            # POST /api/db/read — read app data from Supabase
-│   └── write.js           # POST /api/db/write — write app data to Supabase
+│   ├── write.js           # POST /api/db/write — write app data to Supabase
+│   └── create-tab.js      # POST /api/db/create-tab — create tab with DB-generated ID
 ├── supabase.js            # Supabase client singleton (lazy-init Proxy)
 ├── dev-server.js          # Express wrapper for local dev (port 3001)
 └── package.json           # Server-side dependencies (fast-xml-parser, express, dotenv, @supabase/supabase-js)
@@ -122,8 +123,9 @@ Single interface for all DB operations. Auth via `x-api-key` header.
 ```js
 import { dbApi } from "../../lib/dbApi.js";
 
-const data = await dbApi.read("youtube");   // { data: { tabs, channels, videos } }
-await dbApi.write("youtube", { tabs, channels, videos });
+const data = await dbApi.read("youtube");   // { data: { tabs, channels } }
+await dbApi.write("youtube", { tabs, channels });
+await dbApi.createTab("youtube", "Tab Name", 0);  // { tab: { id, name, position } }
 ```
 
 ### Store Template (Async, DB-only)
@@ -150,8 +152,7 @@ export async function getItems() {
 
 export async function createItem(fields) {
   const store = await readStore();
-  const maxId = store.items.reduce((m, i) => Math.max(m, i.id), 0);
-  const item = { id: maxId + 1, ...fields, createdAt: new Date().toISOString() };
+  const item = { id: Date.now(), ...fields, createdAt: new Date().toISOString() };
   store.items.push(item);
   await writeStore(store);
   return item;
@@ -175,14 +176,21 @@ export async function deleteItem(id) {
 
 ### Database Schema
 
-Relational tables in Supabase with RLS enabled (service_role key bypasses RLS). Shared `tabs` table with `app` column discriminator. JS uses camelCase, DB uses snake_case — conversion happens in `api/db/read.js` and `api/db/write.js`.
+Relational tables in Supabase with RLS enabled (service_role key bypasses RLS). `apps` table as registry. Shared `tabs` table with `app_id` FK to `apps`. Each app's data table is named after the app (`youtube`, `facebook`, `bookmarks`, `tasks`). JS uses camelCase, DB uses snake_case — conversion happens in `api/db/read.js` and `api/db/write.js`. Server-side uses static `APP_IDS` map for app name → id lookup.
 
-Tables: `tabs`, `channels`, `videos`, `pages`, `posts`, `bookmarks`, `tasks`, `color_history`.
+Supabase tables: `apps`, `tabs`, `youtube`, `facebook`, `bookmarks`, `tasks`.
+
+localStorage (ephemeral content, can be re-fetched):
+- `dl-youtube-videos` — fetched video data
+- `dl-facebook-posts` — fetched post data
+- `dl-color-history` — recent color picks (max 16)
 
 ### Key Differences from Old localStorage Pattern
 
 - All store functions are **async** (return Promises)
-- ID generation uses `maxId + 1` instead of `nextId` counter
+- Tab ID generation uses DB `SERIAL` auto-increment — client calls `dbApi.createTab(app, name, position)` to get the DB-generated ID back
+- Bookmark ID uses client-side `maxId + 1` (local to bookmarks table)
 - No `exportData()` / `importData()` / `DataManager` components
 - App components must use `await` for all store calls
 - Init effects use `store.getTabs().then(...)` pattern
+- Hybrid stores: metadata via dbApi (Supabase), content data via localStorage

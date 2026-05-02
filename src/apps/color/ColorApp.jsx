@@ -4,7 +4,6 @@ import {
   hexToRgb, hslToRgb, hsvToRgb, cmykToRgb, isValidHex,
   randomRgb, nearestColorName,
 } from "./utils";
-import { dbApi } from "../../lib/dbApi.js";
 import ColorInput from "./components/ColorInput";
 import PaletteGenerator from "./components/PaletteGenerator";
 import ContrastChecker from "./components/ContrastChecker";
@@ -25,21 +24,20 @@ const TABS = [
 ];
 
 const MAX_HISTORY = 16;
+const HISTORY_KEY = "dl-color-history";
 
 export default function ColorApp() {
   const [rgb, setRgb] = useState({ r: 99, g: 102, b: 241 });
   const [activeTab, setActiveTab] = useState("picker");
   const [toast, setToast] = useState(null);
-  const [history, setHistory] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [history, setHistory] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+    } catch {
+      return [];
+    }
+  });
   const toastTimer = useRef(null);
-
-  useEffect(() => {
-    dbApi.read("color").then(({ data }) => {
-      if (Array.isArray(data) && data.length > 0) setHistory(data);
-      setReady(true);
-    }).catch(() => setReady(true));
-  }, []);
 
   const hex = useMemo(() => rgbToHex(rgb), [rgb.r, rgb.g, rgb.b]);
   const hsl = useMemo(() => rgbToHsl(rgb), [rgb.r, rgb.g, rgb.b]);
@@ -52,7 +50,7 @@ export default function ColorApp() {
       const newHex = rgbToHex(newRgb);
       const filtered = prev.filter((h) => h.hex !== newHex);
       const next = [{ hex: newHex, rgb: newRgb }, ...filtered].slice(0, MAX_HISTORY);
-      dbApi.write("color", next).catch(() => {});
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
       return next;
     });
   }, []);
@@ -94,8 +92,6 @@ export default function ColorApp() {
     setRgb(r);
     addToHistory(r);
   }, [addToHistory]);
-
-  if (!ready) return <div className="color-app"><div className="app-loading">Loading...</div></div>;
 
   return (
     <div className="color-app">

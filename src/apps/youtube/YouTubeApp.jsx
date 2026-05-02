@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { YouTubeProvider, useYouTube } from "./YouTubeContext.jsx";
 import TabBar from "./components/TabBar.jsx";
-import AddChannel from "./components/AddChannel.jsx";
-import ChannelList from "./components/ChannelList.jsx";
+import ChannelForm from "./components/ChannelForm.jsx";
+import ChannelGrid from "./components/ChannelGrid.jsx";
 import VideoGrid from "./components/VideoGrid.jsx";
 import "./youtube.css";
 
@@ -15,11 +16,59 @@ function YouTubeInner() {
     handleSync,
   } = useYouTube();
 
+  const [showForm, setShowForm] = useState(false);
+  const [editingChannel, setEditingChannel] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
+
+  function handleAdd() {
+    setEditingChannel(null);
+    setFormError(null);
+    setShowForm(true);
+  }
+
+  function handleEdit(channel) {
+    setEditingChannel(channel);
+    setFormError(null);
+    setShowForm(true);
+  }
+
+  function handleCancel() {
+    setShowForm(false);
+    setEditingChannel(null);
+    setFormError(null);
+  }
+
+  async function handleSave(payload) {
+    setFormError(null);
+    if (payload.channelId) {
+      // Edit mode — update name
+      await handleUpdateChannel(payload.channelId, { channelName: payload.channelName });
+      setShowForm(false);
+      setEditingChannel(null);
+    } else {
+      // Add mode — resolve + add
+      setFormLoading(true);
+      try {
+        await handleAddChannel(payload.input);
+        setShowForm(false);
+        setEditingChannel(null);
+      } catch (err) {
+        setFormError(err.message);
+      } finally {
+        setFormLoading(false);
+      }
+    }
+  }
+
   return (
     <div className="youtube-app">
       <div className="youtube-header">
         <h2>DL YouTube</h2>
         <div className="header-actions">
+          <button className="btn btn-primary" onClick={handleAdd}>
+            + Add Channel
+          </button>
           <div className="range-toggle">
             <button
               className={`range-btn ${range === "week" ? "active" : ""}`}
@@ -60,8 +109,21 @@ function YouTubeInner() {
         </div>
       )}
 
-      <AddChannel onAdded={handleAddChannel} />
-      <ChannelList channels={channels} onDelete={handleDeleteChannel} onUpdate={handleUpdateChannel} />
+      {showForm && (
+        <ChannelForm
+          channel={editingChannel}
+          onSave={handleSave}
+          onCancel={handleCancel}
+          loading={formLoading}
+          error={formError}
+        />
+      )}
+
+      <ChannelGrid
+        channels={channels}
+        onEdit={handleEdit}
+        onDelete={handleDeleteChannel}
+      />
       <VideoGrid videos={videos} syncing={syncing} />
     </div>
   );

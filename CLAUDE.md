@@ -35,7 +35,8 @@ When creating a new page or making significant changes to an existing page:
 5. **Windows dev.** Dev server uses `pathToFileURL()` for dynamic imports.
 6. **Dark theme.** Global dark theme in `src/index.css`. Sub-apps inherit but can override with scoped variables.
 7. **No TypeScript.** All code is plain JSX/JS.
-8. **Database-only storage.** All persistent data stored in Supabase. No localStorage. Client → serverless API → Supabase. Use `dbApi.read(app)` / `dbApi.write(app, data)` from `src/lib/dbApi.js`. All store functions are async.
+8. **Hybrid storage.** Metadata in Supabase via `dbApi.read/write` (tables: `apps`, `tabs`, `youtube`, `facebook`, `bookmarks`, `tasks`). Ephemeral content (videos, posts, color history) in localStorage. All store functions are async.
+9. **DB table naming.** Each app's data table is named after the app itself (`youtube`, `facebook`, `bookmarks`, `tasks`). Shared table `tabs` links to `apps` via `app_id` FK. Tab IDs are DB-generated (SERIAL) via `dbApi.createTab()`. When adding a new app with its own data table, name the table after the app.
 
 ## Dev Commands
 

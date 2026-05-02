@@ -14,7 +14,7 @@ const VideoGrid = memo(function VideoGrid({ videos, syncing }) {
 
   if (videos.length === 0) {
     return (
-      <div className="empty">
+      <div className="yt-empty">
         <p>No videos yet</p>
         <p>Add some channels, then hit "Fetch Videos" to fetch videos.</p>
       </div>

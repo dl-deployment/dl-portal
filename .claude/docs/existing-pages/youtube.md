@@ -1,6 +1,6 @@
 # YouTube App (`/youtube`)
 
-Tracks YouTube channels via RSS feeds. Data stored in Supabase via serverless API.
+Tracks YouTube channels via web scraping. Metadata stored in Supabase (`tabs` + `youtube` tables); videos stored in localStorage.
 
 ## Origin
 
@@ -14,38 +14,40 @@ src/apps/youtube/
 ├── YouTubeContext.jsx       # React Context for shared state across components
 ├── youtube.css              # Scoped under .youtube-app, uses --yt-* variables
 ├── api.js                   # HTTP client (resolveChannel, fetchVideos)
-├── store.js                 # Async DB CRUD via dbApi (tabs, channels, videos)
+├── store.js                 # Hybrid store: tabs+youtube via dbApi, videos via localStorage
 ├── utils.js                 # Utility functions
 └── components/
     ├── TabBar.jsx            # Tab management (create, rename, delete)
-    ├── AddChannel.jsx        # Add channel by URL/@handle
-    ├── ChannelList.jsx       # List of tracked channels per tab
+    ├── ChannelForm.jsx       # Add/edit channel form panel (URL/@handle input for add, name edit)
+    ├── ChannelGrid.jsx       # Card grid display of tracked channels (thumbnail, name, edit/delete)
     └── VideoGrid.jsx         # Video thumbnails grid with skeleton loading
 ```
 
 ## API Endpoints
 
-- `POST /api/resolve-channel` — resolves YouTube URL/@handle to channel info (name, ID, thumbnail).
-- `POST /api/fetch-videos` — fetches videos from YouTube RSS feed for a channel ID.
+- `POST /api/resolve-channel` — resolves YouTube URL/@handle to channel info (name, ID, thumbnail). Scrapes YouTube channel page HTML (og:title, og:image, externalId).
+- `POST /api/fetch-videos` — fetches videos by scraping `ytInitialData` from the channel's `/videos` page. Supports both `videoRenderer` (legacy) and `lockupViewModel` (current) formats. Parses relative time strings ("2 days ago") to approximate ISO dates.
 - Server-side files: `api/resolve-channel.js`, `api/fetch-videos.js`.
-- Uses `fast-xml-parser` for RSS parsing.
+- No external dependencies for YouTube scraping (no RSS, no XML parser needed).
 
-## Data Model (Supabase)
+## Data Model
 
-Tables: `tabs` (app='youtube'), `channels`, `videos`
-
+**Supabase** (tabs, youtube):
 ```
-tabs:     { id, name, position, app }
-channels: { tab_id, channel_id, channel_name, channel_thumb }
-videos:   { channel_id, video_id, title, published_at, thumb_url }
+tabs:    { id, name, position, app_id=1 }
+youtube: { id, channel_name, thumbnail, tab_id }
 ```
 
-JS store uses camelCase; DB uses snake_case (converted in api/db/read.js and write.js).
+**localStorage** key `dl-youtube-videos` (videos):
+```
+[{ videoId, channelId, channelName, title, publishedAt, thumbnail, link }]
+```
 
 ## Key Implementation Details
 
 - **Manual sync only:** Videos are fetched only when the user clicks "Fetch Videos". No background polling.
-- **Context pattern:** Uses React Context (`YouTubeContext.jsx`) to share state across tab bar, channel list, and video grid.
+- **Context pattern:** Uses React Context (`YouTubeContext.jsx`) to share state across tab bar, channel grid, and video grid.
+- **Card grid + form panel UI:** Channels displayed as cards with thumbnail. Add/edit via form panel (same pattern as Bookmarks).
 - **Range filter:** Videos filterable by "Week" or "Month".
-- **Async store:** All store functions return Promises. ID generation uses `maxId + 1`.
+- **Hybrid store:** Tabs and youtube records are async (Supabase via dbApi). Videos are synchronous (localStorage). Cascade deletes update both. Tab IDs are DB-generated via `dbApi.createTab()`.
 - CSS prefix: `.youtube-app`, `--yt-*` variables.

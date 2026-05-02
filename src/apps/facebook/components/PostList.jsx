@@ -14,7 +14,7 @@ const PostList = memo(function PostList({ posts, syncing }) {
 
   if (posts.length === 0) {
     return (
-      <div className="empty">
+      <div className="fb-empty">
         <p>No posts yet</p>
         <p>Add some feeds, then hit "Fetch Posts" to load recent posts.</p>
       </div>

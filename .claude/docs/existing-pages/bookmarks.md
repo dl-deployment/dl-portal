@@ -19,11 +19,11 @@ src/pages/BookmarksPage.jsx      # Thin page wrapper
 
 ## Data Model (Supabase)
 
-Tables: `tabs` (app='bookmarks'), `bookmarks`
+Tables: `tabs` (app_id=3), `bookmarks`
 
 ```
-tabs:      { id, name, position, app }
-bookmarks: { id, tab_id, title, url, description, icon, created_at }
+tabs:      { id, name, position, app_id }
+bookmarks: { id, tab_id, title, url, description, icon }
 ```
 
 JS store uses camelCase; DB uses snake_case.
@@ -34,7 +34,7 @@ JS store uses camelCase; DB uses snake_case.
 - **Tab management** — add (+), rename (double-click), delete (x with confirm). Cannot delete last tab. Deleting a tab also removes its bookmarks.
 - **Icon rendering** — `isUrl()` check: URLs render as `<img>`, everything else as emoji text. Default fallback: 🔗
 - **Card links** — entire card-link area opens URL in new tab (`target="_blank"`). Edit/Delete buttons are siblings of the `<a>`, not nested inside.
-- **Async store** — all store functions return Promises. ID generation uses `maxId + 1`.
+- **Async store** — all store functions return Promises. Tab ID from DB SERIAL (via `dbApi.createTab`). Bookmark ID uses `maxId + 1` (local to bookmarks table).
 
 ## CSS Prefix
 

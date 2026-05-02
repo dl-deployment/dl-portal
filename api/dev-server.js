@@ -47,6 +47,11 @@ app.post("/api/db/write", async (req, res) => {
   await handler(req, res);
 });
 
+app.post("/api/db/create-tab", async (req, res) => {
+  const handler = await loadHandler("db/create-tab");
+  await handler(req, res);
+});
+
 app.post("/api/db/migrate", async (req, res) => {
   const handler = await loadHandler("db/migrate");
   await handler(req, res);

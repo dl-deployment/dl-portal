@@ -66,18 +66,12 @@ export function YouTubeProvider({ children }) {
   }, []);
 
   const handleAddChannel = useCallback(async (input) => {
-    setError(null);
-    try {
-      const info = await api.resolveChannel(input);
-      const added = await store.addChannel({ ...info, tabId: activeTabId });
-      if (!added) {
-        setError("Channel already added");
-        return;
-      }
-      setChannels(await store.getChannels(activeTabId));
-    } catch (err) {
-      setError(err.message);
+    const info = await api.resolveChannel(input);
+    const added = await store.addChannel({ ...info, tabId: activeTabId });
+    if (!added) {
+      throw new Error("Channel already added");
     }
+    setChannels(await store.getChannels(activeTabId));
   }, [activeTabId]);
 
   const handleDeleteChannel = useCallback(async (channelId) => {
@@ -89,8 +83,7 @@ export function YouTubeProvider({ children }) {
   const handleUpdateChannel = useCallback(async (channelId, updates) => {
     await store.updateChannel(channelId, updates);
     setChannels(await store.getChannels(activeTabId));
-    if (updates.channelId) setVideos(await store.getVideos(activeTabId, range));
-  }, [activeTabId, range]);
+  }, [activeTabId]);
 
   const handleSync = useCallback(async () => {
     setSyncing(true);
