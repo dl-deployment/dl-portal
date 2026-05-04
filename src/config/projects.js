@@ -21,6 +21,13 @@ export const projects = [
     description: "Convert colors, generate palettes, check WCAG contrast",
   },
   {
+    id: "freegames",
+    name: "Free Games",
+    path: "/freegames",
+    icon: "\u{1F3AE}",
+    description: "Free games on Steam & Epic Games Store",
+  },
+  {
     id: "bookmarks",
     name: "Bookmarks",
     path: "/bookmarks",

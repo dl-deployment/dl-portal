@@ -63,3 +63,4 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid) |
 | `existing-pages/facebook.md` | Facebook app details (RSS Bridge, post list, tabs) |
 | `existing-pages/color.md` | Color Tools app details (conversions, palettes, WCAG contrast) |
+| `existing-pages/freegames.md` | Free Games app details (Epic/Steam APIs, card grid, countdown) |

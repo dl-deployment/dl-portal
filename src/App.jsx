@@ -12,6 +12,7 @@ import TelegramPage from "./pages/TelegramPage";
 import TextToolsPage from "./pages/TextToolsPage";
 import PersonalTimelinePage from "./pages/PersonalTimelinePage";
 import TimelinePage from "./pages/TimelinePage";
+import FreeGamesPage from "./pages/FreeGamesPage";
 import YouTubePage from "./pages/YouTubePage";
 
 function ProtectedRoute({ children }) {
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="texttools" element={<ErrorBoundary><TextToolsPage /></ErrorBoundary>} />
           <Route path="spritesheetslicer" element={<ErrorBoundary><SpriteSheetSlicerPage /></ErrorBoundary>} />
           <Route path="color" element={<ErrorBoundary><ColorPage /></ErrorBoundary>} />
+          <Route path="freegames" element={<ErrorBoundary><FreeGamesPage /></ErrorBoundary>} />
           {/* Auth required */}
           <Route path="bookmarks" element={<ProtectedRoute><ErrorBoundary><BookmarksPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="tasks" element={<ProtectedRoute><ErrorBoundary><TasksPage /></ErrorBoundary></ProtectedRoute>} />
