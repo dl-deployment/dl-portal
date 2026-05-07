@@ -4,7 +4,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Layout from "./components/Layout";
 import BookmarksPage from "./pages/BookmarksPage";
 import ColorPage from "./pages/ColorPage";
-import FacebookPage from "./pages/FacebookPage";
 import Home from "./pages/Home";
 import SpriteSheetSlicerPage from "./pages/SpriteSheetSlicerPage";
 import TasksPage from "./pages/TasksPage";
@@ -38,7 +37,6 @@ export default function App() {
           <Route path="ptimeline" element={<ProtectedRoute><ErrorBoundary><PersonalTimelinePage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="telegram" element={<ProtectedRoute><ErrorBoundary><TelegramPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="youtube" element={<ProtectedRoute><ErrorBoundary><YouTubePage /></ErrorBoundary></ProtectedRoute>} />
-          <Route path="facebook" element={<ProtectedRoute><ErrorBoundary><FacebookPage /></ErrorBoundary></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>
