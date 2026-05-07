@@ -16,12 +16,8 @@
   --tl-lunar-badge: #a78bfa;
   --tl-solar-badge: #38bdf8;
   --tl-timeline-line: rgba(148, 163, 184, 0.15);
-  --tl-font-display: "Playfair Display", Georgia, serif;
-  --tl-font-body: "DM Sans", sans-serif;
   --tl-radius: 14px;
   --tl-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-
-  font-family: var(--tl-font-body);
   color: var(--tl-text-pri);
   line-height: 1.6;
   min-height: 100%;
@@ -62,7 +58,7 @@
 }
 
 .tl-brand-title {
-  font-family: var(--tl-font-display);
+  font-family: var(--font);
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -93,14 +89,14 @@
 }
 
 .tl-today-date {
-  font-family: var(--tl-font-display);
+  font-family: var(--font);
   font-size: 0.95rem;
   font-weight: 400;
   color: var(--tl-accent);
 }
 
 .tl-today-lunar {
-  font-family: var(--tl-font-display);
+  font-family: var(--font);
   font-size: 0.95rem;
   font-weight: 400;
   color: var(--tl-lunar-badge);
@@ -148,7 +144,7 @@
 
 .timeline-app .tl-date .day {
   display: block;
-  font-family: var(--tl-font-display);
+  font-family: var(--font);
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--tl-text-pri);
@@ -215,7 +211,7 @@
 .timeline-app .card-body { flex: 1; min-width: 0; }
 
 .timeline-app .card-name {
-  font-family: var(--tl-font-display);
+  font-family: var(--font);
   font-size: 1.08rem;
   font-weight: 700;
   color: var(--tl-text-pri);
@@ -262,7 +258,7 @@
 }
 
 .timeline-app .count-num {
-  font-family: var(--tl-font-display);
+  font-family: var(--font);
   font-size: 1.6rem;
   font-weight: 900;
   line-height: 1;

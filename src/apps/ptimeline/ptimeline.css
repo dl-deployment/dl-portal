@@ -15,12 +15,8 @@
   --pt-lunar-badge: #a78bfa;
   --pt-solar-badge: #38bdf8;
   --pt-timeline-line: rgba(148, 163, 184, 0.15);
-  --pt-font-display: "Playfair Display", Georgia, serif;
-  --pt-font-body: "DM Sans", sans-serif;
   --pt-radius: 14px;
   --pt-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-
-  font-family: var(--pt-font-body);
   color: var(--pt-text-pri);
   line-height: 1.6;
   min-height: 100%;
@@ -55,7 +51,7 @@
 }
 
 .ptimeline-app .pt-brand-title {
-  font-family: var(--pt-font-display);
+  font-family: var(--font);
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -85,13 +81,13 @@
 }
 
 .ptimeline-app .pt-today-date {
-  font-family: var(--pt-font-display);
+  font-family: var(--font);
   font-size: 0.95rem;
   color: var(--pt-accent);
 }
 
 .ptimeline-app .pt-today-lunar {
-  font-family: var(--pt-font-display);
+  font-family: var(--font);
   font-size: 0.95rem;
   color: var(--pt-lunar-badge);
 }
@@ -247,7 +243,7 @@
 
 .ptimeline-app .pt-date .day {
   display: block;
-  font-family: var(--pt-font-display);
+  font-family: var(--font);
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--pt-text-pri);
@@ -311,7 +307,7 @@
 .ptimeline-app .pt-card-body { flex: 1; min-width: 0; }
 
 .ptimeline-app .pt-card-name {
-  font-family: var(--pt-font-display);
+  font-family: var(--font);
   font-size: 1.08rem;
   font-weight: 700;
   color: var(--pt-text-pri);
@@ -358,7 +354,7 @@
 }
 
 .ptimeline-app .pt-count-num {
-  font-family: var(--pt-font-display);
+  font-family: var(--font);
   font-size: 1.6rem;
   font-weight: 900;
   line-height: 1;
