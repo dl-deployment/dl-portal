@@ -3,6 +3,9 @@ import { dbApi } from "../../lib/dbApi.js";
 const APP = "youtube";
 const VIDEOS_KEY = "dl-youtube-videos";
 
+let _cache = null;
+let _pending = null;
+
 function getLocalVideos() {
   try {
     return JSON.parse(localStorage.getItem(VIDEOS_KEY)) || [];
@@ -16,11 +19,18 @@ function saveLocalVideos(videos) {
 }
 
 async function readStore() {
-  const { data } = await dbApi.read(APP);
-  return data || { tabs: [], channels: [] };
+  if (_cache) return _cache;
+  if (_pending) return _pending;
+  _pending = dbApi.read(APP).then(({ data }) => {
+    _cache = data || { tabs: [], channels: [] };
+    _pending = null;
+    return _cache;
+  });
+  return _pending;
 }
 
 async function writeStore(data) {
+  _cache = data;
   await dbApi.write(APP, data);
 }
 

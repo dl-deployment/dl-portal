@@ -2,12 +2,22 @@ import { dbApi } from "../../lib/dbApi.js";
 
 const APP = "bookmarks";
 
+let _cache = null;
+let _pending = null;
+
 async function readStore() {
-  const { data } = await dbApi.read(APP);
-  return data || { tabs: [], bookmarks: [] };
+  if (_cache) return _cache;
+  if (_pending) return _pending;
+  _pending = dbApi.read(APP).then(({ data }) => {
+    _cache = data || { tabs: [], bookmarks: [] };
+    _pending = null;
+    return _cache;
+  });
+  return _pending;
 }
 
 async function writeStore(data) {
+  _cache = data;
   await dbApi.write(APP, data);
 }
 

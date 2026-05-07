@@ -1,10 +1,9 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4, ptimeline: 5 };
+const APP_IDS = { youtube: 1, bookmarks: 3, tasks: 4, ptimeline: 5 };
 
 const WRITERS = {
   youtube: writeYoutube,
-  facebook: writeFacebook,
   bookmarks: writeBookmarks,
   tasks: writeTasks,
   ptimeline: writePtimeline,
@@ -67,32 +66,6 @@ async function writeYoutube(data) {
     await supabase.from("youtube").upsert(dbChannels, { onConflict: "id" });
   }
   await deleteNotIn("youtube", "id", dbChannels.map((c) => c.id));
-}
-
-async function writeFacebook(data) {
-  const appId = APP_IDS.facebook;
-  const { tabs = [], pages = [] } = data;
-
-  const dbTabs = tabs.map((t) => ({
-    id: t.id,
-    app_id: appId,
-    name: t.name,
-    position: t.position,
-  }));
-
-  const dbPages = pages.map((p) => ({
-    id: p.feedUrl,
-    page_name: p.pageName,
-    thumbnail: p.thumbnail || "",
-    tab_id: p.tabId,
-  }));
-
-  await syncTabs(appId, dbTabs);
-
-  if (dbPages.length > 0) {
-    await supabase.from("facebook").upsert(dbPages, { onConflict: "id" });
-  }
-  await deleteNotIn("facebook", "id", dbPages.map((p) => p.id));
 }
 
 async function writeBookmarks(data) {

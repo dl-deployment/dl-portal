@@ -83,13 +83,20 @@ export function YouTubeProvider({ children }) {
       const publishedAfter = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
       const failed = [];
-      for (const ch of chs) {
-        try {
-          const { videos: vids } = await api.fetchVideos(ch.channelId, publishedAfter);
-          await store.addVideos(vids);
-        } catch (err) {
-          console.error(`Error fetching ${ch.channelName}:`, err.message);
-          failed.push(ch.channelName);
+      const CONCURRENCY = 3;
+      for (let i = 0; i < chs.length; i += CONCURRENCY) {
+        const batch = chs.slice(i, i + CONCURRENCY);
+        const results = await Promise.allSettled(
+          batch.map(async (ch) => {
+            const { videos: vids } = await api.fetchVideos(ch.channelId, publishedAfter);
+            await store.addVideos(vids);
+          })
+        );
+        for (let j = 0; j < results.length; j++) {
+          if (results[j].status === "rejected") {
+            console.error(`Error fetching ${batch[j].channelName}:`, results[j].reason?.message);
+            failed.push(batch[j].channelName);
+          }
         }
       }
       setVideos(await store.getVideos(activeTabId, range));

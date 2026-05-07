@@ -26,7 +26,11 @@
       "Bash(npx supabase *)",
       "Bash(npm run *)",
       "Bash(timeout 5)",
-      "Bash(taskkill /F /IM node.exe)"
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(netstat -aon)",
+      "Bash(awk '{print $5}')",
+      "Bash(xargs -r kill -f)",
+      "Bash(cmd //c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -aon ^| findstr :3001 ^| findstr LISTENING'\\) do taskkill /f /pid %a\")"
     ]
   }
 }

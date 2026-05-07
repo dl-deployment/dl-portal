@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import { fileURLToPath, pathToFileURL } from "url";
 import path from "path";
 import dotenv from "dotenv";
@@ -11,9 +12,15 @@ dotenv.config({ path: path.join(__dirname, "..", ".env") });
 const app = express();
 app.use(express.json());
 
+const handlerCache = new Map();
+
 async function loadHandler(name) {
   const filePath = path.join(__dirname, `${name}.js`);
-  const mod = await import(pathToFileURL(filePath).href + "?t=" + Date.now());
+  const mtime = fs.statSync(filePath).mtimeMs;
+  const cached = handlerCache.get(filePath);
+  if (cached && cached.mtime === mtime) return cached.handler;
+  const mod = await import(pathToFileURL(filePath).href + "?t=" + mtime);
+  handlerCache.set(filePath, { mtime, handler: mod.default });
   return mod.default;
 }
 
@@ -29,11 +36,6 @@ app.post("/api/fetch-videos", async (req, res) => {
 
 app.post("/api/send-telegram", async (req, res) => {
   const handler = await loadHandler("send-telegram");
-  await handler(req, res);
-});
-
-app.post("/api/fetch-facebook-posts", async (req, res) => {
-  const handler = await loadHandler("fetch-facebook-posts");
   await handler(req, res);
 });
 

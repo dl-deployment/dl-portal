@@ -1,10 +1,9 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4, ptimeline: 5 };
+const APP_IDS = { youtube: 1, bookmarks: 3, tasks: 4, ptimeline: 5 };
 
 const READERS = {
   youtube: readYoutube,
-  facebook: readFacebook,
   bookmarks: readBookmarks,
   tasks: readTasks,
   ptimeline: readPtimeline,
@@ -53,24 +52,6 @@ async function readYoutube() {
       channelName: c.channel_name,
       thumbnail: c.thumbnail,
       tabId: c.tab_id,
-    })),
-  };
-}
-
-async function readFacebook() {
-  const appId = APP_IDS.facebook;
-  const [tabsRes, pagesRes] = await Promise.all([
-    supabase.from("tabs").select("*").eq("app_id", appId).order("position"),
-    supabase.from("facebook").select("*"),
-  ]);
-
-  return {
-    tabs: (tabsRes.data || []).map((t) => ({ id: t.id, name: t.name, position: t.position })),
-    pages: (pagesRes.data || []).map((p) => ({
-      feedUrl: p.id,
-      pageName: p.page_name,
-      thumbnail: p.thumbnail,
-      tabId: p.tab_id,
     })),
   };
 }
