@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import * as store from "./store.js";
 import TabBar from "./components/TabBar";
 import BookmarkForm from "./components/BookmarkForm";
@@ -8,17 +8,24 @@ import "./bookmarks.css";
 export default function BookmarksApp() {
   const [tabs, setTabs] = useState([]);
   const [activeTabId, setActiveTabId] = useState(null);
-  const [bookmarks, setBookmarks] = useState([]);
+  const [bookmarksMap, setBookmarksMap] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
   const [ready, setReady] = useState(false);
+  const visitedTabs = useRef(new Set());
+
+  const bookmarks = bookmarksMap[activeTabId] || [];
 
   useEffect(() => {
     store.getTabs().then((t) => {
       setTabs(t);
       if (t.length > 0) {
-        setActiveTabId(t[0].id);
-        store.getBookmarks(t[0].id).then(setBookmarks);
+        const firstId = t[0].id;
+        setActiveTabId(firstId);
+        visitedTabs.current.add(firstId);
+        store.getBookmarks(firstId).then((bm) =>
+          setBookmarksMap((prev) => ({ ...prev, [firstId]: bm }))
+        );
       }
       setReady(true);
     });
@@ -26,14 +33,18 @@ export default function BookmarksApp() {
 
   useEffect(() => {
     if (activeTabId) {
-      store.getBookmarks(activeTabId).then(setBookmarks);
+      visitedTabs.current.add(activeTabId);
+      store.getBookmarks(activeTabId).then((bm) =>
+        setBookmarksMap((prev) => ({ ...prev, [activeTabId]: bm }))
+      );
     }
   }, [activeTabId]);
 
   const reload = useCallback(async () => {
     const freshTabs = await store.getTabs();
     setTabs(freshTabs);
-    setBookmarks(await store.getBookmarks(activeTabId));
+    const bm = await store.getBookmarks(activeTabId);
+    setBookmarksMap((prev) => ({ ...prev, [activeTabId]: bm }));
   }, [activeTabId]);
 
   async function handleCreateTab(name) {
@@ -51,11 +62,21 @@ export default function BookmarksApp() {
     await store.deleteTab(id);
     const freshTabs = await store.getTabs();
     setTabs(freshTabs);
+    visitedTabs.current.delete(id);
+    setBookmarksMap((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
     if (activeTabId === id) {
-      setActiveTabId(freshTabs[0]?.id);
-      setBookmarks(await store.getBookmarks(freshTabs[0]?.id));
-    } else {
-      setBookmarks(await store.getBookmarks(activeTabId));
+      const newId = freshTabs[0]?.id;
+      setActiveTabId(newId);
+      if (newId) {
+        visitedTabs.current.add(newId);
+        store.getBookmarks(newId).then((bm) =>
+          setBookmarksMap((prev) => ({ ...prev, [newId]: bm }))
+        );
+      }
     }
   }
 
@@ -119,11 +140,15 @@ export default function BookmarksApp() {
         />
       )}
 
-      <BookmarkGrid
-        bookmarks={bookmarks}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {tabs.filter((t) => visitedTabs.current.has(t.id)).map((t) => (
+        <div key={t.id} style={{ display: t.id === activeTabId ? undefined : "none" }}>
+          <BookmarkGrid
+            bookmarks={bookmarksMap[t.id] || []}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
+      ))}
       </>}
     </div>
   );

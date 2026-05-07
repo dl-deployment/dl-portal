@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { api } from "./api.js";
 import * as store from "./store.js";
 
@@ -12,27 +12,40 @@ export function useYouTube() {
 
 export function YouTubeProvider({ children }) {
   const [tabs, setTabs] = useState([]);
-  const [channels, setChannels] = useState([]);
-  const [videos, setVideos] = useState([]);
+  const [channelsMap, setChannelsMap] = useState({});
+  const [videosMap, setVideosMap] = useState({});
 
   const [activeTabId, setActiveTabId] = useState(null);
   const [range, setRange] = useState("week");
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState(null);
   const [ready, setReady] = useState(false);
+  const visitedTabs = useRef(new Set());
+
+  const channels = channelsMap[activeTabId] || [];
+  const videos = videosMap[activeTabId] || [];
 
   useEffect(() => {
     store.getTabs().then((t) => {
       setTabs(t);
-      if (t.length > 0) setActiveTabId(t[0].id);
+      if (t.length > 0) {
+        const firstId = t[0].id;
+        setActiveTabId(firstId);
+        visitedTabs.current.add(firstId);
+      }
       setReady(true);
     });
   }, []);
 
   useEffect(() => {
     if (activeTabId) {
-      store.getChannels(activeTabId).then(setChannels);
-      store.getVideos(activeTabId, range).then(setVideos);
+      visitedTabs.current.add(activeTabId);
+      store.getChannels(activeTabId).then((ch) =>
+        setChannelsMap((prev) => ({ ...prev, [activeTabId]: ch }))
+      );
+      store.getVideos(activeTabId, range).then((v) =>
+        setVideosMap((prev) => ({ ...prev, [activeTabId]: v }))
+      );
     }
   }, [activeTabId, range]);
 
@@ -51,6 +64,9 @@ export function YouTubeProvider({ children }) {
     await store.deleteTab(id);
     const remaining = await store.getTabs();
     setTabs(remaining);
+    visitedTabs.current.delete(id);
+    setChannelsMap((prev) => { const next = { ...prev }; delete next[id]; return next; });
+    setVideosMap((prev) => { const next = { ...prev }; delete next[id]; return next; });
     setActiveTabId((prev) => (prev === id && remaining.length > 0 ? remaining[0].id : prev));
   }, []);
 
@@ -60,18 +76,22 @@ export function YouTubeProvider({ children }) {
     if (!added) {
       throw new Error("Channel already added");
     }
-    setChannels(await store.getChannels(activeTabId));
+    const ch = await store.getChannels(activeTabId);
+    setChannelsMap((prev) => ({ ...prev, [activeTabId]: ch }));
   }, [activeTabId]);
 
   const handleDeleteChannel = useCallback(async (channelId) => {
     await store.deleteChannel(channelId);
-    setChannels(await store.getChannels(activeTabId));
-    setVideos(await store.getVideos(activeTabId, range));
+    const ch = await store.getChannels(activeTabId);
+    const v = await store.getVideos(activeTabId, range);
+    setChannelsMap((prev) => ({ ...prev, [activeTabId]: ch }));
+    setVideosMap((prev) => ({ ...prev, [activeTabId]: v }));
   }, [activeTabId, range]);
 
   const handleUpdateChannel = useCallback(async (channelId, updates) => {
     await store.updateChannel(channelId, updates);
-    setChannels(await store.getChannels(activeTabId));
+    const ch = await store.getChannels(activeTabId);
+    setChannelsMap((prev) => ({ ...prev, [activeTabId]: ch }));
   }, [activeTabId]);
 
   const handleSync = useCallback(async () => {
@@ -99,7 +119,8 @@ export function YouTubeProvider({ children }) {
           }
         }
       }
-      setVideos(await store.getVideos(activeTabId, range));
+      const v = await store.getVideos(activeTabId, range);
+      setVideosMap((prev) => ({ ...prev, [activeTabId]: v }));
 
       if (failed.length > 0 && failed.length === chs.length) {
         setError("YouTube RSS is temporarily unavailable. Please try again later.");
@@ -115,6 +136,7 @@ export function YouTubeProvider({ children }) {
 
   const value = {
     tabs, channels, videos,
+    channelsMap, videosMap, visitedTabs,
     activeTabId, range, syncing, error,
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,

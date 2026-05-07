@@ -9,6 +9,7 @@ import "./youtube.css";
 function YouTubeInner() {
   const {
     tabs, channels, videos,
+    channelsMap, videosMap, visitedTabs,
     activeTabId, range, syncing, error,
     setActiveTabId, setRange, setError,
     handleCreateTab, handleRenameTab, handleDeleteTab,
@@ -119,12 +120,16 @@ function YouTubeInner() {
         />
       )}
 
-      <ChannelGrid
-        channels={channels}
-        onEdit={handleEdit}
-        onDelete={handleDeleteChannel}
-      />
-      <VideoGrid videos={videos} syncing={syncing} />
+      {tabs.filter((t) => visitedTabs.current.has(t.id)).map((t) => (
+        <div key={t.id} style={{ display: t.id === activeTabId ? undefined : "none" }}>
+          <ChannelGrid
+            channels={channelsMap[t.id] || []}
+            onEdit={handleEdit}
+            onDelete={handleDeleteChannel}
+          />
+          <VideoGrid videos={videosMap[t.id] || []} syncing={syncing && t.id === activeTabId} />
+        </div>
+      ))}
     </div>
   );
 }
