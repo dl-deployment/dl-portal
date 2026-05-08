@@ -3,6 +3,6 @@
   "outputDirectory": "dist",
   "installCommand": "npm install && cd api && npm install",
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|static_pages/).*)", "destination": "/index.html" }
   ]
 }

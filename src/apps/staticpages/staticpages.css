@@ -1,0 +1,59 @@
+.staticpages-app {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.staticpages-app .sp-title {
+  font-size: 1.5rem;
+  color: var(--text-bright);
+  margin-bottom: 24px;
+}
+
+.staticpages-app .sp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.staticpages-app .sp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+
+.staticpages-app .sp-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.staticpages-app .sp-icon {
+  font-size: 2rem;
+}
+
+.staticpages-app .sp-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  text-align: center;
+}
+
+.staticpages-app .sp-type {
+  font-size: 0.75rem;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.staticpages-app .sp-empty {
+  color: var(--text);
+  text-align: center;
+  padding: 48px 0;
+}

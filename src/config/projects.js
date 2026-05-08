@@ -28,6 +28,13 @@ export const projects = [
     description: "Free games on Steam & Epic Games Store",
   },
   {
+    id: "staticpages",
+    name: "Static Pages",
+    path: "/staticpages",
+    icon: "\u{1F4C4}",
+    description: "Browse standalone HTML pages and mini projects",
+  },
+  {
     id: "timeline",
     name: "Timeline",
     path: "/timeline",
