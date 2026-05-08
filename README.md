@@ -56,7 +56,7 @@ npm run dev
 
 This runs:
 - Vite dev server on `http://localhost:5174`
-- Express API server on `http://localhost:3001`
+- Express API server on `http://localhost:3002`
 
 Vite proxies all `/api/*` requests to the API server automatically.
 
@@ -116,5 +116,5 @@ The new project will automatically appear on the home dashboard and in the sideb
 
 - **CSS Isolation:** Each sub-app scopes its styles under a parent class (`.timeline-app`, `.telegram-app`, `.social-app`) to prevent conflicts
 - **Dark Theme:** Global CSS variables define the dark theme; sub-apps inherit and can override with prefixed variables
-- **API Proxy:** In development, Vite proxies `/api/*` to Express on port 3001. In production, Vercel routes to serverless functions
+- **API Proxy:** In development, Vite proxies `/api/*` to Express on port 3002. In production, Vercel routes to serverless functions
 - **No Database:** YouTube data is stored in browser localStorage. Telegram and Timeline are stateless on the client side

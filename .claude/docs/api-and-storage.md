@@ -14,7 +14,7 @@ api/
 │   ├── write.js           # POST /api/db/write — write app data to Supabase
 │   └── create-tab.js      # POST /api/db/create-tab — create tab with DB-generated ID
 ├── supabase.js            # Supabase client singleton (lazy-init Proxy)
-├── dev-server.js          # Express wrapper for local dev (port 3001)
+├── dev-server.js          # Express wrapper for local dev (port 3002)
 └── package.json           # Server-side dependencies (fast-xml-parser, express, dotenv, @supabase/supabase-js)
 ```
 
@@ -79,7 +79,7 @@ export async function doSomething(data) {
 
 ### Routing
 
-- **Dev:** Vite proxies `/api` → `http://localhost:3001` (configured in `vite.config.js`).
+- **Dev:** Vite proxies `/api` → `http://localhost:3002` (configured in `vite.config.js`).
 - **Prod:** Vercel routes `/api/*` to serverless functions (configured in `vercel.json`).
 
 ## Database Storage Pattern (Supabase)
@@ -184,6 +184,134 @@ localStorage (ephemeral content, can be re-fetched):
 - `dl-youtube-videos` — fetched video data
 - `dl-facebook-posts` — fetched post data
 - `dl-color-history` — recent color picks (max 16)
+
+## Tabbed App Loading Pattern
+
+All tabbed apps (bookmarks, youtube, facebook) use the same set of patterns for fast tab switching and responsive mutations. **Always follow these patterns when building a new tabbed app.**
+
+### 1. `visitedTabs` — Lazy Tab Rendering
+
+Only render a tab's content after the user has visited it. Tabs that have never been opened don't render at all, saving initial load time. Once visited, tabs stay in the DOM (hidden via `display: none`) so switching back is instant — no re-render, no re-fetch.
+
+```jsx
+const visitedTabs = useRef(new Set());
+
+function handleSelectTab(id) {
+  visitedTabs.current.add(id);
+  setActiveTabId(id);
+}
+
+// In render — only mount visited tabs, hide inactive ones
+{tabs.filter((t) => visitedTabs.current.has(t.id)).map((t) => (
+  <div key={t.id} style={{ display: t.id === activeTabId ? undefined : "none" }}>
+    <ContentGrid items={itemsMap[t.id] || []} />
+  </div>
+))}
+```
+
+**Why `display: none` instead of conditional render:**
+- Switching tabs is instant (DOM already exists, just toggle visibility)
+- Scroll position, form state, etc. are preserved per tab
+- No re-fetch or re-render needed on tab switch
+
+**Why not render all tabs on mount:**
+- Tabs with many items would slow initial render
+- `visitedTabs` Set is the middle ground — lazy mount, persistent once mounted
+
+### 2. Optimistic State Updates
+
+Update React state **immediately** on user action. Call the API in the background. Never `await reload()` after a mutation — this causes the UI to freeze while waiting for a round-trip to the server.
+
+```jsx
+// GOOD — optimistic: UI updates instantly
+async function handleCreateTab(name) {
+  const tab = await api.createTab(name);       // API call returns new tab
+  setTabs((prev) => [...prev, tab]);           // Update state with result
+  setItemsMap((prev) => ({ ...prev, [tab.id]: [] }));
+  visitedTabs.current.add(tab.id);
+  setActiveTabId(tab.id);
+  // No reload() — state is already correct
+}
+
+async function handleRenameTab(id, name) {
+  setTabs((prev) => prev.map((t) => (t.id === id ? { ...t, name } : t)));
+  await api.renameTab(id, name);               // Fire-and-forget
+}
+
+async function handleDeleteTab(id) {
+  const remaining = tabs.filter((t) => t.id !== id);
+  setTabs(remaining);                          // Remove from state immediately
+  setItemsMap((prev) => { const next = { ...prev }; delete next[id]; return next; });
+  visitedTabs.current.delete(id);
+  if (activeTabId === id) {
+    const nextId = remaining[0]?.id ?? null;
+    if (nextId) visitedTabs.current.add(nextId);
+    setActiveTabId(nextId);
+  }
+  await api.deleteTab(id);                     // Fire-and-forget
+}
+
+// BAD — blocks UI with redundant reload
+async function handleCreateTab(name) {
+  await api.createTab(name);
+  await reload();  // ← Don't do this! Fetches everything again, slow
+}
+```
+
+### 3. Batch API Calls
+
+When the API needs to fetch data from multiple sources (e.g., multiple sheet tabs, multiple DB tables), batch into a single request instead of N sequential calls.
+
+```js
+// GOOD — 1 API call for all sheets
+const batchResult = await sheets.spreadsheets.values.batchGet({
+  spreadsheetId: SPREADSHEET_ID,
+  ranges,  // Array of all sheet ranges
+});
+
+// BAD — N sequential API calls (1 per sheet tab)
+for (const tab of tabs) {
+  const result = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `'${tab.name}'!A2:B`,
+  });
+}
+```
+
+### 4. Initial Load Pattern
+
+Load all tabs + first tab's data on mount. Set `ready` flag only after initial data is available.
+
+```jsx
+const [ready, setReady] = useState(false);
+
+useEffect(() => {
+  fetchAllData().then(({ tabs, items }) => {
+    setTabs(tabs);
+    setItemsMap(buildMap(tabs, items));
+    if (tabs.length > 0) {
+      const firstId = tabs[0].id;
+      visitedTabs.current.add(firstId);
+      setActiveTabId(firstId);
+    }
+    setReady(true);
+  });
+}, []);
+
+// Show loading state until ready
+{!ready ? <div className="app-loading">Loading...</div> : <>{/* app content */}</>}
+```
+
+### Checklist for New Tabbed Apps
+
+- [ ] `visitedTabs = useRef(new Set())` — track which tabs have been opened
+- [ ] `handleSelectTab` adds to `visitedTabs` before setting `activeTabId`
+- [ ] Render loop: `tabs.filter(t => visitedTabs.current.has(t.id)).map(...)` with `display: none`
+- [ ] All mutations use optimistic state updates — no `await reload()` after write
+- [ ] `handleDeleteTab` cleans up `visitedTabs`, `itemsMap`, and resets `activeTabId`
+- [ ] `handleCreateTab` adds to `visitedTabs` and sets `activeTabId`
+- [ ] API reads use batch calls where possible (e.g., `batchGet` instead of N `get` calls)
+- [ ] Initial load sets `ready = true` only after data is available
 
 ### Key Differences from Old localStorage Pattern
 

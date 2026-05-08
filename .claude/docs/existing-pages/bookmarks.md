@@ -7,10 +7,10 @@ Tabbed bookmark manager for quick access to apps and websites. Data stored in Su
 ```
 src/apps/bookmarks/
 ├── BookmarksApp.jsx             # Main component — tabs, form toggle, grid
-├── bookmarks.css                # Scoped under .bookmarks-app, uses --bm-* variables
+├── bookmarks.css                # Scoped under .bookmarks-app, uses global CSS variables
 ├── store.js                     # Async DB CRUD via dbApi
 └── components/
-    ├── TabBar.jsx               # Add/rename/delete tabs (based on YouTube TabBar)
+    ├── TabBar.jsx               # Shared tab bar (used by bookmarks, youtube, facebook)
     ├── BookmarkForm.jsx         # Create/edit form (title, url, description, icon)
     └── BookmarkGrid.jsx         # Card grid with icon, title, description, edit/delete
 
@@ -31,11 +31,12 @@ JS store uses camelCase; DB uses snake_case.
 ## Key Implementation Details
 
 - **No Context provider** — uses simpler Tasks pattern (useState + async reload in root component)
-- **Tab management** — add (+), rename (double-click), delete (x with confirm). Cannot delete last tab. Deleting a tab also removes its bookmarks.
+- **Shared TabBar** — `TabBar.jsx` is the shared component used by bookmarks, youtube, and facebook. Lives in bookmarks but imported by other apps. Supports add (+), rename (double-click), delete (x with confirm). Cannot delete last tab. Uses `submittedRef` to prevent blur/submit race condition on rename.
+- **`visitedTabs` pattern** — tabs rendered lazily on first visit, kept in DOM with `display: none` for instant switching. See `api-and-storage.md` → "Tabbed App Loading Pattern".
 - **Icon rendering** — `isUrl()` check: URLs render as `<img>`, everything else as emoji text. Default fallback: 🔗
 - **Card links** — entire card-link area opens URL in new tab (`target="_blank"`). Edit/Delete buttons are siblings of the `<a>`, not nested inside.
 - **Async store** — all store functions return Promises. Tab ID from DB SERIAL (via `dbApi.createTab`). Bookmark ID uses `maxId + 1` (local to bookmarks table).
 
-## CSS Prefix
+## CSS
 
-`.bookmarks-app` with `--bm-*` variables (accent, surface, border, text, danger, radius).
+Uses global CSS variables from `index.css` (`--bg-card`, `--border`, `--accent`, `--text-bright`, `--text`, `--radius`, `--danger`). No private `--bm-*` variables.

@@ -31,7 +31,7 @@ When creating a new page or making significant changes to an existing page:
 1. **CSS isolation.** Every sub-app CSS scoped under its parent class (e.g., `.tasks-app button`). Never use global selectors.
 2. **ESM throughout.** Use `import`/`export`, not `require`.
 3. **Serverless-compatible.** API functions export a default `(req, res) => {}` handler. No persistent state.
-4. **Vite proxy.** Dev: `/api` → `http://localhost:3001`. Prod: Vercel routes `/api/*` to serverless functions.
+4. **Vite proxy.** Dev: `/api` → `http://localhost:3002`. Prod: Vercel routes `/api/*` to serverless functions.
 5. **Windows dev.** Dev server uses `pathToFileURL()` for dynamic imports.
 6. **Dark theme.** Global dark theme in `src/index.css`. Sub-apps inherit but can override with scoped variables.
 7. **No TypeScript.** All code is plain JSX/JS.
@@ -43,7 +43,7 @@ When creating a new page or making significant changes to an existing page:
 ```bash
 npm run install:all         # Install all dependencies
 npm run dev                 # Both servers concurrently
-npm run dev:api             # API on http://localhost:3001
+npm run dev:api             # API on http://localhost:3002
 npm run dev:client          # Frontend on http://localhost:5174
 ```
 
@@ -63,3 +63,4 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid) |
 | `existing-pages/color.md` | Color Tools app details (conversions, palettes, WCAG contrast) |
 | `existing-pages/freegames.md` | Free Games app details (Epic/Steam APIs, card grid, countdown) |
+| `existing-pages/facebook.md` | Facebook Manager app details (Google Sheets API, group tabs) |

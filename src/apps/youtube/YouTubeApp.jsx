@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { YouTubeProvider, useYouTube } from "./YouTubeContext.jsx";
-import TabBar from "./components/TabBar.jsx";
+import TabBar from "../bookmarks/components/TabBar.jsx";
 import ChannelForm from "./components/ChannelForm.jsx";
 import ChannelGrid from "./components/ChannelGrid.jsx";
 import VideoGrid from "./components/VideoGrid.jsx";

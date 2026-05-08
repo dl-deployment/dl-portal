@@ -54,12 +54,22 @@ app.post("/api/db/create-tab", async (req, res) => {
   await handler(req, res);
 });
 
+app.post("/api/facebook/read", async (req, res) => {
+  const handler = await loadHandler("facebook/read");
+  await handler(req, res);
+});
+
+app.post("/api/facebook/write", async (req, res) => {
+  const handler = await loadHandler("facebook/write");
+  await handler(req, res);
+});
+
 app.get("/api/fetch-free-games", async (req, res) => {
   const handler = await loadHandler("fetch-free-games");
   await handler(req, res);
 });
 
-const PORT = 3001;
+const PORT = 3002;
 app.listen(PORT, () => {
   console.log(`API dev server running on http://localhost:${PORT}`);
 });

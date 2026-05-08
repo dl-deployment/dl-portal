@@ -1,8 +1,8 @@
 /* Header */
-.bm-header {
+.facebook-app .fb-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 20px 0;
   border-bottom: 1px solid var(--border);
   margin-bottom: 32px;
@@ -10,98 +10,77 @@
   gap: 12px;
 }
 
-.bm-header h2 {
+.facebook-app .fb-header h2 {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-bright);
 }
 
-.bm-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Bookmark Grid */
-.bm-grid {
+/* Grid */
+.facebook-app .fb-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
+  margin-top: 16px;
 }
 
-/* Bookmark Card */
-.bm-card {
+.facebook-app .fb-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
 
-.bm-card:hover {
+.facebook-app .fb-card:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-.bm-card-link {
+.facebook-app .fb-card-link {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
+  flex: 1;
 }
 
-.bm-card-icon {
-  flex-shrink: 0;
+.facebook-app .fb-card-icon {
   font-size: 28px;
+  flex-shrink: 0;
   line-height: 1;
 }
 
-.bm-card-favicon {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  object-fit: contain;
-}
-
-.bm-card-body {
-  flex: 1;
+.facebook-app .fb-card-body {
   min-width: 0;
+  flex: 1;
 }
 
-.bm-card-title {
+.facebook-app .fb-card-title {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-bright);
-  margin-bottom: 4px;
   word-break: break-word;
 }
 
-.bm-card-desc {
-  font-size: 0.8rem;
-  color: var(--text);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.bm-card-actions {
+.facebook-app .fb-card-actions {
   display: flex;
   gap: 4px;
   padding: 0 20px 12px;
 }
 
-.bm-card-actions .bm-btn-danger:hover {
+.facebook-app .fb-card-actions .fb-btn-danger:hover {
   color: var(--danger);
 }
 
 /* Form */
-.bm-form {
+.facebook-app .fb-form {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -109,77 +88,70 @@
   margin-bottom: 1.25rem;
 }
 
-.bm-form-title {
+.facebook-app .fb-form-title {
   margin: 0 0 1rem;
   font-size: 1rem;
   color: var(--text-bright);
 }
 
-.bm-form-field {
+.facebook-app .fb-form-field {
   margin-bottom: 0.85rem;
 }
 
-.bm-form-field label {
+.facebook-app .fb-form-field label {
   display: block;
   font-size: 0.8rem;
   color: var(--text);
   margin-bottom: 0.3rem;
 }
 
-.bm-form-field input,
-.bm-form-field textarea {
+.facebook-app .fb-form-field input {
   width: 100%;
   padding: 0.55rem 0.7rem;
-  background: var(--bg-hover);
   border: 1px solid var(--border);
   border-radius: 6px;
+  background: var(--bg-hover);
   color: var(--text-bright);
   font-size: 0.9rem;
   font-family: inherit;
+  box-sizing: border-box;
   outline: none;
   transition: border-color 0.15s;
-  box-sizing: border-box;
 }
 
-.bm-form-field input:focus,
-.bm-form-field textarea:focus {
+.facebook-app .fb-form-field input:focus {
   border-color: var(--accent);
 }
 
-.bm-form-field textarea {
-  resize: vertical;
+.facebook-app .fb-form-field input.has-value {
+  border-color: var(--accent);
+  color: var(--text-bright);
 }
 
-.bm-form-hint {
-  font-size: 0.75rem;
-  color: var(--text);
-  margin-top: 0.2rem;
-}
-
-.bm-form-actions {
+.facebook-app .fb-form-actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.25rem;
 }
 
 /* Empty state */
-.bm-empty {
+.facebook-app .fb-empty {
   text-align: center;
   padding: 40px 20px;
   color: var(--text);
 }
 
-.bm-empty p {
+.facebook-app .fb-empty p {
   margin-bottom: 8px;
 }
 
 /* Responsive */
 @media (max-width: 640px) {
-  .bm-grid {
+  .facebook-app .fb-grid {
     grid-template-columns: 1fr;
   }
 
-  .bm-header {
+  .facebook-app .fb-header {
     flex-direction: column;
     align-items: flex-start;
   }

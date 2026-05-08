@@ -471,3 +471,102 @@ select:focus-visible {
   color: var(--text);
   font-size: 0.9rem;
 }
+
+/* ── Shared Tab Bar ── */
+.tab-bar {
+  margin-bottom: 24px;
+}
+
+.tab-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text);
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  border-radius: 6px 6px 0 0;
+}
+
+.tab-item:hover {
+  color: var(--text-bright);
+  background: var(--bg-card);
+}
+
+.tab-item.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.tab-name {
+  user-select: none;
+}
+
+.tab-delete {
+  padding: 1px 4px;
+  font-size: 0.7rem;
+  line-height: 1;
+  background: transparent;
+  color: var(--text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tab-item:hover .tab-delete {
+  opacity: 1;
+}
+
+.tab-delete:hover {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.tab-edit-form,
+.tab-add-form {
+  display: inline;
+}
+
+.tab-edit-input,
+.tab-add-input {
+  width: 100px;
+  padding: 4px 8px;
+  background: var(--bg-hover);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--text-bright);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.tab-add-btn {
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--text);
+  border: 1px dashed var(--border);
+  border-radius: 6px 6px 0 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tab-add-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}

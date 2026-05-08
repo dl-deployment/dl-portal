@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename, onDelete }) {
   const [adding, setAdding] = useState(false);
   const [newName, setNewName] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
+  const submittedRef = useRef(false);
 
   function handleAdd(e) {
     e.preventDefault();
@@ -21,8 +22,20 @@ export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename
 
   function handleRename(e) {
     e.preventDefault();
-    if (!editName.trim()) return;
+    submittedRef.current = true;
+    if (!editName.trim() || !editingId) return;
     onRename(editingId, editName.trim());
+    setEditingId(null);
+  }
+
+  function handleRenameBlur() {
+    if (submittedRef.current) {
+      submittedRef.current = false;
+      return;
+    }
+    if (editingId && editName.trim()) {
+      onRename(editingId, editName.trim());
+    }
     setEditingId(null);
   }
 
@@ -62,7 +75,7 @@ export default function TabBar({ tabs, activeTabId, onSelect, onCreate, onRename
                   autoFocus
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  onBlur={() => setEditingId(null)}
+                  onBlur={handleRenameBlur}
                   className="tab-edit-input"
                   aria-label="Rename tab"
                 />

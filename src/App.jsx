@@ -12,6 +12,7 @@ import TextToolsPage from "./pages/TextToolsPage";
 import PersonalTimelinePage from "./pages/PersonalTimelinePage";
 import TimelinePage from "./pages/TimelinePage";
 import FreeGamesPage from "./pages/FreeGamesPage";
+import FacebookPage from "./pages/FacebookPage";
 import YouTubePage from "./pages/YouTubePage";
 
 function ProtectedRoute({ children }) {
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="ptimeline" element={<ProtectedRoute><ErrorBoundary><PersonalTimelinePage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="telegram" element={<ProtectedRoute><ErrorBoundary><TelegramPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="youtube" element={<ProtectedRoute><ErrorBoundary><YouTubePage /></ErrorBoundary></ProtectedRoute>} />
+          <Route path="facebook" element={<ProtectedRoute><ErrorBoundary><FacebookPage /></ErrorBoundary></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

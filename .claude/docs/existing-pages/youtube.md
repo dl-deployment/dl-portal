@@ -12,12 +12,11 @@ Ported from `dl-social` (Vite + React). Minimal changes — adjusted import path
 src/apps/youtube/
 ├── YouTubeApp.jsx          # Main component (wraps with YouTubeProvider)
 ├── YouTubeContext.jsx       # React Context for shared state across components
-├── youtube.css              # Scoped under .youtube-app, uses --yt-* variables
+├── youtube.css              # Scoped under .youtube-app, uses global CSS variables
 ├── api.js                   # HTTP client (resolveChannel, fetchVideos)
 ├── store.js                 # Hybrid store: tabs+youtube via dbApi, videos via localStorage
 ├── utils.js                 # Utility functions
 └── components/
-    ├── TabBar.jsx            # Tab management (create, rename, delete)
     ├── ChannelForm.jsx       # Add/edit channel form panel (URL/@handle input for add, name edit)
     ├── ChannelGrid.jsx       # Card grid display of tracked channels (thumbnail, name, edit/delete)
     └── VideoGrid.jsx         # Video thumbnails grid with skeleton loading
@@ -50,4 +49,9 @@ youtube: { id, channel_name, thumbnail, tab_id }
 - **Card grid + form panel UI:** Channels displayed as cards with thumbnail. Add/edit via form panel (same pattern as Bookmarks).
 - **Range filter:** Videos filterable by "Week" or "Month".
 - **Hybrid store:** Tabs and youtube records are async (Supabase via dbApi). Videos are synchronous (localStorage). Cascade deletes update both. Tab IDs are DB-generated via `dbApi.createTab()`.
-- CSS prefix: `.youtube-app`, `--yt-*` variables.
+- **Shared TabBar:** Uses `src/apps/bookmarks/components/TabBar.jsx` (shared across bookmarks, youtube, facebook).
+- **`visitedTabs` pattern:** Tabs rendered lazily on first visit, kept in DOM with `display: none` for instant switching. See `api-and-storage.md` → "Tabbed App Loading Pattern".
+
+## CSS
+
+Uses global CSS variables from `index.css` (`--bg-card`, `--border`, `--accent`, `--text-bright`, `--text`, `--radius`, `--danger`, `--success`). No private `--yt-*` variables.
