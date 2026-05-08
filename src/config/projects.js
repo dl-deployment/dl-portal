@@ -28,22 +28,6 @@ export const projects = [
     description: "Free games on Steam & Epic Games Store",
   },
   {
-    id: "bookmarks",
-    name: "Bookmarks",
-    path: "/bookmarks",
-    icon: "\u{1F516}",
-    description: "Tabbed bookmark manager",
-    auth: true,
-  },
-  {
-    id: "tasks",
-    name: "Tasks",
-    path: "/tasks",
-    icon: "✅",
-    description: "Task manager with Telegram reminders",
-    auth: true,
-  },
-  {
     id: "timeline",
     name: "Timeline",
     path: "/timeline",
@@ -64,6 +48,14 @@ export const projects = [
     path: "/telegram",
     icon: "\u{1F4AC}",
     description: "Send messages via Telegram Bot API",
+    auth: true,
+  },
+  {
+    id: "bookmarks",
+    name: "Bookmarks",
+    path: "/bookmarks",
+    icon: "\u{1F516}",
+    description: "Tabbed bookmark manager",
     auth: true,
   },
   {

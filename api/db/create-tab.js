@@ -1,6 +1,6 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3, tasks: 4 };
+const APP_IDS = { youtube: 1, facebook: 2, bookmarks: 3 };
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {

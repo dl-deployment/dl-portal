@@ -22,7 +22,7 @@ React SPA (Vite) + Vercel Serverless API. Multiple personal projects integrated 
 
 When creating a new page or making significant changes to an existing page:
 
-1. **New page:** Create `.claude/docs/existing-pages/<name>.md` following the format of existing docs (see `tasks.md` or `texttools.md` as reference). Include: files, data model (if any), key implementation details, CSS prefix.
+1. **New page:** Create `.claude/docs/existing-pages/<name>.md` following the format of existing docs (see `texttools.md` as reference). Include: files, data model (if any), key implementation details, CSS prefix.
 2. **Update index:** Add/update the entry in the Documentation Index table below in this file.
 3. **Significant changes to existing page:** Update the corresponding `.claude/docs/existing-pages/<name>.md` to reflect the changes (new files, changed data model, new features, etc.).
 
@@ -35,8 +35,8 @@ When creating a new page or making significant changes to an existing page:
 5. **Windows dev.** Dev server uses `pathToFileURL()` for dynamic imports.
 6. **Dark theme.** Global dark theme in `src/index.css`. Sub-apps inherit but can override with scoped variables.
 7. **No TypeScript.** All code is plain JSX/JS.
-8. **Hybrid storage.** Metadata in Supabase via `dbApi.read/write` (tables: `apps`, `tabs`, `youtube`, `bookmarks`, `tasks`). Ephemeral content (videos, posts, color history) in localStorage. All store functions are async.
-9. **DB table naming.** Each app's data table is named after the app itself (`youtube`, `bookmarks`, `tasks`). Shared table `tabs` links to `apps` via `app_id` FK. Tab IDs are DB-generated (SERIAL) via `dbApi.createTab()`. When adding a new app with its own data table, name the table after the app.
+8. **Hybrid storage.** Metadata in Supabase via `dbApi.read/write` (tables: `apps`, `tabs`, `youtube`, `bookmarks`). Ephemeral content (videos, posts, color history) in localStorage. All store functions are async.
+9. **DB table naming.** Each app's data table is named after the app itself (`youtube`, `bookmarks`). Shared table `tabs` links to `apps` via `app_id` FK. Tab IDs are DB-generated (SERIAL) via `dbApi.createTab()`. When adding a new app with its own data table, name the table after the app.
 
 ## Dev Commands
 
@@ -57,7 +57,6 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/timeline.md` | Timeline app details (lunar calendar, events) |
 | `existing-pages/telegram.md` | Telegram app details (Bot API, env vars) |
 | `existing-pages/youtube.md` | YouTube app details (RSS, Context, Supabase data model) |
-| `existing-pages/tasks.md` | Tasks app details (repeating tasks, reminders, data model) |
 | `existing-pages/texttools.md` | Text Tools app details (JSON, case, trim, Base64 transforms) |
 | `existing-pages/spritesheetslicer.md` | SpriteSheet Slicer app details (grid slicing, JSZip, Canvas API) |
 | `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid) |

@@ -1,11 +1,10 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, bookmarks: 3, tasks: 4, ptimeline: 5 };
+const APP_IDS = { youtube: 1, bookmarks: 3, ptimeline: 5 };
 
 const WRITERS = {
   youtube: writeYoutube,
   bookmarks: writeBookmarks,
-  tasks: writeTasks,
   ptimeline: writePtimeline,
 };
 
@@ -94,27 +93,6 @@ async function writeBookmarks(data) {
     await supabase.from("bookmarks").upsert(dbBookmarks, { onConflict: "id" });
   }
   await deleteNotInNumeric("bookmarks", "id", dbBookmarks.map((b) => b.id));
-}
-
-async function writeTasks(data) {
-  const { tasks = [] } = data;
-
-  const dbTasks = tasks.map((t) => ({
-    id: t.id,
-    title: t.title,
-    description: t.description || "",
-    due_at: t.dueAt,
-    reminders: t.reminders,
-    repeat: t.repeat || "none",
-    completed: t.completed || false,
-    reminder_sent: t.reminderSent || false,
-    created_at: t.createdAt || new Date().toISOString(),
-  }));
-
-  if (dbTasks.length > 0) {
-    await supabase.from("tasks").upsert(dbTasks, { onConflict: "id" });
-  }
-  await deleteNotInNumeric("tasks", "id", dbTasks.map((t) => t.id));
 }
 
 async function syncTabs(appId, dbTabs) {

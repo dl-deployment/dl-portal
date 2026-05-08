@@ -1,11 +1,10 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, bookmarks: 3, tasks: 4, ptimeline: 5 };
+const APP_IDS = { youtube: 1, bookmarks: 3, ptimeline: 5 };
 
 const READERS = {
   youtube: readYoutube,
   bookmarks: readBookmarks,
-  tasks: readTasks,
   ptimeline: readPtimeline,
 };
 
@@ -72,24 +71,6 @@ async function readBookmarks() {
       url: b.url,
       description: b.description,
       icon: b.icon,
-    })),
-  };
-}
-
-async function readTasks() {
-  const { data } = await supabase.from("tasks").select("*").order("created_at");
-
-  return {
-    tasks: (data || []).map((t) => ({
-      id: t.id,
-      title: t.title,
-      description: t.description,
-      dueAt: t.due_at,
-      reminders: t.reminders,
-      repeat: t.repeat,
-      completed: t.completed,
-      reminderSent: t.reminder_sent,
-      createdAt: t.created_at,
     })),
   };
 }
