@@ -160,6 +160,142 @@
   box-sizing: border-box;
 }
 
+/* Mode tabs */
+.spritesheetslicer-app .ss-mode-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.spritesheetslicer-app .ss-mode-tab {
+  padding: 0.45rem 1.2rem;
+  font-size: 0.85rem;
+  border: none;
+  background: transparent;
+  color: var(--ss-text);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.spritesheetslicer-app .ss-mode-tab.active {
+  background: var(--ss-accent);
+  color: #fff;
+}
+
+.spritesheetslicer-app .ss-mode-tab:not(.active):hover {
+  background: var(--bg-hover, #22222e);
+  color: var(--ss-text-bright);
+}
+
+/* File name */
+.spritesheetslicer-app .ss-filename {
+  font-size: 0.82rem;
+  color: var(--ss-text);
+  margin-right: auto;
+}
+
+/* Plist dropzone (inside controls) */
+.spritesheetslicer-app .ss-plist-dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  flex: 1;
+  border: 2px dashed var(--ss-border);
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.03);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.spritesheetslicer-app .ss-plist-dropzone:hover,
+.spritesheetslicer-app .ss-plist-dropzone.dragging {
+  border-color: var(--ss-accent);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.spritesheetslicer-app .ss-plist-dropzone-text {
+  color: var(--ss-text);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.spritesheetslicer-app .ss-plist-dropzone-text span {
+  color: var(--ss-accent);
+  text-decoration: underline;
+}
+
+/* Plist info bar */
+.spritesheetslicer-app .ss-plist-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: var(--ss-text);
+  font-size: 0.85rem;
+}
+
+.spritesheetslicer-app .ss-plist-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--ss-accent);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Checkbox */
+.spritesheetslicer-app .ss-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--ss-text);
+}
+
+.spritesheetslicer-app .ss-checkbox input {
+  accent-color: var(--ss-accent);
+}
+
+/* Extra small button */
+.spritesheetslicer-app .btn-xs {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.78rem;
+}
+
+/* Frame overlay (plist mode) */
+.spritesheetslicer-app .ss-frame-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.spritesheetslicer-app .ss-frame-rect {
+  position: absolute;
+  border: 2px solid;
+  box-sizing: border-box;
+  border-radius: 2px;
+  pointer-events: auto;
+  opacity: 0.7;
+  transition: opacity 0.15s, border-width 0.15s;
+}
+
+.spritesheetslicer-app .ss-frame-rect:hover {
+  opacity: 1;
+  border-width: 3px;
+  z-index: 10;
+}
+
 /* Toast */
 .spritesheetslicer-app .ss-toast {
   position: fixed;
