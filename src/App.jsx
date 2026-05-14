@@ -13,6 +13,7 @@ import TimelinePage from "./pages/TimelinePage";
 import FreeGamesPage from "./pages/FreeGamesPage";
 import FacebookPage from "./pages/FacebookPage";
 import YouTubePage from "./pages/YouTubePage";
+import SpritesheetViewerPage from "./pages/SpritesheetViewerPage";
 import StaticPagesPage from "./pages/StaticPagesPage";
 
 function ProtectedRoute({ children }) {
@@ -29,6 +30,7 @@ export default function App() {
           {/* Public */}
           <Route path="texttools" element={<ErrorBoundary><TextToolsPage /></ErrorBoundary>} />
           <Route path="spritesheetslicer" element={<ErrorBoundary><SpriteSheetSlicerPage /></ErrorBoundary>} />
+          <Route path="spritesheetviewer" element={<ErrorBoundary><SpritesheetViewerPage /></ErrorBoundary>} />
           <Route path="color" element={<ErrorBoundary><ColorPage /></ErrorBoundary>} />
           <Route path="freegames" element={<ErrorBoundary><FreeGamesPage /></ErrorBoundary>} />
           <Route path="timeline" element={<ErrorBoundary><TimelinePage /></ErrorBoundary>} />

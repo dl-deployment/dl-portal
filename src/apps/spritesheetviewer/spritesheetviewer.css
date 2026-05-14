@@ -1,0 +1,236 @@
+/* SpriteSheet Viewer — scoped under .spritesheetviewer-app */
+.spritesheetviewer-app {
+  --sv-accent: #6366f1;
+  --sv-accent-hover: #818cf8;
+  --sv-surface: #1a1a24;
+  --sv-surface-hover: #22222e;
+  --sv-border: #2a2a3a;
+  --sv-text: #a0a0b0;
+  --sv-text-bright: #e4e4ef;
+  --sv-radius: 10px;
+
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.spritesheetviewer-app h2 {
+  margin: 0 0 1.25rem;
+  font-size: 1.3rem;
+  color: var(--sv-text-bright);
+}
+
+/* ── Drop zone ── */
+.sv-dropzone {
+  border: 2px dashed var(--sv-border);
+  border-radius: var(--sv-radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: var(--sv-surface);
+}
+
+.sv-dropzone:hover,
+.sv-dropzone--over {
+  border-color: var(--sv-accent);
+  background: var(--sv-surface-hover);
+}
+
+.sv-dropzone__icon {
+  color: var(--sv-text);
+  margin-bottom: 0.75rem;
+}
+
+.sv-dropzone--over .sv-dropzone__icon {
+  color: var(--sv-accent);
+}
+
+.sv-dropzone__text {
+  color: var(--sv-text-bright);
+  font-size: 1rem;
+  margin: 0 0 0.35rem;
+}
+
+.sv-dropzone__hint {
+  color: var(--sv-text);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ── Preview area ── */
+.sv-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  background: var(--sv-surface);
+  border-radius: var(--sv-radius);
+  border: 1px solid var(--sv-border);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.sv-preview__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 15, 19, 0.8);
+  color: var(--sv-text-bright);
+  font-size: 1rem;
+  z-index: 2;
+  border: 2px dashed var(--sv-accent);
+  border-radius: var(--sv-radius);
+}
+
+.sv-preview__img {
+  max-width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.sv-preview__badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.65);
+  color: var(--sv-text-bright);
+  font-size: 0.8rem;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Frame strip ── */
+.sv-strip {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 0;
+  margin-bottom: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-border) transparent;
+}
+
+.sv-strip__thumb {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: var(--sv-surface);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s;
+}
+
+.sv-strip__thumb:hover {
+  border-color: var(--sv-text);
+}
+
+.sv-strip__thumb--active {
+  border-color: var(--sv-accent);
+  box-shadow: 0 0 0 1px var(--sv-accent);
+}
+
+.sv-strip__thumb--selected {
+  border-color: var(--sv-text-bright);
+}
+
+.sv-strip__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* ── Controls ── */
+.sv-controls {
+  background: var(--sv-surface);
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius);
+  padding: 0.85rem 1rem;
+}
+
+.sv-controls__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sv-controls__empty {
+  color: var(--sv-text);
+  font-size: 0.85rem;
+}
+
+.sv-controls__sliders {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--sv-border);
+}
+
+.sv-controls__group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sv-controls__group--full {
+  width: 100%;
+}
+
+.sv-controls__label {
+  color: var(--sv-text);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.sv-controls__label strong {
+  color: var(--sv-text-bright);
+}
+
+.sv-controls__range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--sv-border);
+  outline: none;
+  cursor: pointer;
+}
+
+.sv-controls__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--sv-accent);
+  border: none;
+  cursor: pointer;
+}
+
+.sv-controls__range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--sv-accent);
+  border: none;
+  cursor: pointer;
+}
+
+.sv-controls__tabs {
+  display: flex;
+  gap: 4px;
+}

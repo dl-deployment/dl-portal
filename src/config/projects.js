@@ -28,6 +28,13 @@ export const projects = [
     description: "Free games on Steam & Epic Games Store",
   },
   {
+    id: "spritesheetviewer",
+    name: "SpriteSheet Viewer",
+    path: "/spritesheetviewer",
+    icon: "🎞️",
+    description: "Animate sprite frames, adjust FPS and loop modes",
+  },
+  {
     id: "staticpages",
     name: "Static Pages",
     path: "/staticpages",
