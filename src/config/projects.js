@@ -35,6 +35,13 @@ export const projects = [
     description: "Animate sprite frames, adjust FPS and loop modes",
   },
   {
+    id: "texturepacker",
+    name: "Texture Packer",
+    path: "/texturepacker",
+    icon: "🧩",
+    description: "Pack image assets into sprite sheets with plist metadata",
+  },
+  {
     id: "staticpages",
     name: "Static Pages",
     path: "/staticpages",

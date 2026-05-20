@@ -15,6 +15,7 @@ import FacebookPage from "./pages/FacebookPage";
 import YouTubePage from "./pages/YouTubePage";
 import SpritesheetViewerPage from "./pages/SpritesheetViewerPage";
 import StaticPagesPage from "./pages/StaticPagesPage";
+import TexturePackerPage from "./pages/TexturePackerPage";
 
 function ProtectedRoute({ children }) {
   if (!isLoggedIn()) return <Navigate to="/" replace />;
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="freegames" element={<ErrorBoundary><FreeGamesPage /></ErrorBoundary>} />
           <Route path="timeline" element={<ErrorBoundary><TimelinePage /></ErrorBoundary>} />
           <Route path="staticpages" element={<ErrorBoundary><StaticPagesPage /></ErrorBoundary>} />
+          <Route path="texturepacker" element={<ErrorBoundary><TexturePackerPage /></ErrorBoundary>} />
           {/* Auth required */}
           <Route path="bookmarks" element={<ProtectedRoute><ErrorBoundary><BookmarksPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="ptimeline" element={<ProtectedRoute><ErrorBoundary><PersonalTimelinePage /></ErrorBoundary></ProtectedRoute>} />

@@ -59,6 +59,7 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/youtube.md` | YouTube app details (RSS, Context, Supabase data model) |
 | `existing-pages/texttools.md` | Text Tools app details (JSON, case, trim, Base64 transforms) |
 | `existing-pages/spritesheetslicer.md` | SpriteSheet Slicer app details (grid slicing, JSZip, Canvas API) |
+| `existing-pages/texturepacker.md` | Texture Packer app details (shelf packing, plist generation, ZIP export) |
 | `existing-pages/spritesheetviewer.md` | SpriteSheet Viewer app details (drag-drop frames, animation, FPS/loop controls) |
 | `existing-pages/bookmarks.md` | Bookmarks app details (tabs, card grid) |
 | `existing-pages/color.md` | Color Tools app details (conversions, palettes, WCAG contrast) |

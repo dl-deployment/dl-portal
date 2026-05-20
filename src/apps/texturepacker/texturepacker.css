@@ -1,0 +1,395 @@
+.texturepacker-app {
+  --tp-accent: var(--accent, #6366f1);
+  --tp-accent-hover: var(--accent-hover, #818cf8);
+  --tp-border: var(--border, #2a2a3a);
+  --tp-surface: var(--bg-card, #1a1a24);
+  --tp-surface-hover: var(--bg-hover, #22222e);
+  --tp-text: var(--text, #a0a0b0);
+  --tp-text-bright: var(--text-bright, #e4e4ef);
+  --tp-radius: var(--radius, 10px);
+  --tp-danger: var(--danger, #ef4444);
+
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.texturepacker-app h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--tp-text-bright);
+  font-weight: 600;
+}
+
+/* ── Sections ── */
+.texturepacker-app .tp-section {
+  background: var(--tp-surface);
+  border: 1px solid var(--tp-border);
+  border-radius: var(--tp-radius);
+  overflow: hidden;
+}
+
+.texturepacker-app .tp-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--tp-border);
+}
+
+.texturepacker-app .tp-section-title {
+  font-size: 0.88rem;
+  color: var(--tp-text-bright);
+  font-weight: 500;
+}
+
+.texturepacker-app .tp-section-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* ── Drop zone ── */
+.texturepacker-app .tp-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 280px;
+  border: 2px dashed var(--tp-border);
+  border-radius: var(--tp-radius);
+  background: var(--tp-surface);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.texturepacker-app .tp-dropzone:hover,
+.texturepacker-app .tp-dropzone.dragging {
+  border-color: var(--tp-accent);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.texturepacker-app .tp-dropzone-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.texturepacker-app .tp-dropzone-title {
+  font-size: 1.05rem;
+  color: var(--tp-text-bright);
+  font-weight: 500;
+}
+
+.texturepacker-app .tp-dropzone-hint {
+  font-size: 0.85rem;
+  color: var(--tp-text);
+}
+
+/* ── Asset table ── */
+.texturepacker-app .tp-asset-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.texturepacker-app .tp-asset-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  color: var(--tp-text);
+}
+
+.texturepacker-app .tp-asset-row:hover {
+  background: var(--tp-surface-hover);
+}
+
+.texturepacker-app .tp-asset-header {
+  font-size: 0.78rem;
+  color: var(--tp-text);
+  opacity: 0.7;
+  border-bottom: 1px solid var(--tp-border);
+  pointer-events: none;
+}
+
+.texturepacker-app .tp-asset-preview {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--tp-surface-hover);
+}
+
+.texturepacker-app .tp-asset-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.texturepacker-app .tp-asset-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--tp-text-bright);
+}
+
+.texturepacker-app .tp-asset-size {
+  flex: 0 0 80px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.texturepacker-app .tp-asset-action {
+  flex: 0 0 32px;
+  text-align: center;
+}
+
+.texturepacker-app .tp-remove-btn {
+  color: var(--tp-text);
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  padding: 0.2rem 0.5rem;
+  line-height: 1;
+}
+
+.tp-asset-row:hover .tp-remove-btn {
+  opacity: 1;
+}
+
+.texturepacker-app .tp-remove-btn:hover {
+  color: var(--tp-danger);
+}
+
+/* ── Settings ── */
+.texturepacker-app .tp-settings {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  flex-wrap: wrap;
+}
+
+.texturepacker-app .tp-setting {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.texturepacker-app .tp-setting label {
+  font-size: 0.85rem;
+  color: var(--tp-text);
+  white-space: nowrap;
+}
+
+.texturepacker-app .tp-num-input {
+  width: 72px;
+  padding: 0.35rem 0.5rem;
+  background: var(--bg, #0f0f13);
+  border: 1px solid var(--tp-border);
+  border-radius: 6px;
+  color: var(--tp-text-bright);
+  font-size: 0.9rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.texturepacker-app .tp-num-input:focus {
+  border-color: var(--tp-accent);
+}
+
+/* Chrome/safari remove spinner */
+.texturepacker-app .tp-num-input::-webkit-inner-spin-button,
+.texturepacker-app .tp-num-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.texturepacker-app .tp-num-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ── POT quick-select chips ── */
+.texturepacker-app .tp-pot-chips {
+  display: flex;
+  gap: 3px;
+}
+
+.texturepacker-app .tp-pot-chip {
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  border: 1px solid var(--tp-border);
+  border-radius: 5px;
+  background: var(--bg, #0f0f13);
+  color: var(--tp-text);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.texturepacker-app .tp-pot-chip:hover {
+  border-color: var(--tp-accent);
+  color: var(--tp-text-bright);
+}
+
+.texturepacker-app .tp-pot-chip.active {
+  border-color: var(--tp-accent);
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--tp-accent);
+}
+
+.texturepacker-app .tp-setting-check {
+  cursor: pointer;
+}
+
+.texturepacker-app .tp-setting-check label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.texturepacker-app .tp-setting-check input[type="checkbox"] {
+  accent-color: var(--tp-accent);
+}
+
+.texturepacker-app .tp-setting-action {
+  margin-left: auto;
+}
+
+/* ── Result ── */
+.texturepacker-app .tp-result {
+  padding: 1rem;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.texturepacker-app .tp-result-canvas-wrap {
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--tp-border);
+}
+
+.texturepacker-app .tp-result-canvas {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  /* CSS checkerboard for transparency */
+  background-image:
+    linear-gradient(45deg, #1a1a24 25%, transparent 25%),
+    linear-gradient(-45deg, #1a1a24 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1a24 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1a24 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0px;
+}
+
+.texturepacker-app .tp-result-canvas img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Frame overlay rects ── */
+.texturepacker-app .tp-frame-rect {
+  position: absolute;
+  border: 1.5px solid;
+  box-sizing: border-box;
+  pointer-events: auto;
+  transition: border-width 0.15s;
+}
+
+.texturepacker-app .tp-frame-rect:hover {
+  border-width: 2.5px;
+  z-index: 10;
+}
+
+.texturepacker-app .tp-frame-label {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  font-size: 10px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 0 2px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.texturepacker-app .tp-frame-rect:hover .tp-frame-label {
+  opacity: 1;
+}
+
+/* ── Toast ── */
+.texturepacker-app .tp-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #fff;
+  z-index: 1000;
+  animation: tp-toast-in 0.25s ease;
+  pointer-events: none;
+}
+
+.texturepacker-app .tp-toast--success {
+  background: var(--success, #22c55e);
+}
+
+.texturepacker-app .tp-toast--error {
+  background: var(--tp-danger);
+}
+
+@keyframes tp-toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .texturepacker-app {
+    padding: 0 0.5rem;
+  }
+
+  .texturepacker-app .tp-dropzone {
+    min-height: 200px;
+  }
+
+  .texturepacker-app .tp-settings {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .texturepacker-app .tp-setting-action {
+    margin-left: 0;
+    align-self: stretch;
+  }
+
+  .texturepacker-app .tp-setting-action button {
+    width: 100%;
+  }
+}
