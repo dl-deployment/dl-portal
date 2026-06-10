@@ -24,6 +24,7 @@ src/apps/texttools/
 | JWT | Decode (header + payload, no secret needed) | Shows error toast on invalid JWT |
 | Format | XML/HTML Pretty, SQL Format | Shows error toast on invalid input |
 | Lines | Sort A→Z, Sort Z→A, Remove Duplicates, Reverse, Add Numbers | — |
+| Protobuf | Decode (Base64) — decodes base64-encoded protobuf binary into structured field output (varint, fixed32, fixed64, string, bytes, nested messages) | Shows error toast on invalid base64 or truncated data |
 | Hash | MD5, SHA-256 (async, uses Web Crypto API for SHA-256) | — |
 
 ## UI Layout

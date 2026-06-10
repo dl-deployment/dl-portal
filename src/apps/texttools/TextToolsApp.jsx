@@ -1,6 +1,123 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import "./texttools.css";
 
+// ── Protobuf Decode (defined first to avoid Vite hoisting issues) ──
+function protobufDecode(text) {
+  const raw = atob(text.trim());
+  const bytes = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+  return formatProtobufFields(decodeProtobuf(bytes, 0).result, 0);
+}
+
+function formatProtobufFields(fields, indent) {
+  const pad = "  ".repeat(indent);
+  const lines = fields.map((f) => {
+    const prefix = `${pad}${f.fieldNumber} [${f.type}]`;
+    if (f.repeated) {
+      return `${prefix}: [\n${f.value.map((v) => {
+        if (typeof v === "object" && !Array.isArray(v)) {
+          return `${pad}  ${formatProtobufFields([v], indent + 2)}`;
+        }
+        return `${pad}  ${v}`;
+      }).join(",\n")}\n${pad}]`;
+    }
+    if (f.type === "message") {
+      return `${prefix}:\n${formatProtobufFields(f.value, indent + 1)}`;
+    }
+    return `${prefix}: ${f.value}`;
+  });
+  return lines.join("\n");
+}
+
+function decodeProtobuf(bytes, offset) {
+  const fields = [];
+  while (offset < bytes.length) {
+    const tag = decodeVarint(bytes, offset);
+    if (tag === null) break;
+    const fieldNumber = tag.value >> 3;
+    const wireType = tag.value & 0x07;
+    offset = tag.next;
+
+    const field = { fieldNumber, wireType };
+    if (wireType === 0) {
+      const v = decodeVarint(bytes, offset);
+      if (v === null) throw new Error(`Truncated varint at field ${fieldNumber}`);
+      field.type = "varint";
+      field.value = v.value;
+      offset = v.next;
+    } else if (wireType === 1) {
+      if (offset + 8 > bytes.length) throw new Error(`Truncated 64-bit at field ${fieldNumber}`);
+      field.type = "fixed64";
+      const dv = new DataView(bytes.buffer, bytes.byteOffset + offset, 8);
+      const asDouble = dv.getFloat64(0, true);
+      const hex = [...bytes.slice(offset, offset + 8)].reverse().map(b => b.toString(16).padStart(2, "0")).join("");
+      field.value = `${asDouble} (0x${hex})`;
+      offset += 8;
+    } else if (wireType === 2) {
+      const len = decodeVarint(bytes, offset);
+      if (len === null) throw new Error(`Truncated length at field ${fieldNumber}`);
+      offset = len.next;
+      if (offset + len.value > bytes.length) throw new Error(`Truncated data at field ${fieldNumber}`);
+      const sub = bytes.slice(offset, offset + len.value);
+      if (isPrintable(sub)) {
+        field.type = "string";
+        field.value = new TextDecoder().decode(sub);
+      } else {
+        const nested = decodeProtobuf(sub, 0);
+        if (sub.length >= 2 && nested.result.length > 0 && nested.offset === sub.length) {
+          field.type = "message";
+          field.value = nested.result;
+        } else {
+          field.type = "bytes";
+          field.value = [...sub].map(b => b.toString(16).padStart(2, "0")).join(" ");
+        }
+      }
+      offset += len.value;
+    } else if (wireType === 5) {
+      if (offset + 4 > bytes.length) throw new Error(`Truncated 32-bit at field ${fieldNumber}`);
+      field.type = "fixed32";
+      const view = new DataView(bytes.buffer, bytes.byteOffset + offset, 4);
+      field.value = `0x${[...bytes.slice(offset, offset + 4)].reverse().map(b => b.toString(16).padStart(2, "0")).join("")}`;
+      offset += 4;
+    } else {
+      field.type = "unknown";
+      field.value = `wireType=${wireType}`;
+    }
+    const last = fields[fields.length - 1];
+    if (last && last.fieldNumber === field.fieldNumber && last.type === field.type && !Array.isArray(last.value)) {
+      last.value = [last.value, field.value];
+      last.repeated = true;
+    } else if (last && last.fieldNumber === field.fieldNumber && last.repeated) {
+      last.value.push(field.value);
+    } else {
+      fields.push(field);
+    }
+  }
+  return { result: fields, offset };
+}
+
+function decodeVarint(bytes, offset) {
+  let value = 0;
+  let shift = 0;
+  while (offset < bytes.length) {
+    const byte = bytes[offset++];
+    value |= (byte & 0x7f) << shift;
+    if (!(byte & 0x80)) return { value, next: offset };
+    shift += 7;
+    if (shift > 63) throw new Error("Varint too long");
+  }
+  return null;
+}
+
+function isPrintable(bytes) {
+  if (bytes.length === 0) return false;
+  for (const b of bytes) {
+    if (b < 32 && b !== 9 && b !== 10 && b !== 13) return false;
+    if (b > 126) return false;
+  }
+  return true;
+}
+
 const TOOLS = [
   {
     id: "json",
@@ -69,6 +186,13 @@ const TOOLS = [
       { id: "lines-dedup", label: "Remove Duplicates", action: dedup },
       { id: "lines-reverse", label: "Reverse", action: reverseLines },
       { id: "lines-number", label: "Add Numbers", action: addLineNumbers },
+    ],
+  },
+  {
+    id: "proto",
+    label: "Protobuf",
+    options: [
+      { id: "proto-decode", label: "Decode (Base64)", action: protobufDecode },
     ],
   },
   {
