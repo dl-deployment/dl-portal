@@ -42,6 +42,13 @@ export const projects = [
     description: "Pack image assets into sprite sheets with plist metadata",
   },
   {
+    id: "poe2",
+    name: "POE 2",
+    path: "/poe2",
+    icon: "\u{1F3F9}",
+    description: "Parse poe2db modifiers and create trade search links",
+  },
+  {
     id: "staticpages",
     name: "Static Pages",
     path: "/staticpages",

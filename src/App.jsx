@@ -16,6 +16,7 @@ import YouTubePage from "./pages/YouTubePage";
 import SpritesheetViewerPage from "./pages/SpritesheetViewerPage";
 import StaticPagesPage from "./pages/StaticPagesPage";
 import TexturePackerPage from "./pages/TexturePackerPage";
+import Poe2Page from "./pages/Poe2Page";
 
 function ProtectedRoute({ children }) {
   if (!isLoggedIn()) return <Navigate to="/" replace />;
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="timeline" element={<ErrorBoundary><TimelinePage /></ErrorBoundary>} />
           <Route path="staticpages" element={<ErrorBoundary><StaticPagesPage /></ErrorBoundary>} />
           <Route path="texturepacker" element={<ErrorBoundary><TexturePackerPage /></ErrorBoundary>} />
+          <Route path="poe2" element={<ErrorBoundary><Poe2Page /></ErrorBoundary>} />
           {/* Auth required */}
           <Route path="bookmarks" element={<ProtectedRoute><ErrorBoundary><BookmarksPage /></ErrorBoundary></ProtectedRoute>} />
           <Route path="ptimeline" element={<ProtectedRoute><ErrorBoundary><PersonalTimelinePage /></ErrorBoundary></ProtectedRoute>} />

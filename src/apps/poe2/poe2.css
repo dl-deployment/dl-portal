@@ -1,0 +1,455 @@
+.poe2-app {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.poe2-header h2 {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+}
+
+.poe2-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.poe2-url-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  background: var(--bg-card, #1e1e1e);
+  color: var(--text, #e0e0e0);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.poe2-url-input:focus {
+  border-color: #a272ff;
+}
+
+.poe2-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.poe2-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.poe2-btn-primary {
+  background: #a272ff;
+  color: #fff;
+}
+
+.poe2-btn-primary:hover:not(:disabled) {
+  background: #8b5cf6;
+}
+
+.poe2-btn-outline {
+  background: transparent;
+  border: 1px solid var(--border, #444);
+  color: var(--text, #e0e0e0);
+}
+
+.poe2-btn-outline:hover:not(:disabled) {
+  background: var(--bg-hover, #2a2a2a);
+}
+
+.poe2-btn-trade {
+  background: #e05a3a;
+  color: #fff;
+}
+
+.poe2-btn-trade:hover:not(:disabled) {
+  background: #c94e30;
+}
+
+.poe2-error {
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  background: #3a1c1c;
+  color: #f5a5a5;
+  font-size: 0.85rem;
+}
+
+.poe2-loading {
+  margin-top: 16px;
+}
+
+/* ---- Toolbar (above tabs) ---- */
+
+.poe2-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: var(--bg-card, #1e1e1e);
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  gap: 8px;
+}
+
+.poe2-filter-input {
+  flex: 1;
+  max-width: 280px;
+  padding: 6px 12px;
+  border: 1px solid var(--border, #444);
+  border-radius: 6px;
+  background: var(--bg-card, #1e1e1e);
+  color: var(--text, #e0e0e0);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.poe2-filter-input:focus {
+  border-color: #a272ff;
+}
+
+.poe2-count {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  white-space: nowrap;
+}
+
+.poe2-toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- Main tabs (Prefix | Suffix) ---- */
+
+.poe2-maintabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.poe2-maintab {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border, #444);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted, #888);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+  text-align: center;
+}
+
+.poe2-maintab:hover {
+  background: var(--bg-hover, #2a2a2a);
+  color: var(--text, #e0e0e0);
+}
+
+.poe2-maintab-active {
+  background: rgba(162, 114, 255, 0.12);
+  color: #a272ff;
+  border-color: #a272ff;
+}
+
+/* ---- Source tabs (Base, Essence, Boss...) — wrap naturally ---- */
+
+.poe2-sourcetabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background: var(--bg-card, #1e1e1e);
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+}
+
+.poe2-sourcetab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--border, #444);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted, #888);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.poe2-sourcetab:hover {
+  background: var(--bg-hover, #2a2a2a);
+  color: var(--text, #e0e0e0);
+  border-color: #666;
+}
+
+.poe2-sourcetab-active {
+  background: rgba(162, 114, 255, 0.1);
+  color: #a272ff;
+  border-color: #a272ff;
+}
+
+.poe2-tab-count {
+  font-size: 0.65rem;
+  background: rgba(255,255,255,0.08);
+  padding: 1px 7px;
+  border-radius: 8px;
+  color: var(--text-muted, #888);
+}
+
+.poe2-sourcetab-active .poe2-tab-count {
+  background: rgba(162, 114, 255, 0.2);
+  color: #a272ff;
+}
+
+/* ---- Family group (collapsible) ---- */
+
+.poe2-family-group {
+  margin-bottom: 12px;
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-card, #1e1e1e);
+}
+
+.poe2-family-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  background: rgba(162, 114, 255, 0.06);
+  color: var(--text, #e0e0e0);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.poe2-family-header:hover {
+  background: rgba(162, 114, 255, 0.12);
+}
+
+.poe2-collapse-icon {
+  font-size: 0.6rem;
+  transition: transform 0.15s;
+  color: var(--text-muted, #888);
+  flex-shrink: 0;
+}
+
+.poe2-collapse-open {
+  transform: rotate(90deg);
+}
+
+.poe2-family-title {
+  flex: 1;
+}
+
+.poe2-family-count {
+  font-size: 0.72rem;
+  color: var(--text-muted, #888);
+}
+
+.poe2-family-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.poe2-btn-mini {
+  padding: 2px 8px;
+  border: 1px solid var(--border, #444);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted, #888);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.poe2-btn-mini:hover {
+  background: var(--bg-hover, #2a2a2a);
+  color: var(--text, #e0e0e0);
+}
+
+.poe2-family-desc {
+  padding: 8px 14px 8px 36px;
+  font-size: 0.82rem;
+  color: var(--text-muted, #999);
+  cursor: pointer;
+  line-height: 1.5;
+  transition: background 0.1s;
+}
+
+.poe2-family-desc:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ---- Collapse All / Expand All ---- */
+
+.poe2-collapse-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.poe2-btn-text {
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  color: #a272ff;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.poe2-btn-text:hover {
+  text-decoration: underline;
+}
+
+/* ---- Trade link ---- */
+
+.poe2-trade-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: rgba(162, 114, 255, 0.06);
+  border: 1px solid #a272ff;
+  border-radius: 6px;
+}
+
+.poe2-trade-link a {
+  flex: 1;
+  font-size: 0.78rem;
+  color: #a272ff;
+  word-break: break-all;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.poe2-trade-link a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Mod list ---- */
+
+.poe2-mod-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border, #333);
+}
+
+.poe2-mod-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.1s;
+  border-bottom: 1px solid var(--border, #2a2a2a);
+}
+
+.poe2-mod-item:last-child {
+  border-bottom: none;
+}
+
+.poe2-mod-item:hover {
+  background: var(--bg-hover, #2a2a2a);
+}
+
+.poe2-mod-item.poe2-mod-checked {
+  background: rgba(162, 114, 255, 0.06);
+}
+
+.poe2-mod-item input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: #a272ff;
+  flex-shrink: 0;
+}
+
+.poe2-mod-text {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text, #d0d0d0);
+  word-break: break-word;
+}
+
+.poe2-mod-tier {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #f5a623;
+  background: rgba(245, 166, 35, 0.12);
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.poe2-mod-level {
+  font-size: 0.7rem;
+  color: var(--text-muted, #666);
+  flex-shrink: 0;
+}
+
+.poe2-mod-name {
+  color: #a272ff;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.poe2-mod-stat {
+  color: var(--text, #d0d0d0);
+}
+
+.poe2-mod-checked .poe2-mod-text,
+.poe2-mod-checked .poe2-mod-stat {
+  color: #c8b8ff;
+}
+
+/* ---- Empty state ---- */
+
+.poe2-empty {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--text-muted, #888);
+  font-size: 0.9rem;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  .poe2-input-row {
+    flex-direction: column;
+  }
+
+  .poe2-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .poe2-toolbar-actions {
+    flex-direction: column;
+  }
+
+  .poe2-app {
+    padding: 16px 12px;
+  }
+}

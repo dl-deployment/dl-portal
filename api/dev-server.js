@@ -69,6 +69,11 @@ app.get("/api/fetch-free-games", async (req, res) => {
   await handler(req, res);
 });
 
+app.get("/api/fetch-poedb", async (req, res) => {
+  const handler = await loadHandler("fetch-poedb");
+  await handler(req, res);
+});
+
 const PORT = 3002;
 app.listen(PORT, () => {
   console.log(`API dev server running on http://localhost:${PORT}`);

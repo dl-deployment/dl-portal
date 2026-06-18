@@ -65,3 +65,4 @@ npm run dev:client          # Frontend on http://localhost:5174
 | `existing-pages/color.md` | Color Tools app details (conversions, palettes, WCAG contrast) |
 | `existing-pages/freegames.md` | Free Games app details (Epic/Steam APIs, card grid, countdown) |
 | `existing-pages/facebook.md` | Facebook Manager app details (Google Sheets API, group tabs) |
+| `existing-pages/poe2.md` | POE 2 Trade Helper (poe2db parsing, mod checklist, trade site link) |
