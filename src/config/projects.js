@@ -94,12 +94,5 @@ export const projects = [
     description: "Track YouTube channels and videos",
     auth: true,
   },
-  {
-    id: "facebook",
-    name: "Facebook",
-    path: "/facebook",
-    icon: "\u{1F4D8}",
-    description: "Manage tracked Facebook pages",
-    auth: true,
-  },
+
 ];

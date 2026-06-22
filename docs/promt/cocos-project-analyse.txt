@@ -1,0 +1,146 @@
+You are a senior Cocos Creator architect, reverse engineer, and technical writer.
+
+Analyze the entire Cocos Creator project and generate a complete AI-friendly documentation set in Markdown.
+
+Assume:
+- No documentation exists.
+- Original developers are unavailable.
+- Future developers and AI assistants will rely on this documentation as the source of truth.
+- All findings must be derived from source code, assets, scenes, prefabs, animations, and configuration files.
+
+Analyze all relevant files including:
+- assets/
+- packages/
+- settings/
+- extensions/
+- project.json
+- package.json
+- tsconfig.json
+- *.ts
+- *.js
+- *.scene
+- *.fire
+- *.prefab
+- *.anim
+- *.plist
+
+Tasks:
+
+1. Determine:
+   - Project purpose
+   - Game genre
+   - Core gameplay loop
+   - Main features
+   - Technology stack
+   - Cocos Creator version
+   - Build targets
+
+2. Reverse engineer:
+   - Startup sequence
+   - Initialization order
+   - Scene flow
+   - UI architecture
+   - Gameplay systems
+   - Resource loading strategy
+   - Asset bundle usage
+   - Event system
+   - Networking
+   - Save data
+   - SDK integrations
+   - Analytics
+   - Payment systems
+   - Advertisement systems
+
+3. Identify:
+   - All scenes and transitions
+   - All prefabs and where they are instantiated
+   - All components and their responsibilities
+   - Managers, singletons, global state
+   - Event publishers and subscribers
+   - Resource dependencies
+   - Dynamic loading paths
+   - API endpoints and message structures
+   - Data models and storage formats
+
+4. Detect:
+   - Dead code
+   - Unused assets
+   - Circular dependencies
+   - Architectural violations
+   - Duplicate logic
+   - Performance issues
+   - Memory leaks
+   - Event leaks
+   - Resource leaks
+   - High-risk areas for modification
+
+5. Generate Mermaid diagrams for:
+   - Architecture
+   - Scene flow
+   - Dependency graph
+   - Event flow
+   - Resource flow
+   - Initialization sequence
+
+6. For every important class/module/component provide:
+   - Purpose
+   - Responsibilities
+   - Dependencies
+   - Used by
+   - Public API
+   - Lifecycle
+   - Important execution flows
+   - Risks and caveats
+
+7. Create a /docs folder with:
+
+docs/
+├── PROJECT_OVERVIEW.md
+├── REPOSITORY_STRUCTURE.md
+├── ARCHITECTURE.md
+├── SCENE_FLOW.md
+├── PREFAB_REFERENCE.md
+├── COMPONENT_REFERENCE.md
+├── EVENT_SYSTEM.md
+├── RESOURCE_MANAGEMENT.md
+├── UI_ARCHITECTURE.md
+├── GAMEPLAY_SYSTEMS.md
+├── NETWORKING.md
+├── SAVE_DATA.md
+├── ANIMATION_SYSTEM.md
+├── SINGLETONS_AND_GLOBALS.md
+├── DATA_MODEL.md
+├── DEPENDENCY_GRAPH.md
+├── BUILD_AND_DEPLOY.md
+├── TROUBLESHOOTING.md
+├── TECHNICAL_DEBT.md
+└── AI_CONTEXT.md
+
+8. Create AI_CONTEXT.md containing:
+   - Project architecture rules
+   - Coding conventions
+   - Naming conventions
+   - Folder structure conventions
+   - Scene management rules
+   - Resource loading rules
+   - Event naming conventions
+   - State management rules
+   - Safe areas to modify
+   - High-risk areas
+   - How to add a new UI
+   - How to add a new popup
+   - How to add a new feature
+   - How to add a new API
+   - Common bug locations
+   - Recommended prompts for future AI sessions
+
+9. Trace actual execution paths instead of relying on file names.
+
+10. When uncertain, label findings as:
+    - Confirmed
+    - Likely
+    - Speculative
+
+Do not silently assume behavior.
+
+Output detailed Markdown documentation suitable for long-term maintenance, onboarding, refactoring, and future AI-assisted development.

@@ -7,7 +7,7 @@
 --
 -- NAMING CONVENTION:
 -- Each app's data table is named after the app itself.
--- e.g. youtube app → `youtube` table, facebook app → `facebook` table.
+-- e.g. youtube app → `youtube` table.
 -- This keeps DB table names consistent with app names in the `apps` registry.
 
 -- 0. Apps registry
@@ -15,7 +15,7 @@ CREATE TABLE apps (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
 );
-INSERT INTO apps (name) VALUES ('youtube'), ('facebook'), ('bookmarks'), ('tasks'), ('ptimeline');
+INSERT INTO apps (name) VALUES ('youtube'), ('bookmarks'), ('tasks'), ('ptimeline');
 
 -- 1. Shared tabs table (linked to apps)
 CREATE TABLE tabs (
@@ -34,13 +34,6 @@ CREATE TABLE youtube (
   tab_id INT NOT NULL REFERENCES tabs(id) ON DELETE CASCADE
 );
 
--- 3. Facebook: tracked feeds
-CREATE TABLE facebook (
-  id TEXT PRIMARY KEY,
-  page_name TEXT NOT NULL,
-  thumbnail TEXT DEFAULT '',
-  tab_id INT NOT NULL REFERENCES tabs(id) ON DELETE CASCADE
-);
 
 -- 4. Bookmarks
 CREATE TABLE bookmarks (
@@ -85,7 +78,7 @@ CREATE TABLE ptimeline (
 ALTER TABLE apps ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tabs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE youtube ENABLE ROW LEVEL SECURITY;
-ALTER TABLE facebook ENABLE ROW LEVEL SECURITY;
+
 ALTER TABLE bookmarks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ptimeline ENABLE ROW LEVEL SECURITY;
@@ -93,6 +86,6 @@ ALTER TABLE ptimeline ENABLE ROW LEVEL SECURITY;
 -- Indexes for common queries
 CREATE INDEX idx_tabs_app_id ON tabs(app_id);
 CREATE INDEX idx_youtube_tab_id ON youtube(tab_id);
-CREATE INDEX idx_facebook_tab_id ON facebook(tab_id);
+
 CREATE INDEX idx_bookmarks_tab_id ON bookmarks(tab_id);
 CREATE INDEX idx_tasks_completed ON tasks(completed);

@@ -49,7 +49,7 @@ youtube: { id, channel_name, thumbnail, tab_id }
 - **Card grid + form panel UI:** Channels displayed as cards with thumbnail. Add/edit via form panel (same pattern as Bookmarks).
 - **Range filter:** Videos filterable by "Week" or "Month".
 - **Hybrid store:** Tabs and youtube records are async (Supabase via dbApi). Videos are synchronous (localStorage). Cascade deletes update both. Tab IDs are DB-generated via `dbApi.createTab()`.
-- **Shared TabBar:** Uses `src/apps/bookmarks/components/TabBar.jsx` (shared across bookmarks, youtube, facebook).
+- **Shared TabBar:** Uses `src/apps/bookmarks/components/TabBar.jsx` (shared across bookmarks, youtube).
 - **`visitedTabs` pattern:** Tabs rendered lazily on first visit, kept in DOM with `display: none` for instant switching. See `api-and-storage.md` → "Tabbed App Loading Pattern".
 
 ## CSS

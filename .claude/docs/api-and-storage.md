@@ -176,18 +176,17 @@ export async function deleteItem(id) {
 
 ### Database Schema
 
-Relational tables in Supabase with RLS enabled (service_role key bypasses RLS). `apps` table as registry. Shared `tabs` table with `app_id` FK to `apps`. Each app's data table is named after the app (`youtube`, `facebook`, `bookmarks`, `tasks`). JS uses camelCase, DB uses snake_case — conversion happens in `api/db/read.js` and `api/db/write.js`. Server-side uses static `APP_IDS` map for app name → id lookup.
+Relational tables in Supabase with RLS enabled (service_role key bypasses RLS). `apps` table as registry. Shared `tabs` table with `app_id` FK to `apps`. Each app's data table is named after the app (`youtube`, `bookmarks`, `tasks`). JS uses camelCase, DB uses snake_case — conversion happens in `api/db/read.js` and `api/db/write.js`. Server-side uses static `APP_IDS` map for app name → id lookup.
 
-Supabase tables: `apps`, `tabs`, `youtube`, `facebook`, `bookmarks`, `tasks`.
+Supabase tables: `apps`, `tabs`, `youtube`, `bookmarks`, `tasks`.
 
 localStorage (ephemeral content, can be re-fetched):
 - `dl-youtube-videos` — fetched video data
-- `dl-facebook-posts` — fetched post data
 - `dl-color-history` — recent color picks (max 16)
 
 ## Tabbed App Loading Pattern
 
-All tabbed apps (bookmarks, youtube, facebook) use the same set of patterns for fast tab switching and responsive mutations. **Always follow these patterns when building a new tabbed app.**
+All tabbed apps (bookmarks, youtube) use the same set of patterns for fast tab switching and responsive mutations. **Always follow these patterns when building a new tabbed app.**
 
 ### 1. `visitedTabs` — Lazy Tab Rendering
 
