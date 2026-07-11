@@ -425,6 +425,63 @@
   margin-left: 12px;
 }
 
+.poe2-sid-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.poe2-sid-row .poe2-input {
+  flex: 1;
+}
+
+.poe2-btn-get {
+  border-color: #a272ff;
+  color: #a272ff;
+  flex-shrink: 0;
+}
+
+.poe2-btn-get:hover {
+  background: rgba(162, 114, 255, 0.12);
+}
+
+.poe2-sid-help {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--bg-input, #121212);
+  border: 1px solid var(--border, #444);
+  font-size: 0.8rem;
+  color: var(--text-muted, #888);
+  line-height: 1.8;
+}
+
+.poe2-sid-help p {
+  margin: 0;
+}
+
+.poe2-sid-help strong {
+  color: var(--text, #e0e0e0);
+}
+
+.poe2-sid-snippet {
+  display: block;
+  margin: 6px 0;
+  padding: 8px 10px;
+  background: rgba(162, 114, 255, 0.1);
+  border: 1px solid rgba(162, 114, 255, 0.3);
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: #a272ff;
+  cursor: pointer;
+  user-select: all;
+  word-break: break-all;
+}
+
+.poe2-sid-snippet:hover {
+  background: rgba(162, 114, 255, 0.18);
+}
+
 @media (max-width: 600px) {
   .poe2-app {
     padding: 16px 12px;

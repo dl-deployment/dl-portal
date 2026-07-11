@@ -118,10 +118,13 @@ export default function Poe2App() {
   }, [copyToClipboard]);
 
   const [marketUrl, setMarketUrl] = useState(DEFAULT_MARKET_URL);
-  const [marketData, setMarketData] = useState([]);
   const [quickLinks, setQuickLinks] = useState([]);
   const [editing, setEditing] = useState(null); // null | { id?, name, payload }
   const [searchingId, setSearchingId] = useState(null);
+  const [poesessid, setPoesessid] = useState(() => {
+    try { return localStorage.getItem("poe2_poesessid") || ""; } catch { return ""; }
+  });
+  const [showSidHelp, setShowSidHelp] = useState(false);
 
   useEffect(() => {
     getQuickLinks().then(setQuickLinks);
@@ -156,7 +159,7 @@ export default function Poe2App() {
       const res = await fetch("/api/poe2-trade", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: marketUrl, payload: link.payload }),
+        body: JSON.stringify({ url: marketUrl, payload: link.payload, cookie: poesessid }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -166,6 +169,11 @@ export default function Poe2App() {
       // silently fail — trade site may be unreachable
     }
     setSearchingId(null);
+  }
+
+  function handlePoesessidChange(value) {
+    setPoesessid(value);
+    try { localStorage.setItem("poe2_poesessid", value); } catch {}
   }
 
   function startCreate() {
@@ -327,6 +335,34 @@ export default function Poe2App() {
               </div>
             </div>
 
+            <div className="poe2-segment">
+              <label className="poe2-segment-label">POESESSID</label>
+              <div className="poe2-sid-row">
+                <input
+                  type="text"
+                  className="poe2-input"
+                  placeholder="Paste your POESESSID cookie from pathofexile.com"
+                  value={poesessid}
+                  onChange={(e) => handlePoesessidChange(e.target.value)}
+                />
+                <button
+                  className="poe2-btn poe2-btn-get"
+                  onClick={() => setShowSidHelp(!showSidHelp)}
+                >
+                  {showSidHelp ? "Hide" : "Get"}
+                </button>
+              </div>
+              {showSidHelp && (
+                <div className="poe2-sid-help">
+                  <p>1. Open <strong>pathofexile.com</strong> and log in</p>
+                  <p>2. Press <strong>F12</strong> → <strong>Application</strong> tab</p>
+                  <p>3. Left sidebar: Cookies → <strong>pathofexile.com</strong></p>
+                  <p>4. Find <strong>POESESSID</strong> in the list, double-click its Value, Ctrl+C</p>
+                  <p>5. Come back here and <strong>Ctrl+V</strong> to paste</p>
+                </div>
+              )}
+            </div>
+
             {editing && (
               <div className="poe2-segment poe2-segment-edit">
                 <label className="poe2-segment-label">
@@ -392,18 +428,6 @@ export default function Poe2App() {
               </div>
             )}
 
-            {marketData.length > 0 && (
-              <div className="poe2-segment">
-                <label className="poe2-segment-label">Results</label>
-                <ul className="poe2-data-list">
-                  {marketData.map((item, i) => (
-                    <li key={i} className="poe2-data-item">
-                      {typeof item === "string" ? item : JSON.stringify(item)}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         )}
       </div>
