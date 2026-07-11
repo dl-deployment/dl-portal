@@ -23,7 +23,19 @@
       "Bash(netstat -aon)",
       "Bash(awk '{print $5}')",
       "Bash(xargs -r kill -f)",
-      "Bash(cmd //c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -aon ^| findstr :3001 ^| findstr LISTENING'\\) do taskkill /f /pid %a\")"
+      "Bash(cmd //c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -aon ^| findstr :3001 ^| findstr LISTENING'\\) do taskkill /f /pid %a\")",
+      "Bash(taskkill /F /PID 218128)",
+      "Bash(curl -s -X POST http://localhost:3002/api/poe2-trade -H \"Content-Type: application/json\" -d \"{\\\\\"url\\\\\":\\\\\"https://www.pathofexile.com/api/trade2/search/poe2/Runes%20of%20Aldur\\\\\",\\\\\"payload\\\\\":\\\\\"{\\\\\\\\\\\\\"query\\\\\\\\\\\\\":{\\\\\\\\\\\\\"status\\\\\\\\\\\\\":{\\\\\\\\\\\\\"option\\\\\\\\\\\\\":\\\\\\\\\\\\\"securable\\\\\\\\\\\\\"}}}\\\\\"}\")",
+      "Bash(node setup-poe2.js)",
+      "Bash(curl -s -X POST http://localhost:3002/api/db/read -H \"Content-Type: application/json\" -H \"x-api-key: $\\(grep API_SECRET .env)",
+      "Bash(curl -s -X POST http://localhost:3002/api/db/read -H \"Content-Type: application/json\" -H \"x-api-key: 123\" -d \"{\\\\\"app\\\\\":\\\\\"poe2\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:3002/api/db/write -H \"Content-Type: application/json\" -H \"x-api-key: 123\" -d \"{\\\\\"app\\\\\":\\\\\"poe2\\\\\",\\\\\"data\\\\\":{\\\\\"quickLinks\\\\\":[]}}\")",
+      "Bash(taskkill //F //PID 218836)",
+      "Bash(curl -s -X POST http://localhost:3002/api/db/write -H \"Content-Type: application/json\" -H \"x-api-key: 123\" -d \"{\\\\\"app\\\\\":\\\\\"poe2\\\\\",\\\\\"data\\\\\":{\\\\\"quickLinks\\\\\":[{\\\\\"id\\\\\":99,\\\\\"name\\\\\":\\\\\"CurlTest\\\\\",\\\\\"payload\\\\\":\\\\\"{}\\\\\"}]}}\")",
+      "Bash(taskkill //PID 219072 //F)",
+      "Bash(taskkill //PID 230592 //F)",
+      "Bash(taskkill //PID 233684 //F)",
+      "mcp__Claude_in_Chrome__find"
     ]
   }
 }

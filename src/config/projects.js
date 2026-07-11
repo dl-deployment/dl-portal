@@ -46,7 +46,7 @@ export const projects = [
     name: "POE 2",
     path: "/poe2",
     icon: "\u{1F3F9}",
-    description: "Parse poe2db modifiers and create trade search links",
+    description: "Regex tools, market check, and notes for Path of Exile 2",
   },
   {
     id: "staticpages",

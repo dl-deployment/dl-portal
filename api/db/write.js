@@ -1,11 +1,12 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, bookmarks: 3, ptimeline: 5 };
+const APP_IDS = { youtube: 1, bookmarks: 3, ptimeline: 5, poe2: 6 };
 
 const WRITERS = {
   youtube: writeYoutube,
   bookmarks: writeBookmarks,
   ptimeline: writePtimeline,
+  poe2: writePoe2,
 };
 
 export default async function handler(req, res) {
@@ -151,4 +152,19 @@ async function writePtimeline(data) {
     await supabase.from("ptimeline").upsert(dbEvents, { onConflict: "id" });
   }
   await deleteNotInNumeric("ptimeline", "id", dbEvents.map((e) => e.id));
+}
+
+async function writePoe2(data) {
+  const { quickLinks = [] } = data;
+
+  const dbLinks = quickLinks.map((l) => ({
+    id: l.id,
+    name: l.name,
+    payload: l.payload,
+  }));
+
+  if (dbLinks.length > 0) {
+    await supabase.from("poe2").upsert(dbLinks, { onConflict: "id" });
+  }
+  await deleteNotInNumeric("poe2", "id", dbLinks.map((l) => l.id));
 }

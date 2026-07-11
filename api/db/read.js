@@ -1,11 +1,12 @@
 import { supabase, getSupabase } from "../supabase.js";
 
-const APP_IDS = { youtube: 1, bookmarks: 3, ptimeline: 5 };
+const APP_IDS = { youtube: 1, bookmarks: 3, ptimeline: 5, poe2: 6 };
 
 const READERS = {
   youtube: readYoutube,
   bookmarks: readBookmarks,
   ptimeline: readPtimeline,
+  poe2: readPoe2,
 };
 
 export default async function handler(req, res) {
@@ -88,6 +89,18 @@ async function readPtimeline() {
       icon: e.icon,
       note: e.note,
       createdAt: e.created_at,
+    })),
+  };
+}
+
+async function readPoe2() {
+  const { data } = await supabase.from("poe2").select("*").order("id");
+
+  return {
+    quickLinks: (data || []).map((l) => ({
+      id: l.id,
+      name: l.name,
+      payload: l.payload,
     })),
   };
 }

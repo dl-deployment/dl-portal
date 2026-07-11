@@ -54,15 +54,16 @@ app.post("/api/db/create-tab", async (req, res) => {
   await handler(req, res);
 });
 
+app.post("/api/poe2-trade", async (req, res) => {
+  const handler = await loadHandler("poe2-trade");
+  await handler(req, res);
+});
+
 app.get("/api/fetch-free-games", async (req, res) => {
   const handler = await loadHandler("fetch-free-games");
   await handler(req, res);
 });
 
-app.get("/api/fetch-poedb", async (req, res) => {
-  const handler = await loadHandler("fetch-poedb");
-  await handler(req, res);
-});
 
 const PORT = 3002;
 app.listen(PORT, () => {

@@ -9,135 +9,13 @@
   font-size: 1.5rem;
 }
 
-.poe2-input-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.poe2-url-input {
-  flex: 1;
-  padding: 10px 14px;
-  border: 1px solid var(--border, #333);
-  border-radius: 6px;
-  background: var(--bg-card, #1e1e1e);
-  color: var(--text, #e0e0e0);
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.poe2-url-input:focus {
-  border-color: #a272ff;
-}
-
-.poe2-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity 0.15s;
-}
-
-.poe2-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.poe2-btn-primary {
-  background: #a272ff;
-  color: #fff;
-}
-
-.poe2-btn-primary:hover:not(:disabled) {
-  background: #8b5cf6;
-}
-
-.poe2-btn-outline {
-  background: transparent;
-  border: 1px solid var(--border, #444);
-  color: var(--text, #e0e0e0);
-}
-
-.poe2-btn-outline:hover:not(:disabled) {
-  background: var(--bg-hover, #2a2a2a);
-}
-
-.poe2-btn-trade {
-  background: #e05a3a;
-  color: #fff;
-}
-
-.poe2-btn-trade:hover:not(:disabled) {
-  background: #c94e30;
-}
-
-.poe2-error {
-  padding: 10px 14px;
-  margin-bottom: 16px;
-  border-radius: 6px;
-  background: #3a1c1c;
-  color: #f5a5a5;
-  font-size: 0.85rem;
-}
-
-.poe2-loading {
-  margin-top: 16px;
-}
-
-/* ---- Toolbar (above tabs) ---- */
-
-.poe2-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  padding: 10px 14px;
-  background: var(--bg-card, #1e1e1e);
-  border: 1px solid var(--border, #333);
-  border-radius: 8px;
-  gap: 8px;
-}
-
-.poe2-filter-input {
-  flex: 1;
-  max-width: 280px;
-  padding: 6px 12px;
-  border: 1px solid var(--border, #444);
-  border-radius: 6px;
-  background: var(--bg-card, #1e1e1e);
-  color: var(--text, #e0e0e0);
-  font-size: 0.85rem;
-  outline: none;
-}
-
-.poe2-filter-input:focus {
-  border-color: #a272ff;
-}
-
-.poe2-count {
-  font-size: 0.85rem;
-  color: var(--text-muted, #888);
-  white-space: nowrap;
-}
-
-.poe2-toolbar-actions {
-  display: flex;
-  gap: 8px;
-}
-
-/* ---- Main tabs (Prefix | Suffix) ---- */
-
-.poe2-maintabs {
+.poe2-tabs {
   display: flex;
   gap: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 }
 
-.poe2-maintab {
+.poe2-tab {
   flex: 1;
   padding: 10px;
   border: 1px solid var(--border, #444);
@@ -151,304 +29,403 @@
   text-align: center;
 }
 
-.poe2-maintab:hover {
+.poe2-tab:hover {
   background: var(--bg-hover, #2a2a2a);
   color: var(--text, #e0e0e0);
 }
 
-.poe2-maintab-active {
+.poe2-tab-active {
   background: rgba(162, 114, 255, 0.12);
   color: #a272ff;
   border-color: #a272ff;
 }
 
-/* ---- Source tabs (Base, Essence, Boss...) — wrap naturally ---- */
-
-.poe2-sourcetabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 16px;
-  padding: 8px;
-  background: var(--bg-card, #1e1e1e);
-  border: 1px solid var(--border, #333);
-  border-radius: 8px;
+.poe2-tab-content {
+  min-height: 200px;
 }
 
-.poe2-sourcetab {
+.poe2-regex {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.poe2-regex-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.poe2-regex-row .poe2-input {
+  flex: 1;
+}
+
+.poe2-btn-clear {
+  flex-shrink: 0;
+}
+
+.poe2-btn-clear:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.poe2-rarity-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.poe2-rarity-tab {
+  flex: 1;
+  min-width: 80px;
+  padding: 8px 12px;
+  border: 1px solid var(--border, #444);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text, #e0e0e0);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.poe2-rarity-tab:hover {
+  background: var(--bg-hover, #2a2a2a);
+  border-color: #a272ff;
+  color: #a272ff;
+}
+
+.poe2-rarity-active {
+  background: rgba(162, 114, 255, 0.15);
+  border-color: #a272ff;
+  color: #a272ff;
+}
+
+.poe2-waystone-regex-active {
+  color: #a272ff !important;
+}
+
+.poe2-segment-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.poe2-segment-tab {
+  flex: 1;
+  min-width: 60px;
+  padding: 6px 10px;
+  border: 1px solid var(--border, #444);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted, #888);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.poe2-segment-tab:hover {
+  background: var(--bg-hover, #2a2a2a);
+  color: var(--text, #e0e0e0);
+}
+
+.poe2-segment-tab-active {
+  background: rgba(162, 114, 255, 0.12);
+  color: #a272ff;
+  border-color: #a272ff;
+}
+
+.poe2-quantity-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border, #444);
+}
+
+.poe2-waystone-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.poe2-waystone-row:last-child {
+  margin-bottom: 0;
+}
+
+.poe2-waystone-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text, #e0e0e0);
+  white-space: nowrap;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.poe2-waystone-regex {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-muted, #666);
+  background: transparent;
+  cursor: pointer;
+}
+
+.poe2-waystone-regex:hover {
+  color: #a272ff;
+}
+
+.poe2-waystone-input {
+  width: 100px;
+  padding: 6px 8px;
+  border: 1px solid var(--border, #444);
+  border-radius: 6px;
+  background: var(--bg-input, #121212);
+  color: var(--text, #e0e0e0);
+  font-size: 0.9rem;
+  font-family: monospace;
+  text-align: center;
+  outline: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.poe2-waystone-input:focus {
+  border-color: #a272ff;
+}
+
+
+.poe2-btn-add {
+  flex-shrink: 0;
+  padding: 6px 16px;
+  border: 1px solid #a272ff;
+  color: #a272ff;
+  font-weight: 600;
+}
+
+.poe2-btn-add:hover {
+  background: rgba(162, 114, 255, 0.12);
+}
+
+.poe2-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--text-muted, #888);
+  font-size: 0.95rem;
+  border: 1px dashed var(--border, #444);
+  border-radius: 8px;
+  background: var(--bg-card, #1e1e1e);
+}
+
+.poe2-market {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.poe2-segment {
+  padding: 16px;
+  border: 1px solid var(--border, #444);
+  border-radius: 8px;
+  background: var(--bg-card, #1e1e1e);
+}
+
+.poe2-segment-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.poe2-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border, #444);
+  border-radius: 6px;
+  background: var(--bg-input, #121212);
+  color: var(--text, #e0e0e0);
+  font-size: 0.85rem;
+  font-family: monospace;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.poe2-input:focus {
+  border-color: #a272ff;
+}
+
+.poe2-data-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.poe2-data-item {
+  font-size: 0.85rem;
+  color: var(--text, #e0e0e0);
+}
+
+.poe2-url-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.poe2-url-row .poe2-input {
+  flex: 1;
+}
+
+.poe2-btn {
   padding: 6px 14px;
   border: 1px solid var(--border, #444);
   border-radius: 6px;
   background: transparent;
-  color: var(--text-muted, #888);
-  font-size: 0.82rem;
+  color: var(--text, #e0e0e0);
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
-}
-
-.poe2-sourcetab:hover {
-  background: var(--bg-hover, #2a2a2a);
-  color: var(--text, #e0e0e0);
-  border-color: #666;
-}
-
-.poe2-sourcetab-active {
-  background: rgba(162, 114, 255, 0.1);
-  color: #a272ff;
-  border-color: #a272ff;
-}
-
-.poe2-tab-count {
-  font-size: 0.65rem;
-  background: rgba(255,255,255,0.08);
-  padding: 1px 7px;
-  border-radius: 8px;
-  color: var(--text-muted, #888);
-}
-
-.poe2-sourcetab-active .poe2-tab-count {
-  background: rgba(162, 114, 255, 0.2);
-  color: #a272ff;
-}
-
-/* ---- Family group (collapsible) ---- */
-
-.poe2-family-group {
-  margin-bottom: 12px;
-  border: 1px solid var(--border, #333);
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--bg-card, #1e1e1e);
-}
-
-.poe2-family-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  font-size: 0.92rem;
-  font-weight: 600;
-  background: rgba(162, 114, 255, 0.06);
-  color: var(--text, #e0e0e0);
-  cursor: pointer;
-  user-select: none;
+  white-space: nowrap;
   transition: background 0.1s;
 }
 
-.poe2-family-header:hover {
+.poe2-btn:hover {
+  background: var(--bg-hover, #2a2a2a);
+}
+
+.poe2-btn-create {
+  border-color: #a272ff;
+  color: #a272ff;
+  flex-shrink: 0;
+}
+
+.poe2-btn-create:hover {
   background: rgba(162, 114, 255, 0.12);
 }
 
-.poe2-collapse-icon {
-  font-size: 0.6rem;
-  transition: transform 0.15s;
-  color: var(--text-muted, #888);
-  flex-shrink: 0;
+.poe2-btn-save {
+  border-color: #4caf50;
+  color: #4caf50;
 }
 
-.poe2-collapse-open {
-  transform: rotate(90deg);
+.poe2-btn-save:hover {
+  background: rgba(76, 175, 80, 0.12);
 }
 
-.poe2-family-title {
-  flex: 1;
-}
-
-.poe2-family-count {
-  font-size: 0.72rem;
+.poe2-btn-cancel {
   color: var(--text-muted, #888);
 }
 
-.poe2-family-actions {
-  display: flex;
-  gap: 4px;
-  margin-left: auto;
-}
-
-.poe2-btn-mini {
-  padding: 2px 8px;
-  border: 1px solid var(--border, #444);
-  border-radius: 4px;
-  background: transparent;
+.poe2-btn-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid transparent;
+  background: none;
+  font-size: 0.9rem;
   color: var(--text-muted, #888);
-  font-size: 0.7rem;
   cursor: pointer;
-  transition: background 0.1s;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
 
-.poe2-btn-mini:hover {
-  background: var(--bg-hover, #2a2a2a);
+.poe2-btn-icon:hover {
   color: var(--text, #e0e0e0);
+  background: var(--bg-hover, #2a2a2a);
+  border-color: var(--border, #444);
 }
 
-.poe2-family-desc {
-  padding: 8px 14px 8px 36px;
-  font-size: 0.82rem;
-  color: var(--text-muted, #999);
-  cursor: pointer;
+.poe2-btn-danger:hover {
+  color: #f44336;
+  background: rgba(244, 67, 54, 0.12);
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+.poe2-textarea {
+  min-height: 180px;
+  resize: vertical;
+  margin-top: 8px;
   line-height: 1.5;
-  transition: background 0.1s;
 }
 
-.poe2-family-desc:hover {
-  background: rgba(255, 255, 255, 0.03);
+.poe2-segment-edit {
+  border-color: #a272ff;
 }
 
-/* ---- Collapse All / Expand All ---- */
+.poe2-segment-edit .poe2-input {
+  margin-bottom: 8px;
+}
 
-.poe2-collapse-actions {
+.poe2-edit-actions {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-top: 8px;
 }
 
-.poe2-btn-text {
-  padding: 4px 0;
-  border: none;
-  background: transparent;
-  color: #a272ff;
-  font-size: 0.78rem;
-  cursor: pointer;
-}
-
-.poe2-btn-text:hover {
-  text-decoration: underline;
-}
-
-/* ---- Trade link ---- */
-
-.poe2-trade-link {
+.poe2-quick-link-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 8px 12px;
-  background: rgba(162, 114, 255, 0.06);
-  border: 1px solid #a272ff;
-  border-radius: 6px;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border: 1px solid var(--border, #444);
+  border-radius: 8px;
+  background: var(--bg-input, #121212);
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.poe2-trade-link a {
+.poe2-quick-link-item:hover {
+  border-color: #a272ff;
+  background: rgba(162, 114, 255, 0.06);
+}
+
+.poe2-quick-link-btn {
   flex: 1;
-  font-size: 0.78rem;
-  color: #a272ff;
-  word-break: break-all;
-  overflow: hidden;
-  text-decoration: none;
-}
-
-.poe2-trade-link a:hover {
-  text-decoration: underline;
-}
-
-/* ---- Mod list ---- */
-
-.poe2-mod-list {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--border, #333);
-}
-
-.poe2-mod-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 7px 14px;
-  cursor: pointer;
-  transition: background 0.1s;
-  border-bottom: 1px solid var(--border, #2a2a2a);
-}
-
-.poe2-mod-item:last-child {
-  border-bottom: none;
-}
-
-.poe2-mod-item:hover {
-  background: var(--bg-hover, #2a2a2a);
-}
-
-.poe2-mod-item.poe2-mod-checked {
-  background: rgba(162, 114, 255, 0.06);
-}
-
-.poe2-mod-item input[type="checkbox"] {
-  margin-top: 3px;
-  accent-color: #a272ff;
-  flex-shrink: 0;
-}
-
-.poe2-mod-text {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  flex-wrap: wrap;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: var(--text, #d0d0d0);
-  word-break: break-word;
-}
-
-.poe2-mod-tier {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #f5a623;
-  background: rgba(245, 166, 35, 0.12);
-  padding: 1px 6px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-.poe2-mod-level {
-  font-size: 0.7rem;
-  color: var(--text-muted, #666);
-  flex-shrink: 0;
-}
-
-.poe2-mod-name {
-  color: #a272ff;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text, #e0e0e0);
+  font-size: 0.85rem;
   font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.poe2-mod-stat {
-  color: var(--text, #d0d0d0);
+.poe2-quick-link-btn:hover {
+  color: #a272ff;
 }
 
-.poe2-mod-checked .poe2-mod-text,
-.poe2-mod-checked .poe2-mod-stat {
-  color: #c8b8ff;
-}
-
-/* ---- Empty state ---- */
-
-.poe2-empty {
-  text-align: center;
-  padding: 48px 16px;
+.poe2-quick-link-btn:disabled {
   color: var(--text-muted, #888);
-  font-size: 0.9rem;
+  cursor: wait;
 }
 
-/* ---- Responsive ---- */
+.poe2-quick-link-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
 
 @media (max-width: 600px) {
-  .poe2-input-row {
-    flex-direction: column;
-  }
-
-  .poe2-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .poe2-toolbar-actions {
-    flex-direction: column;
-  }
-
   .poe2-app {
     padding: 16px 12px;
   }
