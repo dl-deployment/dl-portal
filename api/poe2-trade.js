@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   };
 
   if (cookie) {
-    headers.cookie = cookie;
+    headers.cookie = cookie.startsWith("POESESSID=") ? cookie : `POESESSID=${cookie}`;
   }
 
   try {
